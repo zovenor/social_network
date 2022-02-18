@@ -1,0 +1,77 @@
+{% extends 'mainpage/base.html' %}
+
+{% block title %}{{ list.title }}{% endblock %}
+
+{% block content %}
+
+
+    <h1>{{ list.your_friends }}</h1>
+
+    <ul>
+        {% for el in friends %}
+            {% if user.id == el.user1 %}
+                <li><a href="/id{{ el.user2 }}">
+                    {% if el.get_user2 == "DELETED" %}
+                        {{ list.user_del }}
+                    {% else %}
+                        {{ el.get_user2 }}
+                    {% endif %}
+                </a><a href="?rm=id{{ el.user2 }}">{{ list.remove_friend }}</a></li>
+            {% else %}
+                <li><a href="/id{{ el.user1 }}">
+                    {% if el.get_user2 == "DELETED" %}
+                        {{ list.user_del }}
+                    {% else %}
+                        {{ el.get_user1 }} {{ list.remove_friend }}
+                    {% endif %}
+                </a><a href="?rm=id{{ el.user1 }}">{{ list.remove_friend }}</a></li>
+            {% endif %}
+    {% endfor %}
+    </ul>
+
+
+    <h1>{{ list.friend_requests }}</h1>
+    <h2>{{ list.incoming_requests }}</h2>
+    <ul>
+     {% for el in incoming_requests %}
+        <li><a href="/id{{ el.user1 }}">
+            {% if el.get_user1 == "DELETED" %}
+                {{ list.user_del }}
+            {% else %}
+                {{ el.get_user1 }}
+            {% endif %}
+        </a> <a href="?add=id{{ el.user1 }}">{{ list.accept_the_request }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <h2>{{ list.outgoing_requests }}</h2>
+    <ul>
+     {% for el in outgoing_requests %}
+        <li><a href="/id{{ el.user2 }}">
+            {% if el.get_user2 == "DELETED" %}
+                {{ list.user_del }}
+            {% else %}
+                {{ el.get_user2 }}
+            {% endif %}
+        </a> <a href="?rm_request=id{{ el.user2 }}">{{ list.remove_request }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <h1>{{ list.all_users }}</h1>
+    <ul>
+        {% for el in all_users %}
+            <li><a href="/id{{ el.id }}">{{ el.first_name }} {{ el.last_name }}</a>
+            {% if el.id in id_list.friends %}
+                <a href="?rm=id{{ el.id }}">{{ list.remove_friend }}</a>
+            {% elif el.id in id_list.incoming_requests %}
+                <a href="?add=id{{ el.id }}">{{ list.accept_the_request }}</a>
+            {% elif el.id in id_list.outgoing_requests %}
+                <a href="?rm_request=id{{ el.id }}">{{ list.remove_request }}</a>
+            {% elif el.id != user.id %}
+                <a href="?add_request=id{{ el.id }}">{{ list.add_request }}</a>
+            {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

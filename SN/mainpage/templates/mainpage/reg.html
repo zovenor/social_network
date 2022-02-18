@@ -1,0 +1,23 @@
+{% extends 'mainpage/base.html' %}
+
+{% block title %}{{ list.title }}{% endblock %}
+
+{% block content %}
+
+    {% if error != "" %}
+        <script>
+            alert("{{ error }}");
+        </script>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>{{ list.name }}: <input value="{{ pl.name }}" name="name" type="text"></p>
+        <p>{{ list.surname }}: <input value="{{ pl.surname }}" name="surname" type="text"></p>
+        <p>{{ list.email }}: <input value="{{ pl.email }}" name="email" type="email"></p>
+        <p>{{ list.username }}: <input value="{{ pl.username }}" name="username" type="text"></p>
+        <p>{{ list.password1 }}: <input value="{{ pl.password1 }}" name="password1" type="password"></p>
+        <p>{{ list.password2 }}: <input value="{{ pl.password2 }}" name="password2" type="password"></p>
+        <input value="Зарегистрироваться" type="submit">
+    </form>
+{% endblock %}

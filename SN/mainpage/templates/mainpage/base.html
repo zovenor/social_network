@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+
+<script>
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    function choose_lang() {
+        if (getCookie('lang') == 'ru') {
+            document.cookie = "lang=en; path=/";
+        } else {
+            document.cookie = "lang=ru; path=/";
+        }
+        location.reload();
+    }
+</script>
+
+<header>
+    <a href="/">{{ list.NAME }}</a>
+    {% if user.is_authenticated %}
+        <a href="/account">{{ user.first_name }} {{ user.last_name }}</a>
+        <a href="/friends">{{ list.Friends }}</a>
+        <a href="/logout">{{ list.LogOut }}</a>
+    {% endif %}
+    <div onclick="choose_lang()">{{ list.choose_lang }}</div>
+</header>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
