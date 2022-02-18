@@ -11,9 +11,9 @@ def user_is_authenticated(func):
     def redir(self, request):
         return redirect('/login')
 
-    def wrapper(self, request):
+    def wrapper(self, request, **kwargs):
         if request.user.is_authenticated:
-            return func(self, request)
+            return func(self, request, **kwargs)
         else:
             return redir(self, request)
 
@@ -73,13 +73,24 @@ class LogInView(View):
 
 class AccountView(View):
 
+    def get(self, request, id):
+        content = {
+            'user_view': User.objects.get(id=id),
+            'list': get_wordlist(request).Account,
+        }
+        if request.user.id == id:
+            return redirect('/account')
+        else:
+            return render(request, 'mainpage/account.html', content)
+
+
+class YourAccountView(View):
     @user_is_authenticated
     def get(self, request):
         content = {
-            'user': User.objects.get(username=request.user),
+            'user_view': User.objects.get(id=request.user.id),
             'list': get_wordlist(request).Account,
         }
-
         return render(request, 'mainpage/account.html', content)
 
 

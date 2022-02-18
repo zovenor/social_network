@@ -1,9 +1,9 @@
 {% extends 'mainpage/base.html'%}
 
-{% block title %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
+{% block title %}{{ user_view.first_name }} {{ user_view.last_name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-    <p><b>{{ list.username }}:</b> {{ user.username }}</p>
-    <p><b>{{ list.email }}</b>: {{ user.email }}</p>
+    <h1>{{ user_view.first_name }} {{ user_view.last_name }}</h1>
+    <p><b>{{ list.username }}:</b> {{ user_view.username }}</p>
+    <p><b>{{ list.email }}</b>: {{ user_view.email }}</p>
 {% endblock %}
