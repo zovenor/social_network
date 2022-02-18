@@ -10,6 +10,7 @@
     <ul>
         {% for el in friends %}
             {% if user.id == el.user1 %}
+
                 <li><a href="/id{{ el.user2 }}">
                     {% if el.get_user2 == "DELETED" %}
                         {{ list.user_del }}
@@ -17,14 +18,17 @@
                         {{ el.get_user2 }}
                     {% endif %}
                 </a><a href="?rm=id{{ el.user2 }}">{{ list.remove_friend }}</a></li>
+
             {% else %}
+
                 <li><a href="/id{{ el.user1 }}">
-                    {% if el.get_user2 == "DELETED" %}
+                    {% if el.get_user1 == "DELETED" %}
                         {{ list.user_del }}
                     {% else %}
-                        {{ el.get_user1 }} {{ list.remove_friend }}
+                        {{ el.get_user1 }}
                     {% endif %}
                 </a><a href="?rm=id{{ el.user1 }}">{{ list.remove_friend }}</a></li>
+
             {% endif %}
     {% endfor %}
     </ul>
