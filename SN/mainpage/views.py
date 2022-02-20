@@ -3,7 +3,31 @@ from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from . import langs
-from .models import Friend, Follower
+from .models import Friend, Follower, UserDetail
+
+
+def page_not_found_view(request, exception):
+    content = {
+        'list': get_wordlist(request).Error404
+    }
+    return render(request, 'mainpage/404.html', content, status=404)
+
+
+def get_sex(request, sex):
+    if sex == 'male':
+        return get_wordlist(request).Account.sex_names['male']
+    elif sex == 'female':
+        return get_wordlist(request).Account.sex_names['female']
+    else:
+        return get_wordlist(request).Account.sex_names['none']
+
+
+def hehe(request):
+    content = {
+        'list': get_wordlist(request).BASE,
+    }
+
+    return render(request, 'mainpage/hehe.html', content)
 
 
 # Decorator for authentication
@@ -71,27 +95,48 @@ class LogInView(View):
             return redirect('/')
 
 
-class AccountView(View):
+class AccountIDView(View):
 
-    def get(self, request, id):
-        content = {
-            'user_view': User.objects.get(id=id),
-            'list': get_wordlist(request).Account,
-        }
-        if request.user.id == id:
-            return redirect('/account')
-        else:
-            return render(request, 'mainpage/account.html', content)
+    def get(self, request, id=None, username=None, user_view=None):
+        try:
+            if username != None:
+                id = User.objects.get(username=username).id
+            if id == 1:
+                return redirect('/admin/')
+            content = {
+                'permissions': 'opened',
+                'user_view': UserDetail.objects.get(user=id),
+                'list': get_wordlist(request).Account,
+                'get_sex': get_sex(request, UserDetail.objects.get(user=id).sex),
+            }
+            if request.user.id == id and user_view == None:
+                return redirect('/account')
+            else:
+                if user_view != None:
+                    content['user_view'] = UserDetail.objects.get(user=request.user.id)
+                else:
+                    if content['user_view'].permissions == 'private':
+                        if not Friend.objects.filter(user1=id, user2=request.user.id) and not Friend.objects.filter(
+                                user1=request.user.id, user2=id):
+                            content['permissions'] = 'closed'
+                return render(request, 'mainpage/account.html', content)
+        except:
+            content = {
+                'list': get_wordlist(request).Account
+            }
+            return render(request, 'mainpage/error.html', content)
+
+
+class AccountView(View):
+    def get(self, request, username):
+        return AccountIDView.get(self, request, username=username)
 
 
 class YourAccountView(View):
     @user_is_authenticated
     def get(self, request):
-        content = {
-            'user_view': User.objects.get(id=request.user.id),
-            'list': get_wordlist(request).Account,
-        }
-        return render(request, 'mainpage/account.html', content)
+        return AccountIDView.get(self, request, id=request.user.id,
+                                 user_view=UserDetail.objects.get(user=request.user.id))
 
 
 class LogOutView(View):
@@ -99,7 +144,7 @@ class LogOutView(View):
     @user_is_authenticated
     def get(self, request):
         logout(request)
-        return redirect('/')
+        return redirect(request.GET['url'])
 
 
 class FriendsView(View):

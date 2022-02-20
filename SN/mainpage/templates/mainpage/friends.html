@@ -11,7 +11,7 @@
         {% for el in friends %}
             {% if user.id == el.user1 %}
 
-                <li><a href="/id{{ el.user2 }}">
+                <li><a href="/{{ el.get_user2_username }}">
                     {% if el.get_user2 == "DELETED" %}
                         {{ list.user_del }}
                     {% else %}
@@ -21,7 +21,7 @@
 
             {% else %}
 
-                <li><a href="/id{{ el.user1 }}">
+                <li><a href="/{{ el.get_user1_username }}">
                     {% if el.get_user1 == "DELETED" %}
                         {{ list.user_del }}
                     {% else %}
@@ -38,7 +38,7 @@
     <h2>{{ list.incoming_requests }}</h2>
     <ul>
      {% for el in incoming_requests %}
-        <li><a href="/id{{ el.user1 }}">
+        <li><a href="/{{ el.get_user1_username }}">
             {% if el.get_user1 == "DELETED" %}
                 {{ list.user_del }}
             {% else %}
@@ -51,7 +51,7 @@
     <h2>{{ list.outgoing_requests }}</h2>
     <ul>
      {% for el in outgoing_requests %}
-        <li><a href="/id{{ el.user2 }}">
+        <li><a href="/{{ el.get_user2_username }}">
             {% if el.get_user2 == "DELETED" %}
                 {{ list.user_del }}
             {% else %}
@@ -64,7 +64,7 @@
     <h1>{{ list.all_users }}</h1>
     <ul>
         {% for el in all_users %}
-            <li><a href="/id{{ el.id }}">{{ el.first_name }} {{ el.last_name }}</a>
+            <li><a href="/{{ el.username }}">{{ el.first_name }} {{ el.last_name }}</a>
             {% if el.id in id_list.friends %}
                 <a href="?rm=id{{ el.id }}">{{ list.remove_friend }}</a>
             {% elif el.id in id_list.incoming_requests %}

@@ -15,6 +15,17 @@ class EN:
         email = "Email"
         name = "Name"
         surname = "Surname"
+        error = "User not found!"
+        permissions = "User restricted access"
+        country = "Country"
+        city = "City"
+        sex = "Sex"
+        age = "Birthday"
+        sex_names = {
+            'male': 'male',
+            'female': 'female',
+            'none': 'none',
+        }
 
     class Friends(BASE):
         title = "Friends"
@@ -42,6 +53,9 @@ class EN:
         error_email = "User with this email already exist!"
         error_username = "User with this username already exist!"
 
+    class Error404(BASE):
+        title = "Page not found!"
+
 
 class RU(EN):
     class BASE(EN.BASE):
@@ -59,6 +73,17 @@ class RU(EN):
         email = "Эл. почта"
         name = "Имя"
         surname = "Фамилия"
+        error = "Пользователь не найден!"
+        permissions = "Пользователь ограничил доступ"
+        country = "Страна"
+        city = "Город"
+        sex = "Пол"
+        age = "День рождения"
+        sex_names = {
+            'male': 'мужской',
+            'female': 'женский',
+            'none': 'не определён',
+        }
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"
@@ -85,3 +110,6 @@ class RU(EN):
         password2 = "Повторить пароль"
         error_email = "Пользователь с данной почтой уже существует!"
         error_username = "Пользователь с данным именем пользователя уже существует!"
+
+    class Error404(EN.Error404, BASE):
+        title = "Страница не найдена!"

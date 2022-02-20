@@ -1,9 +1,16 @@
 {% extends 'mainpage/base.html'%}
 
-{% block title %}{{ user_view.first_name }} {{ user_view.last_name }}{% endblock %}
+{% block title %}{{ user_view.user.first_name }} {{ user_view.user.last_name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ user_view.first_name }} {{ user_view.last_name }}</h1>
-    <p><b>{{ list.username }}:</b> {{ user_view.username }}</p>
-    <p><b>{{ list.email }}</b>: {{ user_view.email }}</p>
+    <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
+    {% if permissions != 'closed' %}
+        <p>{{ user_view.user.email }}</p>
+        <p><b>{{ list.sex }}: </b>{{ get_sex }}</p>
+        <p><b>{{ list.age }}: </b>{{ user_view.age }}</p>
+        <p><b>{{ list.country }}</b>: {{ user_view.country }}</p>
+        <p><b>{{ list.city }}: </b>{{ user_view.city }}</p>
+    {% else %}
+        <h3>{{ list.permissions }}</h3>
+    {% endif %}
 {% endblock %}
