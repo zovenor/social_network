@@ -1,0 +1,8 @@
+.account_photo{
+    border-radius: 20px;
+}
+main{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}

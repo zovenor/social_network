@@ -1,17 +1,42 @@
-body{
+body {
     padding: 0;
     margin: 0;
+    background: #222226;
+    color: #777;
+    font-family: Calibri;
 }
-header{
-    background-color: cadetblue;
+
+header {
+    background: #333336;
     padding: 10px;
     color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    width: 100vw;
+    height: 50px;
+    left: 0;
+    top: 0;
 }
-header a{
+
+.NAME {
+    position: fixed;
+    left: 20px;
+    font-size: 30px;
+}
+
+header a {
     text-decoration: none;
-    color: #FFF;
     margin: 5px;
+    color: #777;
 }
-main{
+
+main {
     padding: 20px;
+    padding-top: 90px;
+}
+main a{
+    text-decoration: none;
+    color: #777;
 }

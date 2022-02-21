@@ -30,9 +30,9 @@
 </script>
 
 <header>
-    <a href="/">{{ list.NAME }}</a>
+    <a class="NAME" href="/">{{ list.NAME }}</a>
     {% if user.is_authenticated %}
-        <a href="/account">{{ user.first_name }} {{ user.last_name }}</a>
+        <a href="/account"><img width="40px" style="border-radius: 999px" src="{{ your_user.get_photo }}"></a>
         <a href="/friends">{{ list.Friends }}</a>
         <a href="/logout?url={{ request.path }}">{{ list.LogOut }}</a>
     {% endif %}

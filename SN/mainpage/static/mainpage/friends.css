@@ -1,0 +1,29 @@
+.remove_friend{
+    color: #993333;
+}
+.user{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+.user *{
+    display: flex;
+    align-items: center;
+}
+.user_photo{
+    border-radius: 999px;
+    margin-right: 10px;
+    width: 40px;
+}
+.action{
+    margin-left: 10px;
+}
+.accept_request{
+    color: #264b5d;
+}
+.remove_request{
+    color: #f5dd5d;
+}
+.add_request{
+    color: #006b1b;
+}

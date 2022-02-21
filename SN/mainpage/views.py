@@ -6,11 +6,28 @@ from . import langs
 from .models import Friend, Follower, UserDetail
 
 
+def base(func):
+    def wrapper(self, request, **kwargs):
+        content = {}
+        if request.user.is_authenticated:
+            content = {'your_user': UserDetail.objects.get(user=request.user)}
+        return func(self, request, content=content, **kwargs)
+
+    return wrapper
+
+
 def page_not_found_view(request, exception):
     content = {
         'list': get_wordlist(request).Error404
     }
     return render(request, 'mainpage/404.html', content, status=404)
+
+
+def url_redirect_or_not(request):
+    if 'url' in request.GET:
+        return redirect(request.GET['url'])
+    else:
+        return redirect(request.path)
 
 
 def get_sex(request, sex):
@@ -22,12 +39,15 @@ def get_sex(request, sex):
         return get_wordlist(request).Account.sex_names['none']
 
 
-def hehe(request):
-    content = {
-        'list': get_wordlist(request).BASE,
-    }
+class HeheView(View):
 
-    return render(request, 'mainpage/hehe.html', content)
+    @base
+    def get(self, request, content={}):
+        content.update({
+            'list': get_wordlist(request).BASE,
+        })
+
+        return render(request, 'mainpage/hehe.html', content)
 
 
 # Decorator for authentication
@@ -60,9 +80,9 @@ def get_wordlist(request):
 
 
 class IndexView(View):
-
+    @base
     @user_is_authenticated
-    def get(self, request):
+    def get(self, request, content={}):
         return redirect('/account')
 
     def post(self, request):
@@ -70,11 +90,12 @@ class IndexView(View):
 
 
 class LogInView(View):
-    def get(self, request, error=''):
-        content = {
+    @base
+    def get(self, request, error='', content={}):
+        content.update({
             'error': error,
             'list': get_wordlist(request).Login
-        }
+        })
 
         if not request.user.is_authenticated:
             return render(request, 'mainpage/login.html', content)
@@ -97,18 +118,19 @@ class LogInView(View):
 
 class AccountIDView(View):
 
-    def get(self, request, id=None, username=None, user_view=None):
+    @base
+    def get(self, request, id=None, username=None, user_view=None, content={}):
         try:
             if username != None:
                 id = User.objects.get(username=username).id
             if id == 1:
                 return redirect('/admin/')
-            content = {
+            content.update({
                 'permissions': 'opened',
                 'user_view': UserDetail.objects.get(user=id),
                 'list': get_wordlist(request).Account,
                 'get_sex': get_sex(request, UserDetail.objects.get(user=id).sex),
-            }
+            })
             if request.user.id == id and user_view == None:
                 return redirect('/account')
             else:
@@ -121,9 +143,9 @@ class AccountIDView(View):
                             content['permissions'] = 'closed'
                 return render(request, 'mainpage/account.html', content)
         except:
-            content = {
+            content.update({
                 'list': get_wordlist(request).Account
-            }
+            })
             return render(request, 'mainpage/error.html', content)
 
 
@@ -134,7 +156,7 @@ class AccountView(View):
 
 class YourAccountView(View):
     @user_is_authenticated
-    def get(self, request):
+    def get(self, request, **kwargs):
         return AccountIDView.get(self, request, id=request.user.id,
                                  user_view=UserDetail.objects.get(user=request.user.id))
 
@@ -142,25 +164,26 @@ class YourAccountView(View):
 class LogOutView(View):
 
     @user_is_authenticated
-    def get(self, request):
+    def get(self, request, **kwargs):
         logout(request)
         return redirect(request.GET['url'])
 
 
 class FriendsView(View):
+    @base
     @user_is_authenticated
-    def get(self, request):
+    def get(self, request, content={}, **kwargs):
         user_id = request.user.id
         f1 = Friend.objects.filter(user1=user_id)
         f2 = Friend.objects.filter(user2=user_id)
 
-        content = {
+        content.update({
             'list': get_wordlist(request).Friends,
             'friends': f1.union(f2),
             'incoming_requests': Follower.objects.filter(user2=user_id),
             'outgoing_requests': Follower.objects.filter(user1=user_id),
-            'all_users': User.objects.all(),
-        }
+            'all_users': UserDetail.objects.all(),
+        })
 
         id_list = {
             'friends': [],
@@ -188,7 +211,7 @@ class FriendsView(View):
             if Follower.objects.filter(user1=add_id, user2=user_id):
                 Friend.objects.create(user1=user_id, user2=add_id)
                 Follower.objects.filter(user1=add_id, user2=user_id).delete()
-            return redirect(request.path)
+            return url_redirect_or_not(request)
         except:
             pass
 
@@ -201,7 +224,7 @@ class FriendsView(View):
             elif Friend.objects.filter(user1=user_id, user2=rm_id):
                 Follower.objects.create(user1=rm_id, user2=user_id)
                 Friend.objects.filter(user1=user_id, user2=rm_id).delete()
-            return redirect(request.path)
+            return url_redirect_or_not(request)
         except:
             pass
 
@@ -210,7 +233,7 @@ class FriendsView(View):
             rm_request_id = int(request.GET['rm_request'][2:])
             if Follower.objects.filter(user1=user_id, user2=rm_request_id):
                 Follower.objects.filter(user1=user_id, user2=rm_request_id).delete()
-            return redirect(request.path)
+            return url_redirect_or_not(request)
         except:
             pass
 
@@ -219,7 +242,7 @@ class FriendsView(View):
             add_request_id = int(request.GET['add_request'][2:])
             if not Follower.objects.filter(user1=user_id, user2=add_request_id) and user_id != add_request_id:
                 Follower.objects.create(user1=user_id, user2=add_request_id)
-            return redirect(request.path)
+            return url_redirect_or_not(request)
         except:
             pass
 

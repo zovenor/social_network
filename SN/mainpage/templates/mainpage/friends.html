@@ -2,8 +2,10 @@
 
 {% block title %}{{ list.title }}{% endblock %}
 
-{% block content %}
+{% load static %}
 
+{% block content %}
+    <link rel="stylesheet" href="{% static 'mainpage/friends.css' %}">
 
     <h1>{{ list.your_friends }}</h1>
 
@@ -11,69 +13,72 @@
         {% for el in friends %}
             {% if user.id == el.user1 %}
 
-                <li><a href="/{{ el.get_user2_username }}">
-                    {% if el.get_user2 == "DELETED" %}
-                        {{ list.user_del }}
+                <li class="user"><a href="/{{ el.get_user2_username }}">
+                    {% if el.get_user2_name == "DELETED" %}
+                        <b><img src="{% static "mainpage/img/user.png" %}" class="user_photo">{{ list.user_del }}</b>
                     {% else %}
-                        {{ el.get_user2 }}
+                        <b><img class="user_photo" src="{{ el.get_user2.get_photo }}">{{ el.get_user2_name }}</b>
                     {% endif %}
-                </a><a href="?rm=id{{ el.user2 }}">{{ list.remove_friend }}</a></li>
+                </a><a class="action remove_friend" href="?rm=id{{ el.user2 }}">{{ list.remove_friend }}</a></li>
 
             {% else %}
 
-                <li><a href="/{{ el.get_user1_username }}">
-                    {% if el.get_user1 == "DELETED" %}
-                        {{ list.user_del }}
+                <li class="user"><a href="/{{ el.get_user1_username }}">
+                    {% if el.get_user1_name == "DELETED" %}
+                        <b><img src="{% static "mainpage/img/user.png" %}" class="user_photo">{{ list.user_del }}</b>
                     {% else %}
-                        {{ el.get_user1 }}
+                        <b><img class="user_photo" src="{{ el.get_user1.get_photo }}">{{ el.get_user1_name }}</b>
                     {% endif %}
-                </a><a href="?rm=id{{ el.user1 }}">{{ list.remove_friend }}</a></li>
+                </a><a class="action remove_friend" href="?rm=id{{ el.user1 }}">{{ list.remove_friend }}</a></li>
 
             {% endif %}
-    {% endfor %}
+        {% endfor %}
     </ul>
 
 
     <h1>{{ list.friend_requests }}</h1>
     <h2>{{ list.incoming_requests }}</h2>
     <ul>
-     {% for el in incoming_requests %}
-        <li><a href="/{{ el.get_user1_username }}">
-            {% if el.get_user1 == "DELETED" %}
-                {{ list.user_del }}
-            {% else %}
-                {{ el.get_user1 }}
-            {% endif %}
-        </a> <a href="?add=id{{ el.user1 }}">{{ list.accept_the_request }}</a></li>
-    {% endfor %}
+        {% for el in incoming_requests %}
+            <li class="user"><a href="/{{ el.get_user1_username }}">
+                {% if el.get_user1_name == "DELETED" %}
+                    <b><img src="{% static 'mainpage/img/user.png' %}" class="user_photo">{{ list.user_del }}</b>
+                {% else %}
+                    <b><img class="user_photo" src="{{ el.get_user1.get_photo }}">{{ el.get_user1_name }}</b>
+                {% endif %}
+            </a> <a class="action accept_request" href="?add=id{{ el.user1 }}">{{ list.accept_the_request }}</a></li>
+        {% endfor %}
     </ul>
 
     <h2>{{ list.outgoing_requests }}</h2>
     <ul>
-     {% for el in outgoing_requests %}
-        <li><a href="/{{ el.get_user2_username }}">
-            {% if el.get_user2 == "DELETED" %}
-                {{ list.user_del }}
-            {% else %}
-                {{ el.get_user2 }}
-            {% endif %}
-        </a> <a href="?rm_request=id{{ el.user2 }}">{{ list.remove_request }}</a></li>
-    {% endfor %}
+        {% for el in outgoing_requests %}
+            <li class="user"><a href="/{{ el.get_user2_username }}">
+                {% if el.get_user2_name == "DELETED" %}
+                    <b>{{ list.user_del }}</b>
+                {% else %}
+                    <b><img src="{{ el.get_user2.get_photo }}" class="user_photo">{{ el.get_user2_name }}</b>
+                {% endif %}
+            </a> <a class="action remove_request" href="?rm_request=id{{ el.user2 }}">{{ list.remove_request }}</a></li>
+        {% endfor %}
     </ul>
 
     <h1>{{ list.all_users }}</h1>
     <ul>
         {% for el in all_users %}
-            <li><a href="/{{ el.username }}">{{ el.first_name }} {{ el.last_name }}</a>
-            {% if el.id in id_list.friends %}
-                <a href="?rm=id{{ el.id }}">{{ list.remove_friend }}</a>
-            {% elif el.id in id_list.incoming_requests %}
-                <a href="?add=id{{ el.id }}">{{ list.accept_the_request }}</a>
-            {% elif el.id in id_list.outgoing_requests %}
-                <a href="?rm_request=id{{ el.id }}">{{ list.remove_request }}</a>
-            {% elif el.id != user.id %}
-                <a href="?add_request=id{{ el.id }}">{{ list.add_request }}</a>
-            {% endif %}
+            <li class="user">
+                <b><a href="/{{ el.user.username }}"><img width="40px" class="user_photo"
+                                                          src="{{ el.get_photo }}">{{ el.user.first_name }} {{ el.user.last_name }}
+                </a></b>
+                {% if el.user.id in id_list.friends %}
+                    <a class="action remove_friend" href="?rm=id{{ el.user.id }}">{{ list.remove_friend }}</a>
+                {% elif el.user.id in id_list.incoming_requests %}
+                    <a class="action accept_request" href="?add=id{{ el.user.id }}">{{ list.accept_the_request }}</a>
+                {% elif el.user.id in id_list.outgoing_requests %}
+                    <a class="action remove_request" href="?rm_request=id{{ el.user.id }}">{{ list.remove_request }}</a>
+                {% elif el.user.id != user.id %}
+                    <a class="action add_request" href="?add_request=id{{ el.user.id }}">{{ list.add_request }}</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

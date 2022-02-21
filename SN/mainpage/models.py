@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 # Confirmed requests
@@ -10,7 +11,7 @@ class Friend(models.Model):
     def __str__(self):
         return f'id{self.user1} - id{self.user2}'
 
-    def get_user1(self):
+    def get_user1_name(self):
         try:
             return f'{User.objects.get(id=self.user1).first_name} {User.objects.get(id=self.user1).last_name}'
         except:
@@ -22,7 +23,13 @@ class Friend(models.Model):
         except:
             return None
 
-    def get_user2(self):
+    def get_user1(self):
+        try:
+            return UserDetail.objects.get(user=self.user1)
+        except:
+            return None
+
+    def get_user2_name(self):
         try:
             return f'{User.objects.get(id=self.user2).first_name} {User.objects.get(id=self.user2).last_name}'
         except:
@@ -31,6 +38,12 @@ class Friend(models.Model):
     def get_user2_username(self):
         try:
             return User.objects.get(id=self.user2).username
+        except:
+            return None
+
+    def get_user2(self):
+        try:
+            return UserDetail.objects.get(user=self.user2)
         except:
             return None
 
@@ -43,17 +56,41 @@ class Follower(models.Model):
     def __str__(self):
         return f'id{self.user1} - id{self.user2}'
 
-    def get_user1(self):
+    def get_user1_name(self):
         try:
             return f'{User.objects.get(id=self.user1).first_name} {User.objects.get(id=self.user1).last_name}'
         except:
             return "DELETED"
 
-    def get_user2(self):
+    def get_user1_username(self):
+        try:
+            return User.objects.get(id=self.user1).username
+        except:
+            return ''
+
+    def get_user1(self):
+        try:
+            return UserDetail.objects.get(user=self.user1)
+        except:
+            return None
+
+    def get_user2_name(self):
         try:
             return f'{User.objects.get(id=self.user2).first_name} {User.objects.get(id=self.user2).last_name}'
         except:
             return "DELETED"
+
+    def get_user2_username(self):
+        try:
+            return User.objects.get(id=self.user2).username
+        except:
+            return ''
+
+    def get_user2(self):
+        try:
+            return UserDetail.objects.get(user=self.user2)
+        except:
+            return None
 
 
 class Photo(models.Model):
@@ -63,7 +100,7 @@ class Photo(models.Model):
     permissions = models.CharField(max_length=10, default="public")
 
     def __str__(self):
-        return self.path
+        return self.photo.url
 
 
 class UserDetail(models.Model):
@@ -78,3 +115,9 @@ class UserDetail(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_photo(self):
+        if self.photo:
+            return self.photo
+        else:
+            return settings.STATIC_URL + "/mainpage/img/user.png"
