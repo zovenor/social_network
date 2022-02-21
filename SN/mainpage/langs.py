@@ -28,6 +28,7 @@ class EN:
             'female': 'female',
             'none': 'none',
         }
+        add_friend = "Add to friends"
 
     class Friends(BASE):
         title = "Friends"
@@ -40,7 +41,7 @@ class EN:
         remove_friend = "Remove a friend"
         remove_request = "Remove a request"
         all_users = "All users"
-        add_request = "Add friend"
+        add_request = "Add to friends"
 
     class Reg(BASE):
         title = "Registration"
@@ -97,6 +98,7 @@ class RU(EN):
             'female': 'женский',
             'none': 'не определён',
         }
+        add_friend = "Добавить в друзья"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"

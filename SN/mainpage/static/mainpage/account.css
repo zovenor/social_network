@@ -1,8 +1,21 @@
 .account_photo{
     border-radius: 20px;
+    width: 350px;
 }
 main{
     display: flex;
     flex-flow: column;
     align-items: center;
+}
+.accept_request{
+    color: #264b5d;
+}
+.remove_request{
+    color: #f5dd5d;
+}
+.add_request{
+    color: #006b1b;
+}
+.remove_friend{
+    color: #993333;
 }

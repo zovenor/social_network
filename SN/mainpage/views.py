@@ -6,6 +6,39 @@ from . import langs
 from .models import Friend, Follower, UserDetail
 
 
+def user_to_user(self, request, user_view, url=""):
+    id1 = request.user.id
+    id2 = user_view.user.id
+    response = {
+        'url': request.path,
+    }
+    if Friend.objects.filter(user1=id1, user2=id2) or Friend.objects.filter(user1=id2, user2=id1):
+        response.update({
+            'text': get_wordlist(request).Friends.remove_friend,
+            'link': f'/friends?rm=id{id2}',
+            'class': "remove_friend",
+        })
+    elif Follower.objects.filter(user1=id2, user2=id1):
+        response.update({
+            'text': get_wordlist(request).Friends.accept_the_request,
+            'link': f'/friends?add=id{id2}',
+            'class': "accept_request",
+        })
+    elif Follower.objects.filter(user1=id1, user2=id2):
+        response.update({
+            'text': get_wordlist(request).Friends.remove_request,
+            'link': f'/friends?rm_request=id{id2}',
+            'class': "remove_request",
+        })
+    else:
+        response.update({
+            'text': get_wordlist(request).Friends.add_request,
+            'link': f'/friends?add_request=id{id2}',
+            'class': "add_request",
+        })
+    return f'<a class="{response["class"]}" href="{response["link"]}&url={response["url"]}">{response["text"]}</a>'
+
+
 def base(func):
     def wrapper(self, request, **kwargs):
         content = {}
@@ -130,6 +163,7 @@ class AccountIDView(View):
                 'user_view': UserDetail.objects.get(user=id),
                 'list': get_wordlist(request).Account,
                 'get_sex': get_sex(request, UserDetail.objects.get(user=id).sex),
+                'user_to_user': user_to_user(self, request, UserDetail.objects.get(user=id)),
             })
             if request.user.id == id and user_view == None:
                 return redirect('/account')
@@ -164,7 +198,7 @@ class YourAccountView(View):
 class LogOutView(View):
 
     @user_is_authenticated
-    def get(self, request, **kwargs):
+    def get(self, request, url="", **kwargs):
         logout(request)
         return redirect(request.GET['url'])
 

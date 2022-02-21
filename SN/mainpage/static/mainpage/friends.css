@@ -1,6 +1,3 @@
-.remove_friend{
-    color: #993333;
-}
 .user{
     display: flex;
     align-items: center;
@@ -26,4 +23,7 @@
 }
 .add_request{
     color: #006b1b;
+}
+.remove_friend{
+    color: #993333;
 }

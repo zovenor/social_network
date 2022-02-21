@@ -8,9 +8,13 @@
 
     <div class="account">
         <link rel="stylesheet" href="{% static 'mainpage/account.css' %}">
-        {% if user_view.photo and permissions != 'closed' %}
-            <img class="account_photo" src="{{ user_view.photo }}" width="350px">
-        {% endif  %}
+        {% if permissions != "closed" %}
+            {% if user_view.photo %}
+                <img class="account_photo" src="{{ user_view.photo }}">
+            {% else %}
+                <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
+            {% endif  %}
+        {% endif %}
         <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
         {% if permissions != 'closed' %}
             <p><b>{{ list.email }}</b>: {{ user_view.user.email }}</p>
@@ -18,8 +22,10 @@
             <p><b>{{ list.age }}: </b>{{ user_view.age }}</p>
             <p><b>{{ list.country }}</b>: {{ user_view.country }}</p>
             <p><b>{{ list.city }}: </b>{{ user_view.city }}</p>
-            {% if user.id != user_view.user.id %}
-                <a href="">Добавить в друзья</a>
+            {% if user.is_authenticated %}
+                {% if user.id != user_view.user.id %}
+                    {{ user_to_user|safe }}
+                {% endif %}
             {% endif %}
         {% else %}
             <h3>{{ list.permissions }}</h3>

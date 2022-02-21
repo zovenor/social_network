@@ -19,10 +19,10 @@
         <p>{{ list.password1 }}: <input required value="{{ pl.password1 }}" name="password1" type="password"></p>
         <p>{{ list.password2 }}: <input required value="{{ pl.password2 }}" name="password2" type="password"></p>
 
-        <p>{{ list.birthday }}: <input required name="date" type="date"></p>
-        <p>{{ list.country }}: <input name="country" type="text"></p>
-        <p>{{ list.city }}: <input name="city" type="text"></p>
-        <p>{{ list.sex }}: <select required name="sex">
+        <p>{{ list.birthday }}: <input required value="{{ pl.birthday }}" name="date" type="date"></p>
+        <p>{{ list.country }}: <input value="{{ pl.country }}" name="country" type="text"></p>
+        <p>{{ list.city }}: <input value="{{ pl.city }}" name="city" type="text"></p>
+        <p>{{ list.sex }}: <select value="{{ pl.sex }}" required name="sex">
             <option disabled>{{ list.choose_sex }}</option>
             <option value="None">{{ list.sex_is_not_defined }}</option>
             <option value="male">{{ list.male }}</option>
