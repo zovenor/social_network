@@ -269,6 +269,10 @@ class RegView(View):
         username = request.POST['username']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
+        birthday = request.POST['date']
+        country = request.POST['country']
+        city = request.POST['city']
+        sex = request.POST['sex']
 
         error = ""
         post_list = {
@@ -278,14 +282,20 @@ class RegView(View):
             'username': username,
             'password1': password1,
             'password2': password2,
+            'birthday': birthday,
+            'country': country,
+            'city': city,
+            'sex': sex,
         }
 
-        if name != "" and surname != "" and email != "" and username != "" and password1 != "" and password2 != "":
+        if name != "" and surname != "" and email != "" and username != "" and password1 != "" and password2 != "" and birthday != "" and country != "" and city != "" and sex != "":
             if password1 == password2:
                 if not User.objects.filter(username=username).exists():
                     if not User.objects.filter(email=email).exists():
                         User.objects.create_user(first_name=name, last_name=surname, email=email, username=username,
                                                  password=password1)
+                        UserDetail.objects.create(user=User.objects.get(username=username), age=birthday,
+                                                  country=country, city=city, sex=sex)
                         user = authenticate(username=username, password=password1)
                         login(request, user)
                         return redirect("/")

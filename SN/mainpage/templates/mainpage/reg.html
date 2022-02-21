@@ -12,12 +12,23 @@
 
     <form method="POST">
         {% csrf_token %}
-        <p>{{ list.name }}: <input value="{{ pl.name }}" name="name" type="text"></p>
-        <p>{{ list.surname }}: <input value="{{ pl.surname }}" name="surname" type="text"></p>
-        <p>{{ list.email }}: <input value="{{ pl.email }}" name="email" type="email"></p>
-        <p>{{ list.username }}: <input value="{{ pl.username }}" name="username" type="text"></p>
-        <p>{{ list.password1 }}: <input value="{{ pl.password1 }}" name="password1" type="password"></p>
-        <p>{{ list.password2 }}: <input value="{{ pl.password2 }}" name="password2" type="password"></p>
-        <input value="Зарегистрироваться" type="submit">
+        <p>{{ list.name }}: <input required value="{{ pl.name }}" name="name" type="text"></p>
+        <p>{{ list.surname }}: <input required value="{{ pl.surname }}" name="surname" type="text"></p>
+        <p>{{ list.email }}: <input required value="{{ pl.email }}" name="email" type="email"></p>
+        <p>{{ list.username }}: <input required value="{{ pl.username }}" name="username" type="text"></p>
+        <p>{{ list.password1 }}: <input required value="{{ pl.password1 }}" name="password1" type="password"></p>
+        <p>{{ list.password2 }}: <input required value="{{ pl.password2 }}" name="password2" type="password"></p>
+
+        <p>{{ list.birthday }}: <input required name="date" type="date"></p>
+        <p>{{ list.country }}: <input name="country" type="text"></p>
+        <p>{{ list.city }}: <input name="city" type="text"></p>
+        <p>{{ list.sex }}: <select required name="sex">
+            <option disabled>{{ list.choose_sex }}</option>
+            <option value="None">{{ list.sex_is_not_defined }}</option>
+            <option value="male">{{ list.male }}</option>
+            <option value="female">{{ list.female }}</option>
+        </select></p>
+
+        <input value="{{ list.register }}" type="submit">
     </form>
 {% endblock %}

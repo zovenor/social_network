@@ -12,7 +12,7 @@
         <h1>{{ list.title }}</h1>
         <input type="text" name="username">
         <input type="password" name="password">
-        <input type="submit" value="Войти">
+        <input type="submit" value="{{ list.login }}">
     </form>
     <h3><a href="/registration">{{ list.no_account }}</a></h3>
 {% endblock %}

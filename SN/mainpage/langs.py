@@ -4,11 +4,13 @@ class EN:
         Friends = "Friends"
         NAME = "SN"
         choose_lang = "English"
+        login = "Login"
 
     class Login(BASE):
         incorrect_username_or_password = 'Incorrect username or password!'
         title = "Login"
         no_account = "Don't you have an account?"
+        login = "Login"
 
     class Account(BASE):
         username = "Username"
@@ -52,6 +54,15 @@ class EN:
         password2 = "Repeat password"
         error_email = "User with this email already exist!"
         error_username = "User with this username already exist!"
+        register = "Register"
+        birthday = "Birthday"
+        country = "Country"
+        city = "City"
+        sex = "Sex"
+        sex_is_not_defined = "Sex is not defined"
+        male = "Male"
+        female = "Female"
+        choose_sex = "Choose sex"
 
     class Error404(BASE):
         title = "Page not found!"
@@ -62,11 +73,13 @@ class RU(EN):
         LogOut = "Выйти"
         Friends = "Друзья"
         choose_lang = "Русский"
+        login = "Войти"
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
         title = "Вход"
         no_account = "Нет аккаунта?"
+        login = "Войти"
 
     class Account(EN.Account, BASE):
         username = "Имя пользователя"
@@ -110,6 +123,15 @@ class RU(EN):
         password2 = "Повторить пароль"
         error_email = "Пользователь с данной почтой уже существует!"
         error_username = "Пользователь с данным именем пользователя уже существует!"
+        register = "Зарегистрироваться"
+        birthday = "День рождения"
+        country = "Страна"
+        city = "Город"
+        sex = "Пол"
+        sex_is_not_defined = "Пол не определён"
+        male = "Мужской"
+        female = "Женский"
+        choose_sex = "Выбрать пол"
 
     class Error404(EN.Error404, BASE):
         title = "Страница не найдена!"
