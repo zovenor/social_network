@@ -95,7 +95,7 @@ class Follower(models.Model):
 
 class Photo(models.Model):
     photo = models.ImageField(upload_to='photos')
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     permissions = models.CharField(max_length=10, default="public")
 

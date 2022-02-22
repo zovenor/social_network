@@ -3,7 +3,7 @@ from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from . import langs
-from .models import Friend, Follower, UserDetail
+from .models import Friend, Follower, UserDetail, Photo
 
 
 def user_to_user(self, request, user_view, url=""):
@@ -213,7 +213,9 @@ class YourAccountView(View):
                                  user_view=UserDetail.objects.get(user=request.user.id))
 
     def post(self, request):
-
+        photo = UserDetail.objects.get(user=request.user).photo
+        if 'photo' in request.FILES:
+            photo = Photo.objects.create(user=request.user, photo=request.FILES['photo'])
         name = request.POST['name']
         surname = request.POST['surname']
         email = request.POST['email']
@@ -230,6 +232,7 @@ class YourAccountView(View):
             user_main.last_name = surname
             user.sex = sex
             user.age = birthday
+            user.photo = photo
             user.country = country
             user.city = city
             user.save()
