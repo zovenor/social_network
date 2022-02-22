@@ -391,3 +391,15 @@ class RegView(View):
             error = get_wordlist(request).Reg.error_fields  # Some fields were not filled in!
 
         return self.get(request, error=error, post_list=post_list)
+
+
+class YourPhotosView(View):
+    @base
+    def get(self, request, content={}, **kwags):
+        content.update({
+            'list': get_wordlist(request).YourPhotos,
+            'photos': Photo.objects.filter(user=request.user),
+            'all_photos': Photo.objects.all(),
+        })
+
+        return render(request, 'mainpage/photos.html', content)

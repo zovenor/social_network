@@ -5,6 +5,7 @@ class EN:
         NAME = "SN"
         choose_lang = "English"
         login = "Login"
+        photos = "Photos"
 
     class Login(BASE):
         incorrect_username_or_password = 'Incorrect username or password!'
@@ -75,6 +76,9 @@ class EN:
     class Error404(BASE):
         title = "Page not found!"
 
+    class YourPhotos(BASE):
+        title = "Photos"
+
 
 class RU(EN):
     class BASE(EN.BASE):
@@ -82,6 +86,7 @@ class RU(EN):
         Friends = "Друзья"
         choose_lang = "Русский"
         login = "Войти"
+        photos = "Фотографии"
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
@@ -150,3 +155,6 @@ class RU(EN):
 
     class Error404(EN.Error404, BASE):
         title = "Страница не найдена!"
+
+    class YourPhotos(EN.YourPhotos, BASE):
+        title = "Фотографии"

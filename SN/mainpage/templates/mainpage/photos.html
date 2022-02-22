@@ -1,0 +1,14 @@
+{% extends "mainpage/base.html" %}
+
+{% block title %}{{ list.title }}{% endblock %}
+
+{% block content %}
+    <h1>Your photos</h1>
+    {% for el in photos %}
+        <img width="400px" src="{{ el }}" alt="">
+    {% endfor %}
+    <h1>All photos</h1>
+    {% for el in all_photos %}
+        <img width="400px" src="{{ el }}" alt="">
+    {% endfor %}
+{% endblock %}
