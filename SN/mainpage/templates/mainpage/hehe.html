@@ -1,7 +1,29 @@
 {% extends 'mainpage/base.html' %}
 
-{% block title %}hehe{% endblock %}
+{% block title %}admin{% endblock %}
+
+{% load static %}
 
 {% block content %}
-<h1>hehe</h1>
+
+    <style>
+    body{
+        padding: 0;
+        margin: 0;
+    }
+    main{
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+
+    <img width="200px" src="{% static 'mainpage/img/XOsX.gif' %}">
 {% endblock %}
