@@ -29,6 +29,13 @@ class EN:
             'none': 'none',
         }
         add_friend = "Add to friends"
+        edit = "Edit profile"
+        sex_is_not_defined = "Sex is not defined"
+        male = "Male"
+        female = "Female"
+        choose_sex = "Choose sex"
+        post_save = "Save"
+        post_error = "Some fields were not filled in!"
 
     class Friends(BASE):
         title = "Friends"
@@ -99,6 +106,12 @@ class RU(EN):
             'none': 'не определён',
         }
         add_friend = "Добавить в друзья"
+        edit = "Редактировать профиль"
+        sex_is_not_defined = "Пол не определён"
+        male = "Мужской"
+        female = "Женский"
+        choose_sex = "Выбрать пол"
+        post_save = "Сохранить"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"

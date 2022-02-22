@@ -154,28 +154,46 @@ class AccountIDView(View):
     @base
     def get(self, request, id=None, username=None, user_view=None, content={}):
         try:
+            # if request receive username
             if username != None:
                 id = User.objects.get(username=username).id
+            # if user is admin
             if id == 1:
                 return redirect('/admin/')
             content.update({
+                'edit': False,
                 'permissions': 'opened',
                 'user_view': UserDetail.objects.get(user=id),
                 'list': get_wordlist(request).Account,
                 'get_sex': get_sex(request, UserDetail.objects.get(user=id).sex),
                 'user_to_user': user_to_user(self, request, UserDetail.objects.get(user=id)),
+                'edit_permissions': False,
             })
+            # if user is you
             if request.user.id == id and user_view == None:
                 return redirect('/account')
             else:
+                # if user is not transmitted (if path = "/account" you redirect to this func with the specific user)
                 if user_view != None:
+                    # if user wanna edit profile
+                    if 'edit' in request.GET:
+                        if request.GET['edit'] == 'True':
+                            content['edit_permissions'] = True
+                        else:
+                            return redirect(request.path)
                     content['user_view'] = UserDetail.objects.get(user=request.user.id)
+                    content['edit'] = True
                 else:
+                    if 'edit' in request.GET:
+                        return redirect(request.path)
+                    # check permissions
                     if content['user_view'].permissions == 'private':
+                        # if you are not user's friend
                         if not Friend.objects.filter(user1=id, user2=request.user.id) and not Friend.objects.filter(
                                 user1=request.user.id, user2=id):
                             content['permissions'] = 'closed'
                 return render(request, 'mainpage/account.html', content)
+        # If user is not found
         except:
             content.update({
                 'list': get_wordlist(request).Account
@@ -193,6 +211,33 @@ class YourAccountView(View):
     def get(self, request, **kwargs):
         return AccountIDView.get(self, request, id=request.user.id,
                                  user_view=UserDetail.objects.get(user=request.user.id))
+
+    def post(self, request):
+
+        name = request.POST['name']
+        surname = request.POST['surname']
+        email = request.POST['email']
+        sex = request.POST['sex']
+        birthday = request.POST['date']
+        country = request.POST['country']
+        city = request.POST['city']
+
+        user = UserDetail.objects.get(user=request.user)
+        if name != "" and surname != "" and email != "" and sex != "" and birthday != "" and country != "" and city != "":
+            user_main = User.objects.get(id=user.user.id)
+            user_main.email = email
+            user_main.first_name = name
+            user_main.last_name = surname
+            user.sex = sex
+            user.age = birthday
+            user.country = country
+            user.city = city
+            user.save()
+            user_main.save()
+        else:
+            return AccountIDView(self, request, id=request.user.id,
+                                 content={'post_error': get_wordlist(request).Account.post_error})
+        return redirect("/account")
 
 
 class LogOutView(View):
