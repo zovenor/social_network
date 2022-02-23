@@ -80,12 +80,19 @@ class EN:
         title = "Photos"
         your_photos = "Your photos"
         redirect_to_all_photos = "Go to all photos"
+        date = "Date"
+        add_photo = "Add a photo"
 
     class AllPhotos(BASE):
         title = "All photos"
         all_photos = "All photos"
         user = "User"
         date = "Date"
+
+    class AddPhoto(BASE):
+        title = "Add a photo"
+        add_photo = "Add a photo"
+        error = "Dont't choose a photo!"
 
 
 class RU(EN):
@@ -167,10 +174,17 @@ class RU(EN):
     class YourPhotos(EN.YourPhotos, BASE):
         title = "Фотографии"
         your_photos = "Ваши фотографии"
+        date = "Дата"
+        redirect_to_all_photos = "Перейти ко всем фотографиям"
+        add_photo = "Добавить фотографию"
 
     class AllPhotos(EN.AllPhotos, BASE):
         title = "Все фотографии"
         all_photos = "Все фотографии"
         user = "Пользователь"
         date = "Дата"
-        redirect_to_all_photos = "Перейти ко всем фотографиям"
+
+    class AddPhoto(EN.AddPhoto, BASE):
+        title = "Добавить фотографию"
+        add_photo = "Добавить фотографию"
+        error = "Не выбрана фотография"

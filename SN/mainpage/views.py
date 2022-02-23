@@ -40,10 +40,9 @@ def user_to_user(self, request, user_view, url=""):
 
 
 def base(func):
-    def wrapper(self, request, **kwargs):
-        content = {}
+    def wrapper(self, request, content={}, *args, **kwargs):
         if request.user.is_authenticated:
-            content = {'your_user': UserDetail.objects.get(user=request.user)}
+            content.update({'your_user': UserDetail.objects.get(user=request.user)})
         return func(self, request, content=content, **kwargs)
 
     return wrapper
@@ -395,9 +394,10 @@ class RegView(View):
         return self.get(request, error=error, post_list=post_list)
 
 
-class YourPhotosView(View):
+class PhotosView(View):
     @base
-    def get(self, request, content={}, **kwags):
+    @user_is_authenticated
+    def get(self, request, content={}, **kwargs):
         content.update({
             'list': get_wordlist(request).YourPhotos,
             'photos': Photo.objects.filter(user=request.user),
@@ -409,5 +409,16 @@ class YourPhotosView(View):
                 content['all_photos'] = Photo.objects.filter(permissions="public")
                 content['photos'] = None
                 content['list'] = get_wordlist(request).AllPhotos
+        elif 'add_photo' in request.GET:
+            if request.GET['add_photo'] == "True":
+                content['list'] = get_wordlist(request).AddPhoto
 
         return render(request, 'mainpage/photos.html', content)
+
+    def post(self, request):
+        print(request.FILES)
+        if 'photo' in request.FILES:
+            Photo.objects.create(user=request.user, photo=request.FILES['photo'])
+            return redirect('/')
+        else:
+            return self.get(request, content={'error': get_wordlist(request).AddPhoto.error})

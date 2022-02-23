@@ -7,14 +7,30 @@
 {% block content %}
 
     <link rel="stylesheet" href="{% static 'mainpage/photos.css' %}">
+    {% if error %}
+        <script>alert("{{ error }}");</script>
+    {% endif %}
+    {% if request.GET.add_photo == "True" and  user.is_authenticated %}
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <h1>{{ list.add_photo }}</h1>
+            <input required name="photo" type="file" accept="image/*,image/jpeg">
+            <input value="{{ list.add_photo }}" type="submit">
+        </form>
 
-    {% if photos != None %}
+    {% elif photos != None %}
 
         <h1>{{ list.your_photos }}</h1>
+        <div class="photos">
         {% for el in photos %}
-            <img style="border-radius: 25px" width="400px" src="{{ el }}" alt="">
+            <div class="post">
+                <img style="border-radius: 25px" width="400px" src="{{ el }}">
+                <p><b>{{ list.date }}: </b>{{ el.date }}</p>
+            </div>
         {% endfor %}
+        </div>
 
+        <h3><a href="?add_photo=True">{{ list.add_photo }}</a></h3>
         <h3><a href="?all=True">{{ list.redirect_to_all_photos }}</a></h3>
 
     {% else %}
