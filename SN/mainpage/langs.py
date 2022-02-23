@@ -6,6 +6,7 @@ class EN:
         choose_lang = "English"
         login = "Login"
         photos = "Photos"
+        groups = "Groups"
 
     class Login(BASE):
         incorrect_username_or_password = 'Incorrect username or password!'
@@ -75,9 +76,11 @@ class EN:
         male = "Male"
         female = "Female"
         choose_sex = "Choose sex"
+        error_group = "Group with this username already exisst!"
 
     class Error404(BASE):
         title = "Page not found!"
+        error_user_and_group_is_not_found = "Groups or user is not found!"
 
     class YourPhotos(BASE):
         title = "Photos"
@@ -97,6 +100,12 @@ class EN:
         add_photo = "Add a photo"
         error = "Dont't choose a photo!"
 
+    class Groups(BASE):
+        title = "Groups"
+
+    class Group(BASE):
+        pass
+
 
 class RU(EN):
     class BASE(EN.BASE):
@@ -105,6 +114,7 @@ class RU(EN):
         choose_lang = "Русский"
         login = "Войти"
         photos = "Фотографии"
+        groups = "Группы"
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
@@ -172,9 +182,11 @@ class RU(EN):
         male = "Мужской"
         female = "Женский"
         choose_sex = "Выбрать пол"
+        error_group = "Группа с этим именем пользователя уже существует!"
 
     class Error404(EN.Error404, BASE):
         title = "Страница не найдена!"
+        error_user_and_group_is_not_found = "Группа или пользователь не найден!"
 
     class YourPhotos(EN.YourPhotos, BASE):
         title = "Фотографии"
@@ -193,3 +205,9 @@ class RU(EN):
         title = "Добавить фотографию"
         add_photo = "Добавить фотографию"
         error = "Не выбрана фотография"
+
+    class Groups(EN.Groups, BASE):
+        title = "Группы"
+
+    class Group(EN.Group, BASE):
+        pass

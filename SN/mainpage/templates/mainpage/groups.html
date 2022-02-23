@@ -1,0 +1,9 @@
+{% extends 'mainpage/base.html' %}
+
+{% block title %}{{ list.title }}{% endblock %}
+
+{% block content %}
+    {% for el in your_groups %}
+        <a href="/{{ el.groupname }}">{{ el.name }}</a>
+    {% endfor %}
+{% endblock %}

@@ -121,3 +121,14 @@ class UserDetail(models.Model):
             return self.photo
         else:
             return settings.STATIC_URL + "/mainpage/img/user.png"
+
+
+class Group(models.Model):
+    followers = models.ManyToManyField(UserDetail)
+    name = models.CharField(max_length=250)
+    description = models.TextField(null=True, blank=True)
+    groupname = models.CharField(max_length=100, unique=True)
+    photo = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.name

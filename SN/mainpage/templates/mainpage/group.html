@@ -1,0 +1,12 @@
+{% extends 'mainpage/base.html' %}
+
+{% block title %}{{ group.name }}{% endblock %}
+
+{% block content %}
+    <h1>Users:</h1> <ul>
+        {% for el in followers %}
+            <li><a href="/{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

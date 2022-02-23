@@ -3,7 +3,7 @@ from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from . import langs
-from .models import Friend, Follower, UserDetail, Photo
+from .models import Friend, Follower, UserDetail, Photo, Group
 
 
 def user_to_user(self, request, user_view, url=""):
@@ -48,10 +48,11 @@ def base(func):
     return wrapper
 
 
-def page_not_found_view(request, exception):
-    content = {
+@base
+def page_not_found_view(self, request, content={}, exception=None, *args, **kwargs):
+    content.update({
         'list': get_wordlist(request).Error404
-    }
+    })
     return render(request, 'mainpage/404.html', content, status=404)
 
 
@@ -151,8 +152,9 @@ class LogInView(View):
 class AccountIDView(View):
 
     @base
-    def get(self, request, id=None, username=None, user_view=None, content={}):
-        try:
+    def get(self, request, id=None, name=None, user_view=None, content={}, gr_or_usr="usr" ):
+        if (User.objects.filter(username=name).exists() or User.objects.filter(id=id).exists()) and gr_or_usr == "usr":
+            username = name
             # if request receive username
             if username != None:
                 id = User.objects.get(username=username).id
@@ -184,10 +186,10 @@ class AccountIDView(View):
                     # if user remove account's photo
                     elif 'rm_photo' in request.GET:
                         if request.GET['rm_photo'] == 'True':
-                             user_photo = UserDetail.objects.get(user=id)
-                             user_photo.photo = None
-                             user_photo.save()
-                             return redirect("/account")
+                            user_photo = UserDetail.objects.get(user=id)
+                            user_photo.photo = None
+                            user_photo.save()
+                            return redirect("/account")
                     elif 'choose_photo' in request.GET:
                         if request.GET['choose_photo'] == 'True':
                             content['choose_photo'] = True
@@ -216,16 +218,25 @@ class AccountIDView(View):
                     Friend.objects.filter(user1=content['user_view'].id, user2=request.user.id))
                 return render(request, 'mainpage/account.html', content)
         # If user is not found
-        except:
+        elif (Group.objects.filter(groupname=name).exists() or Group.objects.filter(id=id).exists()) and gr_or_usr == "gr":
+            if name is not None:
+                id = Group.objects.get(groupname=name).id
             content.update({
-                'list': get_wordlist(request).Account
+                'list': get_wordlist(request).Group,
+                'followers': Group.objects.get(id=id).followers.all(),
+                'group': Group.objects.get(id=id),
             })
-            return render(request, 'mainpage/error.html', content)
+            return render(request, 'mainpage/group.html', content)
+        else:
+            return page_not_found_view(self, request)
 
+class GroupIDView(View):
+    def get(self, request, id):
+        return AccountIDView.get(self, request, id=id, gr_or_usr="gr")
 
 class AccountView(View):
-    def get(self, request, username):
-        return AccountIDView.get(self, request, username=username)
+    def get(self, request, name):
+        return AccountIDView.get(self, request, name=name)
 
 
 class YourAccountView(View):
@@ -393,22 +404,26 @@ class RegView(View):
         }
 
         if name != "" and surname != "" and email != "" and username != "" and password1 != "" and password2 != "" and birthday != "" and country != "" and city != "" and sex != "":
-            if password1 == password2:
-                if not User.objects.filter(username=username).exists():
-                    if not User.objects.filter(email=email).exists():
-                        User.objects.create_user(first_name=name, last_name=surname, email=email, username=username,
-                                                 password=password1)
-                        UserDetail.objects.create(user=User.objects.get(username=username), age=birthday,
-                                                  country=country, city=city, sex=sex)
-                        user = authenticate(username=username, password=password1)
-                        login(request, user)
-                        return redirect("/")
+            # if not User.objects.filter(username=username).exist():
+            if True:
+                if password1 == password2:
+                    if not User.objects.filter(username=username).exists():
+                        if not User.objects.filter(email=email).exists():
+                            User.objects.create_user(first_name=name, last_name=surname, email=email, username=username,
+                                                     password=password1)
+                            UserDetail.objects.create(user=User.objects.get(username=username), age=birthday,
+                                                      country=country, city=city, sex=sex)
+                            user = authenticate(username=username, password=password1)
+                            login(request, user)
+                            return redirect("/")
+                        else:
+                            error = get_wordlist(request).Reg.error_email  # User with this email already exist!
                     else:
-                        error = get_wordlist(request).Reg.error_email  # User with this email already exist!
+                        error = get_wordlist(request).Reg.error_username  # User with this username already exist!
                 else:
-                    error = get_wordlist(request).Reg.error_username  # User with this username already exist!
+                    error = get_wordlist(request).Reg.error_passwords  # Password don't match!
             else:
-                error = get_wordlist(request).Reg.error_passwords  # Password don't match!
+                error = get_wordlist(request).Reg.error_group  # Group with this username already exisst!
         else:
             error = get_wordlist(request).Reg.error_fields  # Some fields were not filled in!
 
@@ -442,3 +457,14 @@ class PhotosView(View):
             return redirect('/')
         else:
             return self.get(request, content={'error': get_wordlist(request).AddPhoto.error})
+
+
+class GroupsView(View):
+    @base
+    def get(self, request, content={}):
+        content.update({
+            'list': get_wordlist(request).Groups,
+            'your_groups': Group.objects.filter(followers=UserDetail.objects.get(user=request.user)),
+        })
+
+        return render(request, 'mainpage/groups.html', content)
