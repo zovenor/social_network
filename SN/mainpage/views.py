@@ -152,8 +152,20 @@ class LogInView(View):
 class AccountIDView(View):
 
     @base
-    def get(self, request, id=None, name=None, user_view=None, content={}, gr_or_usr="usr" ):
-        if (User.objects.filter(username=name).exists() or User.objects.filter(id=id).exists()) and gr_or_usr == "usr":
+    def get(self, request, id=None, name=None, user_view=None, content={}, gr_or_usr="usr"):
+
+        get_page = None
+
+        if id is None:
+            if User.objects.filter(username=name).exists():
+                get_page = 'usr'
+            elif Group.objects.filter(groupname=name).exists():
+                get_page = 'grp'
+        else:
+            get_page = gr_or_usr
+
+        # If it's a user
+        if get_page == 'usr':
             username = name
             # if request receive username
             if username != None:
@@ -217,8 +229,8 @@ class AccountIDView(View):
                 content['friends'] = Friend.objects.filter(user1=request.user.id, user2=content['user_view'].id).union(
                     Friend.objects.filter(user1=content['user_view'].id, user2=request.user.id))
                 return render(request, 'mainpage/account.html', content)
-        # If user is not found
-        elif (Group.objects.filter(groupname=name).exists() or Group.objects.filter(id=id).exists()) and gr_or_usr == "gr":
+        # If it's a group
+        elif get_page == 'grp':
             if name is not None:
                 id = Group.objects.get(groupname=name).id
             content.update({
@@ -227,12 +239,15 @@ class AccountIDView(View):
                 'group': Group.objects.get(id=id),
             })
             return render(request, 'mainpage/group.html', content)
+        # Page not found
         else:
             return page_not_found_view(self, request)
 
+
 class GroupIDView(View):
     def get(self, request, id):
-        return AccountIDView.get(self, request, id=id, gr_or_usr="gr")
+        return AccountIDView.get(self, request, id=id, gr_or_usr="grp")
+
 
 class AccountView(View):
     def get(self, request, name):
