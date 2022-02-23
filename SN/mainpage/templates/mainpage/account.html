@@ -8,89 +8,105 @@
 
     <link rel="stylesheet" href="{% static 'mainpage/account.css' %}">
 
-    <div class="account">
+    {% if choose_photo == True %}
+
+        {% for el in photos_library %}
+            <a href="?choose_photo_by_id={{ el.id }}"><img class="account_photo" src="{{ el }}"></a>
+        {% endfor %}
+
+    {% else %}
+        <div class="account">
 
 
-        {% if permissions != "closed" %}
-            {% if user_view.photo %}
-                <img class="account_photo" src="{{ user_view.photo }}">
-            {% else %}
-                <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
-            {% endif %}
-        {% endif %}
-
-
-        {% if edit_permissions == False %}
-
-            <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
-            {% if permissions != 'closed' %}
-                <p><b>{{ list.email }}</b>: {{ user_view.user.email }}</p>
-                <p><b>{{ list.sex }}: </b>{{ get_sex }}</p>
-                <p><b>{{ list.age }}: </b>{{ user_view.age }}</p>
-                <p><b>{{ list.country }}</b>: {{ user_view.country }}</p>
-                <p><b>{{ list.city }}: </b>{{ user_view.city }}</p>
-                {% if user.is_authenticated %}
-                    {% if user.id != user_view.user.id %}
-                        {{ user_to_user|safe }}
-                    {% endif %}
+            {% if permissions != "closed" %}
+                {% if user_view.photo %}
+                    <img class="account_photo" src="{{ user_view.photo }}">
+                {% else %}
+                    <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
                 {% endif %}
-                {% if edit %}
-                    <b><a class="edit" href="?edit=True">{{ list.edit }}</a></b>
-                {% endif %}
-            {% else %}
-                {% if user.is_authenticated %}
-                    {% if user.id != user_view.user.id %}
-                        {{ user_to_user|safe }}
-                    {% endif %}
-                {% endif %}
-                <h3>{{ list.permissions }}</h3>
             {% endif %}
 
 
-            {% for el in friends %}
-                {{ el }}
-            {% endfor %}
+            {% if edit_permissions == False %}
 
-        {% else %}
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <p><input name="photo" type="file" accept="image/*,image/jpeg"></p>
-                <h1><input required type="text" name="name" value="{{ user_view.user.first_name }}"></input>
-                    <input required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></input></h1>
+                <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
                 {% if permissions != 'closed' %}
-                    <p><b>{{ list.email }}</b>: <input required value="{{ user_view.user.email }}" name="email"
-                                                       type="text"></p>
-                    <p><b>{{ list.sex }}: </b>
-                        <select required name="sex">
-                            <option disabled>{{ list.choose_sex }}</option>
-                            <option value="male" {% if user_view.sex == "male" %}
-                                    default {% endif %}>{{ list.male }}</option>
-                            <option value="female" {% if user_view.sex == "female" %}
-                                    default {% endif %}>{{ list.female }}</option>
-                            <option value="None" {% if user_view.sex == "None" %}
-                                    default {% endif %}>{{ list.sex_is_not_defined }}</option>
-                        </select>
-                    </p>
-                    <p><b>{{ list.age }}: </b><input required name="date" value="{{ user_view.age|safe }}" type="date">
-                    </p>
-                    <p><b>{{ list.country }}</b>: <input required name="country" value="{{ user_view.country }}"
-                                                         type="text"></p>
-                    <p><b>{{ list.city }}: </b><input required name="city" value="{{ user_view.city }}" type="text"></p>
+                    <p><b>{{ list.email }}</b>: {{ user_view.user.email }}</p>
+                    <p><b>{{ list.sex }}: </b>{{ get_sex }}</p>
+                    <p><b>{{ list.age }}: </b>{{ user_view.age }}</p>
+                    <p><b>{{ list.country }}</b>: {{ user_view.country }}</p>
+                    <p><b>{{ list.city }}: </b>{{ user_view.city }}</p>
                     {% if user.is_authenticated %}
                         {% if user.id != user_view.user.id %}
                             {{ user_to_user|safe }}
                         {% endif %}
                     {% endif %}
-                    <input value="{{ list.post_save }}" type="submit">
+                    {% if edit %}
+                        <b><a class="edit" href="?edit=True">{{ list.edit }}</a></b>
+                    {% endif %}
                 {% else %}
+                    {% if user.is_authenticated %}
+                        {% if user.id != user_view.user.id %}
+                            {{ user_to_user|safe }}
+                        {% endif %}
+                    {% endif %}
                     <h3>{{ list.permissions }}</h3>
                 {% endif %}
 
-            </form>
-        {% endif %}
-        {% if psot_error %}
-            {{ list.post_error }}
-        {% endif %}
-    </div>
+
+                {% for el in friends %}
+                    {{ el }}
+                {% endfor %}
+
+            {% else %}
+                <a href="?rm_photo=True">
+                    <button>{{ list.remove_photo }}</button>
+                </a>
+                <a href="?choose_photo=True">
+                    <button>{{ list.choose_photo }}</button>
+                </a>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <p><input name="photo" type="file" accept="image/*,image/jpeg"></p>
+                    <h1><input required type="text" name="name" value="{{ user_view.user.first_name }}"></input>
+                        <input required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></input></h1>
+                    {% if permissions != 'closed' %}
+                        <p><b>{{ list.email }}</b>: <input required value="{{ user_view.user.email }}" name="email"
+                                                           type="text"></p>
+                        <p><b>{{ list.sex }}: </b>
+                            <select required name="sex">
+                                <option disabled>{{ list.choose_sex }}</option>
+                                <option value="male" {% if user_view.sex == "male" %}
+                                        default {% endif %}>{{ list.male }}</option>
+                                <option value="female" {% if user_view.sex == "female" %}
+                                        default {% endif %}>{{ list.female }}</option>
+                                <option value="None" {% if user_view.sex == "None" %}
+                                        default {% endif %}>{{ list.sex_is_not_defined }}</option>
+                            </select>
+                        </p>
+                        <p><b>{{ list.age }}: </b><input required name="date" value="{{ user_view.age|safe }}"
+                                                         type="date">
+                        </p>
+                        <p><b>{{ list.country }}</b>: <input required name="country" value="{{ user_view.country }}"
+                                                             type="text"></p>
+                        <p><b>{{ list.city }}: </b><input required name="city" value="{{ user_view.city }}" type="text">
+                        </p>
+                        {% if user.is_authenticated %}
+                            {% if user.id != user_view.user.id %}
+                                {{ user_to_user|safe }}
+                            {% endif %}
+                        {% endif %}
+                        <input value="{{ list.post_save }}" type="submit">
+                    {% else %}
+                        <h3>{{ list.permissions }}</h3>
+                    {% endif %}
+
+                </form>
+            {% endif %}
+            {% if psot_error %}
+                {{ list.post_error }}
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}

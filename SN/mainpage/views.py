@@ -167,6 +167,7 @@ class AccountIDView(View):
                 'get_sex': get_sex(request, UserDetail.objects.get(user=id).sex),
                 'user_to_user': user_to_user(self, request, UserDetail.objects.get(user=id)),
                 'edit_permissions': False,
+                'choose_photo': False,
             })
             # if user is you
             if request.user.id == id and user_view == None:
@@ -180,6 +181,26 @@ class AccountIDView(View):
                             content['edit_permissions'] = True
                         else:
                             return redirect(request.path)
+                    # if user remove account's photo
+                    elif 'rm_photo' in request.GET:
+                        if request.GET['rm_photo'] == 'True':
+                             user_photo = UserDetail.objects.get(user=id)
+                             user_photo.photo = None
+                             user_photo.save()
+                             return redirect("/account")
+                    elif 'choose_photo' in request.GET:
+                        if request.GET['choose_photo'] == 'True':
+                            content['choose_photo'] = True
+                            content['photos_library'] = Photo.objects.filter(user=id)
+                    elif 'choose_photo_by_id' in request.GET:
+                        try:
+                            choose_photo_by_id = int(request.GET['choose_photo_by_id'])
+                            user_photo = UserDetail.objects.get(user=id)
+                            user_photo.photo = Photo.objects.get(id=choose_photo_by_id)
+                            user_photo.save()
+                            return redirect('/account')
+                        except:
+                            content['error'] = "Incorrect id!"
                     content['user_view'] = UserDetail.objects.get(user=request.user.id)
                     content['edit'] = True
                 else:
@@ -416,7 +437,6 @@ class PhotosView(View):
         return render(request, 'mainpage/photos.html', content)
 
     def post(self, request):
-        print(request.FILES)
         if 'photo' in request.FILES:
             Photo.objects.create(user=request.user, photo=request.FILES['photo'])
             return redirect('/')

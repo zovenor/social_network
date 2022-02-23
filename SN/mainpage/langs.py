@@ -37,6 +37,9 @@ class EN:
         choose_sex = "Choose sex"
         post_save = "Save"
         post_error = "Some fields were not filled in!"
+        remove_photo = "Remove the photo"
+        choose_photo = "Choose the photo"
+
 
     class Friends(BASE):
         title = "Friends"
@@ -132,6 +135,8 @@ class RU(EN):
         female = "Женский"
         choose_sex = "Выбрать пол"
         post_save = "Сохранить"
+        remove_photo = "Убрать фотографию"
+        choose_photo = "Выбрать фотографию"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"

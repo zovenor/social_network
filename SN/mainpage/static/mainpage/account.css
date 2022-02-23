@@ -1,6 +1,7 @@
 .account_photo{
     border-radius: 20px;
     width: 350px;
+    margin-bottom: 20px;
 }
 main{
     display: flex;
@@ -21,4 +22,8 @@ main{
 }
 .edit{
     color: cadetblue;
+}
+.account{
+    display: flex;
+    flex-flow: column;
 }
