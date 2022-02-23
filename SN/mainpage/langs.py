@@ -78,6 +78,14 @@ class EN:
 
     class YourPhotos(BASE):
         title = "Photos"
+        your_photos = "Your photos"
+        redirect_to_all_photos = "Go to all photos"
+
+    class AllPhotos(BASE):
+        title = "All photos"
+        all_photos = "All photos"
+        user = "User"
+        date = "Date"
 
 
 class RU(EN):
@@ -158,3 +166,11 @@ class RU(EN):
 
     class YourPhotos(EN.YourPhotos, BASE):
         title = "Фотографии"
+        your_photos = "Ваши фотографии"
+
+    class AllPhotos(EN.AllPhotos, BASE):
+        title = "Все фотографии"
+        all_photos = "Все фотографии"
+        user = "Пользователь"
+        date = "Дата"
+        redirect_to_all_photos = "Перейти ко всем фотографиям"

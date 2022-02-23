@@ -192,6 +192,8 @@ class AccountIDView(View):
                         if not Friend.objects.filter(user1=id, user2=request.user.id) and not Friend.objects.filter(
                                 user1=request.user.id, user2=id):
                             content['permissions'] = 'closed'
+                content['friends'] = Friend.objects.filter(user1=request.user.id, user2=content['user_view'].id).union(
+                    Friend.objects.filter(user1=content['user_view'].id, user2=request.user.id))
                 return render(request, 'mainpage/account.html', content)
         # If user is not found
         except:
@@ -399,7 +401,13 @@ class YourPhotosView(View):
         content.update({
             'list': get_wordlist(request).YourPhotos,
             'photos': Photo.objects.filter(user=request.user),
-            'all_photos': Photo.objects.all(),
+            'all_photos': None,
         })
+
+        if 'all' in request.GET:
+            if request.GET['all'] == 'True':
+                content['all_photos'] = Photo.objects.filter(permissions="public")
+                content['photos'] = None
+                content['list'] = get_wordlist(request).AllPhotos
 
         return render(request, 'mainpage/photos.html', content)

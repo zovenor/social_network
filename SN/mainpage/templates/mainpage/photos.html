@@ -2,13 +2,34 @@
 
 {% block title %}{{ list.title }}{% endblock %}
 
+{% load static %}
+
 {% block content %}
-    <h1>Your photos</h1>
-    {% for el in photos %}
-        <img width="400px" src="{{ el }}" alt="">
-    {% endfor %}
-    <h1>All photos</h1>
-    {% for el in all_photos %}
-        <img width="400px" src="{{ el }}" alt="">
-    {% endfor %}
+
+    <link rel="stylesheet" href="{% static 'mainpage/photos.css' %}">
+
+    {% if photos != None %}
+
+        <h1>{{ list.your_photos }}</h1>
+        {% for el in photos %}
+            <img style="border-radius: 25px" width="400px" src="{{ el }}" alt="">
+        {% endfor %}
+
+        <h3><a href="?all=True">{{ list.redirect_to_all_photos }}</a></h3>
+
+    {% else %}
+
+        <h1>{{ list.all_photos }}</h1>
+        <div class="photos">
+        {% for el in all_photos %}
+           <div class="photo">
+            <img style="border-radius: 25px" width="400px" src="{{ el }}" alt="">
+            <p><b>{{ list.user }}: </b><a href="/{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}</a></p>
+           <p><b>{{ list.date }}: </b>{{ el.date }}</p>
+           </div>
+        {% endfor %}
+        </div>
+
+    {% endif %}
+
 {% endblock %}

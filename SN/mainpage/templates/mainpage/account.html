@@ -46,6 +46,11 @@
                 <h3>{{ list.permissions }}</h3>
             {% endif %}
 
+
+            {% for el in friends %}
+                {{ el }}
+            {% endfor %}
+
         {% else %}
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
