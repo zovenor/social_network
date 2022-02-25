@@ -5,16 +5,24 @@
 {% load static %}
 
 {% block content %}
+
+    {% if error %}
+        <script>
+            alert('{{ error }}');
+        </script>
+    {% endif %}
+
     <link rel="stylesheet" href="{% static 'mainpage/groups.css' %}">
     <h1>{{ list.title }}</h1>
 
 
     {% if create == True %}
         <form method="POST">
-            <p><b>{{ list.name }}: </b><input type="text"></p>
-            <p><b>{{ list.description }}: </b><input type="text"></p>
-            <p><b>{{ list.groupname }}: </b><input type="text"></p>
-            <p><input value="{{ list.create }}" type="submit"></p>
+        {% csrf_token %}
+            <p><b>{{ list.name }}: </b><input value="{{ pl.name }}" name="name" type="text"></p>
+            <p><b>{{ list.description }}: </b><textarea value="{{ pl.description }}" name="description" type="text"></textarea></p>
+            <p><b>{{ list.groupname }}: </b><input value="{{ pl.groupname }}" name="groupname" type="text"></p>
+            <p><input class="button" value="{{ list.create }}" type="submit"></p>
         </form>
     {% else %}
         <h3>
@@ -31,7 +39,7 @@
         </h3>
         <ul>
             {% for el in groups %}
-                <li><a class="group" href="/{{ el.groupname }}"><div style="background-image: url('{{ el.photo }}');" class="img-group"></div><span class="group_name">{{ el.name }}</span></a></li>
+                <li><a class="group" href="/{{ el.groupname }}"><div style="background-image: url('{{ el.get_photo }}');" class="img-group"></div><span class="group_name">{{ el.name }}</span></a></li>
             {% endfor %}
         </ul>
     {% endif %}

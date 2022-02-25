@@ -501,3 +501,27 @@ class GroupsView(View):
                 content['list'] = get_wordlist(request).CreateGroup
 
         return render(request, 'mainpage/groups.html', content)
+
+    def post(self, request):
+
+        name = request.POST['name']
+        description = request.POST['description']
+        groupname = request.POST['groupname']
+
+        pl = {
+            'name': name,
+            'description': description,
+            'groupname': groupname,
+        }
+
+        if name != '' and description != '' and groupname != '':
+            if not Group.objects.filter(groupname=groupname).exists() and not User.objects.filter(
+                    username=groupname).exists():
+                group = Group.objects.create(name=name, description=description, groupname=groupname,
+                                     admin=UserDetail.objects.get(user=request.user))
+                group.followers.add(UserDetail.objects.get(user=request.user))
+                group.editors.add(UserDetail.objects.get(user=request.user))
+                return redirect('/groups')
+            else:
+                error = get_wordlist(request).Group.create_error
+                return self.get(request, content={'error': error, 'pl': pl})

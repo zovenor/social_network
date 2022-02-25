@@ -139,4 +139,4 @@ class Group(models.Model):
         if self.photo:
             return self.photo
         else:
-            return settings.STATIC_URL + "/mainpage/img/user.png"
+            return settings.STATIC_URL + "/mainpage/img/group.jpg"

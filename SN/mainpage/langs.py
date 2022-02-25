@@ -112,12 +112,13 @@ class EN:
         followers = "Followers"
         admin = "Admin"
         editors = "Editors"
+        create_error = "This name already exists!"
 
     class CreateGroup(BASE):
         title = "Create a group"
         name = "Name"
         description = "Description"
-        groupname = "Groupname"
+        groupname = "Unique group name"
         create = "Create"
 
 
@@ -235,6 +236,7 @@ class RU(EN):
         followers = "Подписчики"
         admin = "Админ"
         editors = "Редакторы"
+        create_error = "Это имя уже существует!"
 
     class CreateGroup(EN.CreateGroup, BASE):
         title = "Создать группу"

@@ -38,14 +38,17 @@ main {
     padding: 20px;
     padding-top: 90px;
 }
-main a{
+
+main a {
     text-decoration: none;
     color: #777;
 }
-li{
+
+li {
     list-style-type: none;
 }
-.button{
+
+.button {
     border: #777 2px solid;
     border-radius: 999px;
     padding: 10px;
@@ -53,16 +56,19 @@ li{
     color: #777;
     background-color: #222226;
 }
-.button:hover{
+
+.button:hover {
     background: #777;
     color: #222226;
 }
-.choose_lang{
+
+.choose_lang {
     border: 0px;
     background-color: #777;
     color: #222226;
 }
-.choose_lang:hover{
+
+.choose_lang:hover {
     background-color: #222226;
     color: #777;
 }
