@@ -19,6 +19,7 @@ header {
     left: 0;
     top: 0;
     z-index: 999;
+    box-shadow: 20px 0px 20px #111113;
 }
 
 .NAME {
@@ -39,5 +40,29 @@ main {
 }
 main a{
     text-decoration: none;
+    color: #777;
+}
+li{
+    list-style-type: none;
+}
+.button{
+    border: #777 2px solid;
+    border-radius: 999px;
+    padding: 10px;
+    transition: .5s;
+    color: #777;
+    background-color: #222226;
+}
+.button:hover{
+    background: #777;
+    color: #222226;
+}
+.choose_lang{
+    border: 0px;
+    background-color: #777;
+    color: #222226;
+}
+.choose_lang:hover{
+    background-color: #222226;
     color: #777;
 }

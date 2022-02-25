@@ -41,7 +41,6 @@ class EN:
         remove_photo = "Remove the photo"
         choose_photo = "Choose the photo"
 
-
     class Friends(BASE):
         title = "Friends"
         your_friends = "Your friends"
@@ -100,12 +99,29 @@ class EN:
         add_photo = "Add a photo"
         error = "Dont't choose a photo!"
 
-    class Groups(BASE):
-        title = "Groups"
+    class YourGroups(BASE):
+        title = "Your groups"
+        your_groups = "Your groups"
+        create_group = "Create a group"
+        all_groups = "All groups"
+
+    class AllGroups(YourGroups):
+        title = "All groups"
 
     class Group(BASE):
-        pass
+        followers = "Followers"
+        admin = "Admin"
+        editors = "Editors"
 
+    class CreateGroup(BASE):
+        title = "Create a group"
+        name = "Name"
+        description = "Description"
+        groupname = "Groupname"
+        create = "Create"
+
+
+# #######################################################################################################################################
 
 class RU(EN):
     class BASE(EN.BASE):
@@ -118,7 +134,7 @@ class RU(EN):
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
-        title = "Вход"
+        title = "Войти"
         no_account = "Нет аккаунта?"
         login = "Войти"
 
@@ -206,8 +222,23 @@ class RU(EN):
         add_photo = "Добавить фотографию"
         error = "Не выбрана фотография"
 
-    class Groups(EN.Groups, BASE):
-        title = "Группы"
+    class YourGroups(EN.YourGroups, BASE):
+        title = "Ваши группы"
+        your_groups = "Ваши группы"
+        create_group = "Создать группу"
+        all_groups = "Все группы"
+
+    class AllGroups(EN.AllGroups, YourGroups):
+        title = "Все группы"
 
     class Group(EN.Group, BASE):
-        pass
+        followers = "Подписчики"
+        admin = "Админ"
+        editors = "Редакторы"
+
+    class CreateGroup(EN.CreateGroup, BASE):
+        title = "Создать группу"
+        name = "Название группы"
+        description = "Описание группы"
+        groupname = "Уникальное имя группы"
+        create = "Создать"

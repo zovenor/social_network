@@ -2,8 +2,39 @@
 
 {% block title %}{{ list.title }}{% endblock %}
 
+{% load static %}
+
 {% block content %}
-    {% for el in your_groups %}
-        <a href="/{{ el.groupname }}">{{ el.name }}</a>
-    {% endfor %}
+    <link rel="stylesheet" href="{% static 'mainpage/groups.css' %}">
+    <h1>{{ list.title }}</h1>
+
+
+    {% if create == True %}
+        <form method="POST">
+            <p><b>{{ list.name }}: </b><input type="text"></p>
+            <p><b>{{ list.description }}: </b><input type="text"></p>
+            <p><b>{{ list.groupname }}: </b><input type="text"></p>
+            <p><input value="{{ list.create }}" type="submit"></p>
+        </form>
+    {% else %}
+        <h3>
+
+        {% if request.user.is_authenticated %}
+            {% if request.GET.all %}
+                <a href="/groups" class="button">{{ list.your_groups }}</a>
+            {% else %}
+                <a href="?all=True" class="button">{{ list.all_groups  }}</a>
+            {% endif %}
+            <a class="button" href="?create=True">{{ list.create_group }}</a>
+        {% endif %}
+
+        </h3>
+        <ul>
+            {% for el in groups %}
+                <li><a class="group" href="/{{ el.groupname }}"><div style="background-image: url('{{ el.photo }}');" class="img-group"></div><span class="group_name">{{ el.name }}</span></a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
 {% endblock %}

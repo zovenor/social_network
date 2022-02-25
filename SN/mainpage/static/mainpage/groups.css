@@ -1,0 +1,16 @@
+.img-group{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 999px;
+    margin-right: 10px;
+}
+.group{
+    display: flex;
+    align-items: center;
+}
+.group_name{
+    font-size: 20px;
+}

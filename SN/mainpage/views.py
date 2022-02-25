@@ -236,6 +236,7 @@ class AccountIDView(View):
             content.update({
                 'list': get_wordlist(request).Group,
                 'followers': Group.objects.get(id=id).followers.all(),
+                'editors': Group.objects.get(id=id).editors.all(),
                 'group': Group.objects.get(id=id),
             })
             return render(request, 'mainpage/group.html', content)
@@ -420,7 +421,7 @@ class RegView(View):
 
         if name != "" and surname != "" and email != "" and username != "" and password1 != "" and password2 != "" and birthday != "" and country != "" and city != "" and sex != "":
             # if not User.objects.filter(username=username).exist():
-            if True:
+            if not Group.objects.filter(groupname=username).exists():
                 if password1 == password2:
                     if not User.objects.filter(username=username).exists():
                         if not User.objects.filter(email=email).exists():
@@ -438,7 +439,7 @@ class RegView(View):
                 else:
                     error = get_wordlist(request).Reg.error_passwords  # Password don't match!
             else:
-                error = get_wordlist(request).Reg.error_group  # Group with this username already exisst!
+                error = get_wordlist(request).Reg.error_group  # Group with this username already exists!
         else:
             error = get_wordlist(request).Reg.error_fields  # Some fields were not filled in!
 
@@ -477,9 +478,26 @@ class PhotosView(View):
 class GroupsView(View):
     @base
     def get(self, request, content={}):
+
+        if not request.user.is_authenticated:
+            return redirect('/groups?all=True')
+
         content.update({
-            'list': get_wordlist(request).Groups,
-            'your_groups': Group.objects.filter(followers=UserDetail.objects.get(user=request.user)),
+            'list': get_wordlist(request).YourGroups,
+            'create': False,
         })
+
+        if request.user.is_authenticated:
+            content['groups'] = Group.objects.filter(followers=UserDetail.objects.get(user=request.user))
+
+        if 'all' in request.GET:
+            if request.GET['all'] == 'True':
+                content['groups'] = Group.objects.all()
+                content['list'] = get_wordlist(request).AllGroups
+
+        if 'create' in request.GET:
+            if request.GET['create'] == 'True':
+                content['create'] = True
+                content['list'] = get_wordlist(request).CreateGroup
 
         return render(request, 'mainpage/groups.html', content)

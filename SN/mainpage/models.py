@@ -124,11 +124,19 @@ class UserDetail(models.Model):
 
 
 class Group(models.Model):
-    followers = models.ManyToManyField(UserDetail)
+    followers = models.ManyToManyField(UserDetail, related_name="followers", null=True, blank=True)
     name = models.CharField(max_length=250)
     description = models.TextField(null=True, blank=True)
     groupname = models.CharField(max_length=100, unique=True)
     photo = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True, blank=True)
+    admin = models.ForeignKey(UserDetail, on_delete=models.SET_NULL, null=True, blank=True)
+    editors = models.ManyToManyField(UserDetail, related_name="editors", null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def get_photo(self):
+        if self.photo:
+            return self.photo
+        else:
+            return settings.STATIC_URL + "/mainpage/img/user.png"

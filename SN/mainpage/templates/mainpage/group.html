@@ -2,11 +2,38 @@
 
 {% block title %}{{ group.name }}{% endblock %}
 
+{% load static %}
+
 {% block content %}
-    <h1>Users:</h1> <ul>
-        {% for el in followers %}
-            <li><a href="/{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}</a></li>
+    <link rel="stylesheet" href="{% static 'mainpage/group.css' %}">
+
+    <div style="background-image: url('{{ group.photo }}')" class="group_photo"></div>
+    <h1 class="name_of_group">{{ group.name }}</h1>
+    <h3 class="description">{{ group.description }}</h3>
+    <h3 style="display: flex; align-items: center;">
+        <span>{{ list.admin }}:</span>
+        <a class="admin" href="/{{ group.admin.user.username }}">
+            <div style="background-image: url('{{ group.admin.get_photo }}')" class="admin_img"></div>
+            <b class="admin_name">{{ group.admin.user.first_name }} {{ group.admin.user.last_name }}</b>
+        </a>
+    </h3>
+    <h3 style="display: flex; align-items: center;">
+        <span>{{ list.editors }}:</span>
+        {% for el in editors %}
+            <a class="editor" href="/{{ group.admin.user.username }}">
+                <div style="background-image: url('{{ group.admin.get_photo }}')" class="admin_img"></div>
+                <b class="admin_name">{{ group.admin.user.first_name }} {{ group.admin.user.last_name }}</b>
+            </a>
         {% endfor %}
-    </ul>
+    </h3>
+
+    <h1>{{ list.followers }}</h1>
+    <section class="followers">
+        <ul>
+            {% for el in followers %}
+                <li><a class="fol" href="/{{ el.user.username }}"><div style="background-image: url('{{ el.get_photo }}')" class="fol_img"></div><b class="group_name">{{ el.user.first_name }} {{ el.user.last_name }}</b></a></li>
+            {% endfor %}
+        </ul>
+    </section>
 
 {% endblock %}

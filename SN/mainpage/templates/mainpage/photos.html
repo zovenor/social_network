@@ -15,7 +15,7 @@
         {% csrf_token %}
             <h1>{{ list.add_photo }}</h1>
             <input required name="photo" type="file" accept="image/*,image/jpeg">
-            <input value="{{ list.add_photo }}" type="submit">
+            <input class="link" value="{{ list.add_photo }}" type="submit">
         </form>
 
     {% elif photos != None %}
@@ -30,8 +30,8 @@
         {% endfor %}
         </div>
 
-        <h3><a href="?add_photo=True">{{ list.add_photo }}</a></h3>
-        <h3><a href="?all=True">{{ list.redirect_to_all_photos }}</a></h3>
+        <h3><a class="button" href="?add_photo=True">{{ list.add_photo }}</a>
+        <a class="button" href="?all=True">{{ list.redirect_to_all_photos }}</a></h3>
 
     {% else %}
 

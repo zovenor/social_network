@@ -1,0 +1,39 @@
+.fol_img{
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.fol{
+    display: flex;
+    flex-flow: row;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.fol_img{
+    margin-right: 10px;
+}
+.admin, .editor{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+.admin_img{
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 999px;
+    margin-right: 10px;
+}
+.group_photo{
+    width: 200px;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 999px;
+}

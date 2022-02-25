@@ -78,11 +78,11 @@
                             <select required name="sex">
                                 <option disabled>{{ list.choose_sex }}</option>
                                 <option value="male" {% if user_view.sex == "male" %}
-                                        default {% endif %}>{{ list.male }}</option>
+                                        selected {% endif %}>{{ list.male }}</option>
                                 <option value="female" {% if user_view.sex == "female" %}
-                                        default {% endif %}>{{ list.female }}</option>
+                                        selected {% endif %}>{{ list.female }}</option>
                                 <option value="None" {% if user_view.sex == "None" %}
-                                        default {% endif %}>{{ list.sex_is_not_defined }}</option>
+                                        selected {% endif %}>{{ list.sex_is_not_defined }}</option>
                             </select>
                         </p>
                         <p><b>{{ list.age }}: </b><input required name="date" value="{{ user_view.age|safe }}"

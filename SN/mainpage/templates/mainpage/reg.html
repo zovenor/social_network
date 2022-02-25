@@ -22,11 +22,11 @@
         <p>{{ list.birthday }}: <input required value="{{ pl.birthday }}" name="date" type="date"></p>
         <p>{{ list.country }}: <input value="{{ pl.country }}" name="country" type="text"></p>
         <p>{{ list.city }}: <input value="{{ pl.city }}" name="city" type="text"></p>
-        <p>{{ list.sex }}: <select value="{{ pl.sex }}" required name="sex">
+        <p>{{ list.sex }}: <select required name="sex">
             <option disabled>{{ list.choose_sex }}</option>
-            <option value="None">{{ list.sex_is_not_defined }}</option>
-            <option value="male">{{ list.male }}</option>
-            <option value="female">{{ list.female }}</option>
+            <option {% if pl.sex == 'None' %}selected{% endif %} value="None">{{ list.sex_is_not_defined }}</option>
+            <option {% if pl.sex == 'male' %}selected{% endif %} value="male">{{ list.male }}</option>
+            <option {% if pl.sex == 'female' %}selected{% endif %} value="female">{{ list.female }}</option>
         </select></p>
 
         <input value="{{ list.register }}" type="submit">
