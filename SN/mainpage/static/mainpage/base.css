@@ -61,6 +61,7 @@ li {
     color: #777;
     background-color: #222226;
     width: fit-content;
+    margin: 10px;
 }
 
 .button:hover {

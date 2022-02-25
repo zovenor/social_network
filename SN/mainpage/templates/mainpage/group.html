@@ -10,7 +10,7 @@
     {% if edit == True %}
 
         <form method="POST">
-        {% csrf_token %}
+            {% csrf_token %}
             <div style="background-image: url('{{ group.get_photo }}')" class="group_photo"></div>
             <p><input name="name" value="{{ group.name }}"></p>
             <textarea name="description">{{ group.description }}</textarea>
@@ -18,14 +18,25 @@
                 <span>{{ list.admin }}:</span>
                 <select name="admin">
                     {% for el in editors %}
+                        <option {% if el == group.admin %}selected{% endif %}
+                                value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}
+                            ({{ el.user }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </h3>
+            <h3 style="display: flex; align-items: center;">
+                <span>{{ list.editors }} ({{ list.del_editor }}):</span>
+                <select name="editors" multiple>
+                    {% for el in editors %}
                         <option value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }} ({{ el.user }})</option>
                     {% endfor %}
                 </select>
             </h3>
             <h3 style="display: flex; align-items: center;">
-                <span>{{ list.editors }}:</span>
-                <select name="editors[]" multiple>
-                    {% for el in followers %}
+                <span>{{ list.editors }} ({{ list.add_editor }}):</span>
+                <select name="add_editors" multiple>
+                    {% for el in add_editors %}
                         <option value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }} ({{ el.user }})</option>
                     {% endfor %}
                 </select>

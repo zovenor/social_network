@@ -242,27 +242,47 @@ class AccountIDView(View):
             if 'edit' in request.GET:
                 if request.GET['edit'] == 'True':
                     content['edit'] = True
+                    content['add_editors'] = Group.objects.get(id=id).followers.difference(
+                        Group.objects.get(id=id).editors.all())
             return render(request, 'mainpage/group.html', content)
         # Page not found
         else:
             return page_not_found_view(self, request)
 
-    def post(self, request):
+    def post(self, request, name=None, id=None):
+
+        group = None
+
+        if id == None:
+            group = Group.objects.get(groupname=name)
+        elif name == None:
+            group = Group.objects.get(id=id)
+
         name = request.POST['name']
         description = request.POST['description']
-        admin = request.POST['description']
-        # editors = request.POST['editors']
+        admin = request.POST['admin']
+        del_editors = request.POST.getlist('editors')
+        add_editors = request.POST.getlist('add_editors')
 
-        for el in request.POST['editors']:
-            print(el)
-        return None
+        if name != '' and description != '' and admin != '':
+            group.name = name
+            group.description = description
+            group.admin = UserDetail.objects.get(user=User.objects.get(username=admin))
 
-        # if name != '' and description != '' and admin != '' and
+            for el in del_editors:
+                group.editors.remove(UserDetail.objects.get(user=User.objects.get(username=el)))
+            for el in add_editors:
+                group.editors.add(UserDetail.objects.get(user=User.objects.get(username=el)))
+            group.save()
+            return redirect(request.path)
 
 
 class GroupIDView(View):
     def get(self, request, id):
         return AccountIDView.get(self, request, id=id, gr_or_usr="grp")
+
+    def post(self, request, id):
+        return AccountIDView.post(self, request, id=id)
 
 
 class AccountView(View):
@@ -271,7 +291,7 @@ class AccountView(View):
 
     def post(self, request, name):
         if Group.objects.filter(groupname=name).exists():
-            return AccountIDView.post(self, request)
+            return AccountIDView.post(self, request, name=name)
 
 
 class YourAccountView(View):

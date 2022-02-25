@@ -120,6 +120,8 @@ class EN:
         edit = "Edit"
         follow = "Follow"
         save = "Save"
+        add_editor = "Add"
+        del_editor = "Delete"
 
     class CreateGroup(BASE):
         title = "Create a group"
@@ -251,6 +253,8 @@ class RU(EN):
         edit = "Редактировать"
         follow = "Подписаться"
         save = "Сохранить"
+        add_editor = "Добавить"
+        del_editor = "Удалить"
 
     class CreateGroup(EN.CreateGroup, BASE):
         title = "Создать группу"
