@@ -23,15 +23,12 @@
         <h1>{{ list.your_photos }}</h1>
         <div class="photos">
         {% for el in photos %}
-            <div class="post">
-                <img style="border-radius: 25px" width="400px" src="{{ el }}">
+            <div class="photo">
+                <div style="background-image: url('{{ el }}')"></div>
                 <p><b>{{ list.date }}: </b>{{ el.date }}</p>
             </div>
         {% endfor %}
         </div>
-
-        <h3><a class="button" href="?add_photo=True">{{ list.add_photo }}</a>
-        <a class="button" href="?all=True">{{ list.redirect_to_all_photos }}</a></h3>
 
     {% else %}
 
@@ -39,7 +36,7 @@
         <div class="photos">
         {% for el in all_photos %}
            <div class="photo">
-            <img style="border-radius: 25px" width="400px" src="{{ el }}" alt="">
+               <div style="background-image: url('{{ el }}')"></div>
             <p><b>{{ list.user }}: </b><a href="/{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}</a></p>
            <p><b>{{ list.date }}: </b>{{ el.date }}</p>
            </div>
@@ -47,5 +44,16 @@
         </div>
 
     {% endif %}
+    <h3>
+        {% if user.is_authenticated %}
+            <a class="button" href="?add_photo=True">{{ list.add_photo }}</a>
+        {% endif %}
+        {% if list.redirect_to_all_photos %}
+            <a class="button" href="?all=True">{{ list.redirect_to_all_photos }}</a>
+        {% endif %}
+        {% if list.to_your_photos %}
+            <a class="button" href="/photos">{{ list.to_your_photos }}</a>
+        {% endif %}
+    </h3>
 
 {% endblock %}

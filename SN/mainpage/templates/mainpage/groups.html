@@ -19,9 +19,9 @@
     {% if create == True %}
         <form method="POST">
         {% csrf_token %}
-            <p><b>{{ list.name }}: </b><input value="{{ pl.name }}" name="name" type="text"></p>
-            <p><b>{{ list.description }}: </b><textarea value="{{ pl.description }}" name="description" type="text"></textarea></p>
-            <p><b>{{ list.groupname }}: </b><input value="{{ pl.groupname }}" name="groupname" type="text"></p>
+            <p><b>{{ list.name }}: </b><input required value="{{ pl.name }}" name="name" type="text"></p>
+            <p><b>{{ list.description }}: </b><textarea required name="description" type="text">{{ pl.description }}</textarea></p>
+            <p><b>{{ list.groupname }}: </b><input required value="{{ pl.groupname }}" name="groupname" type="text"></p>
             <p><input class="button" value="{{ list.create }}" type="submit"></p>
         </form>
     {% else %}

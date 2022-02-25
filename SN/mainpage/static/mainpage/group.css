@@ -37,3 +37,23 @@
     background-size: cover;
     border-radius: 999px;
 }
+.edit{
+    color: cadetblue;
+    border-color: cadetblue;
+}
+.edit:hover{
+    background-color: cadetblue;
+}
+.follow{
+    color: #006b1b;
+    border-color: #006b1b;
+}
+.follow:hover{
+    background-color: #006b1b;
+}
+.editors{
+    display: flex;
+    flex-flow: column;
+    margin-top: 10px;
+    padding: 0;
+}

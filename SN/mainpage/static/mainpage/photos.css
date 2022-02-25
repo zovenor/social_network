@@ -28,3 +28,11 @@ form{
 form *{
     margin: 20px;
 }
+.photo div{
+    width: 350px;
+    height: 350px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 999px;
+}

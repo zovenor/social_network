@@ -36,7 +36,7 @@ def user_to_user(self, request, user_view, url=""):
             'link': f'/friends?add_request=id{id2}',
             'class': "add_request",
         })
-    return f'<a class="{response["class"]}" href="{response["link"]}&url={response["url"]}">{response["text"]}</a>'
+    return f'<a class="button {response["class"]}" href="{response["link"]}&url={response["url"]}">{response["text"]}</a>'
 
 
 def base(func):
@@ -182,6 +182,7 @@ class AccountIDView(View):
                 'user_to_user': user_to_user(self, request, UserDetail.objects.get(user=id)),
                 'edit_permissions': False,
                 'choose_photo': False,
+                'friends': Friend.objects.filter(user1=id).union(Friend.objects.filter(user2=id))
             })
             # if user is you
             if request.user.id == id and user_view == None:
@@ -226,8 +227,6 @@ class AccountIDView(View):
                         if not Friend.objects.filter(user1=id, user2=request.user.id) and not Friend.objects.filter(
                                 user1=request.user.id, user2=id):
                             content['permissions'] = 'closed'
-                content['friends'] = Friend.objects.filter(user1=request.user.id, user2=content['user_view'].id).union(
-                    Friend.objects.filter(user1=content['user_view'].id, user2=request.user.id))
                 return render(request, 'mainpage/account.html', content)
         # If it's a group
         elif get_page == 'grp':
@@ -238,11 +237,27 @@ class AccountIDView(View):
                 'followers': Group.objects.get(id=id).followers.all(),
                 'editors': Group.objects.get(id=id).editors.all(),
                 'group': Group.objects.get(id=id),
+                'edit': False,
             })
+            if 'edit' in request.GET:
+                if request.GET['edit'] == 'True':
+                    content['edit'] = True
             return render(request, 'mainpage/group.html', content)
         # Page not found
         else:
             return page_not_found_view(self, request)
+
+    def post(self, request):
+        name = request.POST['name']
+        description = request.POST['description']
+        admin = request.POST['description']
+        # editors = request.POST['editors']
+
+        for el in request.POST['editors']:
+            print(el)
+        return None
+
+        # if name != '' and description != '' and admin != '' and
 
 
 class GroupIDView(View):
@@ -253,6 +268,10 @@ class GroupIDView(View):
 class AccountView(View):
     def get(self, request, name):
         return AccountIDView.get(self, request, name=name)
+
+    def post(self, request, name):
+        if Group.objects.filter(groupname=name).exists():
+            return AccountIDView.post(self, request)
 
 
 class YourAccountView(View):
@@ -518,7 +537,7 @@ class GroupsView(View):
             if not Group.objects.filter(groupname=groupname).exists() and not User.objects.filter(
                     username=groupname).exists():
                 group = Group.objects.create(name=name, description=description, groupname=groupname,
-                                     admin=UserDetail.objects.get(user=request.user))
+                                             admin=UserDetail.objects.get(user=request.user))
                 group.followers.add(UserDetail.objects.get(user=request.user))
                 group.editors.add(UserDetail.objects.get(user=request.user))
                 return redirect('/groups')

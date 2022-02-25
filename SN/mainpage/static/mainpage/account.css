@@ -1,7 +1,11 @@
 .account_photo{
-    border-radius: 20px;
+    border-radius: 999px;
     width: 350px;
     margin-bottom: 20px;
+    height: 350px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 main{
     display: flex;
@@ -10,20 +14,54 @@ main{
 }
 .accept_request{
     color: #264b5d;
+    border-color: #264b5d;
+}
+.accept_request:hover{
+    background-color: #264b5d;
 }
 .remove_request{
     color: #f5dd5d;
+    border-color: #f5dd5d;
+}
+.remove_request:hover{
+    background-color: #f5dd5d;
 }
 .add_request{
     color: #006b1b;
+    border-color: #006b1b;
+}
+.add_request:hover{
+    background-color: #006b1b;
 }
 .remove_friend{
     color: #993333;
+    border-color: #993333;
+}
+.remove_friend:hover{
+    background-color: #993333;
 }
 .edit{
     color: cadetblue;
+    border-color: cadetblue;
+}
+.edit:hover{
+    background-color: cadetblue;
+    color: #222226;
 }
 .account{
     display: flex;
     flex-flow: column;
+}
+.user_photo{
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+.user{
+    display: flex;
+    align-items: center;
 }

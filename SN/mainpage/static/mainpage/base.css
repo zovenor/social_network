@@ -4,6 +4,9 @@ body {
     background: #222226;
     color: #777;
     font-family: Calibri;
+    min-height: 100vh;
+    display: flex;
+    flex-flow: column;
 }
 
 header {
@@ -49,12 +52,15 @@ li {
 }
 
 .button {
-    border: #777 2px solid;
+    border-color: #777;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 999px;
     padding: 10px;
     transition: .5s;
     color: #777;
     background-color: #222226;
+    width: fit-content;
 }
 
 .button:hover {
@@ -70,5 +76,17 @@ li {
 
 .choose_lang:hover {
     background-color: #222226;
+    color: #777;
+}
+footer{
+    background-color: #1a1a1e;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+}
+footer a{
+    text-decoration: none;
     color: #777;
 }

@@ -7,6 +7,7 @@ class EN:
         login = "Login"
         photos = "Photos"
         groups = "Groups"
+        created_by = "created by"
 
     class Login(BASE):
         incorrect_username_or_password = 'Incorrect username or password!'
@@ -40,6 +41,7 @@ class EN:
         post_error = "Some fields were not filled in!"
         remove_photo = "Remove the photo"
         choose_photo = "Choose the photo"
+        friends = "Friends"
 
     class Friends(BASE):
         title = "Friends"
@@ -93,6 +95,8 @@ class EN:
         all_photos = "All photos"
         user = "User"
         date = "Date"
+        add_photo = "Add a photo"
+        to_your_photos = "Go to your photos"
 
     class AddPhoto(BASE):
         title = "Add a photo"
@@ -113,6 +117,9 @@ class EN:
         admin = "Admin"
         editors = "Editors"
         create_error = "This name already exists!"
+        edit = "Edit"
+        follow = "Follow"
+        save = "Save"
 
     class CreateGroup(BASE):
         title = "Create a group"
@@ -132,6 +139,7 @@ class RU(EN):
         login = "Войти"
         photos = "Фотографии"
         groups = "Группы"
+        created_by = "создан благодаря"
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
@@ -164,6 +172,7 @@ class RU(EN):
         post_save = "Сохранить"
         remove_photo = "Убрать фотографию"
         choose_photo = "Выбрать фотографию"
+        friends = "Друзья"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"
@@ -217,6 +226,8 @@ class RU(EN):
         all_photos = "Все фотографии"
         user = "Пользователь"
         date = "Дата"
+        add_photo = "Добавить фотографию"
+        to_your_photos = "Перейти к вашим фотографиям"
 
     class AddPhoto(EN.AddPhoto, BASE):
         title = "Добавить фотографию"
@@ -237,6 +248,9 @@ class RU(EN):
         admin = "Админ"
         editors = "Редакторы"
         create_error = "Это имя уже существует!"
+        edit = "Редактировать"
+        follow = "Подписаться"
+        save = "Сохранить"
 
     class CreateGroup(EN.CreateGroup, BASE):
         title = "Создать группу"

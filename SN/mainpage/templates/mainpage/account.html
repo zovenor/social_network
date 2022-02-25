@@ -11,7 +11,7 @@
     {% if choose_photo == True %}
 
         {% for el in photos_library %}
-            <a href="?choose_photo_by_id={{ el.id }}"><img class="account_photo" src="{{ el }}"></a>
+            <a href="?choose_photo_by_id={{ el.id }}"><div class="account_photo" style="background-image: url('{{ el }}')"></div></a>
         {% endfor %}
 
     {% else %}
@@ -42,8 +42,9 @@
                         {% endif %}
                     {% endif %}
                     {% if edit %}
-                        <b><a class="edit" href="?edit=True">{{ list.edit }}</a></b>
+                        <a class="button edit" href="?edit=True"><b>{{ list.edit }}</b></a>
                     {% endif %}
+
                 {% else %}
                     {% if user.is_authenticated %}
                         {% if user.id != user_view.user.id %}
@@ -53,10 +54,26 @@
                     <h3>{{ list.permissions }}</h3>
                 {% endif %}
 
-
-                {% for el in friends %}
-                    {{ el }}
-                {% endfor %}
+                <section class="frinds">
+                    <h1>{{ list.friends }}</h1>
+                    <ul>
+                        {% for el in friends %}
+                            <li>
+                            {% if el.user1 == user_view.user.id %}
+                                <a class="user" href="/{{ el.get_user2.user.username }}">
+                                    <div class="user_photo" style="background-image: url('{{ el.get_user2.photo }}')"></div>
+                                    <b>{{ el.get_user2.user.first_name }} {{ el.get_user2.user.last_name }}</b>
+                                </a>
+                            {% else %}
+                                <a class="user" href="/{{ el.get_user1.user.username }}">
+                                    <div class="user_photo" style="background-image: url('{{ el.get_user1.photo }}')"></div>
+                                    <b>{{ el.get_user1.user.first_name }} {{ el.get_user1.user.last_name }}</b>
+                                </a>
+                            {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
 
             {% else %}
                 <a href="?rm_photo=True">
