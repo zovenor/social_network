@@ -9,9 +9,12 @@
 
     {% if edit == True %}
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div style="background-image: url('{{ group.get_photo }}')" class="group_photo"></div>
+            <p><input name="photo" accept="image/*,image/jpeg" type="file"></p>
+            <a href="?choose_photo=True" class="button">Choose a photo</a>
+            <a href="?rm_photo=True" class="button">Remove the photo</a>
             <p><input name="name" value="{{ group.name }}"></p>
             <textarea name="description">{{ group.description }}</textarea>
             <h3 style="display: flex; align-items: center;">
@@ -44,7 +47,16 @@
             <input class="button" value="{{ list.save }}" type="submit">
         </form>
 
+    {% elif choose_photo == True %}
+
+        <div class="photos">
+            {% for el in photos %}
+                <a href="?choose_photo_by_id={{ el.id }}"><div style="background-image: url('{{ el }}')" class="photo"></div></a>
+            {% endfor %}
+        </div>
+
     {% else %}
+
         <div style="background-image: url('{{ group.get_photo }}')" class="group_photo"></div>
         <h1 class="name_of_group">{{ group.name }}</h1>
         <p class="description">{{ group.description }}</p>

@@ -20,7 +20,7 @@
 
             {% if permissions != "closed" %}
                 {% if user_view.photo %}
-                    <img class="account_photo" src="{{ user_view.photo }}">
+                    <img class="account_photo" src="{{ user_view.get_photo }}">
                 {% else %}
                     <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
                 {% endif %}
@@ -54,19 +54,20 @@
                     <h3>{{ list.permissions }}</h3>
                 {% endif %}
 
-                <section class="frinds">
+                {% if permissions != 'closed' %}
+                    <section class="friends">
                     <h1>{{ list.friends }}</h1>
                     <ul>
                         {% for el in friends %}
                             <li>
                             {% if el.user1 == user_view.user.id %}
                                 <a class="user" href="/{{ el.get_user2.user.username }}">
-                                    <div class="user_photo" style="background-image: url('{{ el.get_user2.photo }}')"></div>
+                                    <div class="user_photo" style="background-image: url('{{ el.get_user2.get_photo }}')"></div>
                                     <b>{{ el.get_user2.user.first_name }} {{ el.get_user2.user.last_name }}</b>
                                 </a>
                             {% else %}
                                 <a class="user" href="/{{ el.get_user1.user.username }}">
-                                    <div class="user_photo" style="background-image: url('{{ el.get_user1.photo }}')"></div>
+                                    <div class="user_photo" style="background-image: url('{{ el.get_user1.get_photo }}')"></div>
                                     <b>{{ el.get_user1.user.first_name }} {{ el.get_user1.user.last_name }}</b>
                                 </a>
                             {% endif %}
@@ -74,6 +75,7 @@
                         {% endfor %}
                     </ul>
                 </section>
+                {% endif %}
 
             {% else %}
                 <a href="?rm_photo=True">
@@ -86,8 +88,8 @@
                     {% csrf_token %}
 
                     <p><input name="photo" type="file" accept="image/*,image/jpeg"></p>
-                    <h1><input required type="text" name="name" value="{{ user_view.user.first_name }}"></input>
-                        <input required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></input></h1>
+                    <h1><input required type="text" name="name" value="{{ user_view.user.first_name }}">
+                        <input required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></h1>
                     {% if permissions != 'closed' %}
                         <p><b>{{ list.email }}</b>: <input required value="{{ user_view.user.email }}" name="email"
                                                            type="text"></p>

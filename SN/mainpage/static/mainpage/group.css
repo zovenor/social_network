@@ -57,3 +57,17 @@
     margin-top: 10px;
     padding: 0;
 }
+.photo{
+    width: 350px;
+    height: 350px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 999px;
+    margin: 20px;
+}
+.photos{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}

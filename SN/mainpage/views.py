@@ -238,12 +238,53 @@ class AccountIDView(View):
                 'editors': Group.objects.get(id=id).editors.all(),
                 'group': Group.objects.get(id=id),
                 'edit': False,
+                'choose_photo': False,
+                'photos': Photo.objects.filter(user=request.user),
             })
+
+            if 'choose_photo_by_id' in request.GET:
+                if request.user.is_authenticated:
+                    if content['group'].admin.user == request.user:
+                        photo = Photo.objects.get(id=request.GET['choose_photo_by_id'])
+                        group = Group.objects.get(id=id)
+                        group.photo = photo
+                        group.save()
+                        return redirect(request.path)
+
+            if 'rm_photo' in request.GET:
+                if request.GET['rm_photo'] == 'True':
+                    if request.user.is_authenticated:
+                        if content['group'].admin.user == request.user:
+                            group = Group.objects.get(id=id)
+                            group.photo = None
+                            group.save()
+                            return redirect(request.path)
+                        else:
+                            return redirect(request.path)
+                    else:
+                        return redirect('/' + content['group'].groupname)
+
+            if 'choose_photo' in request.GET:
+                if request.GET['choose_photo'] == 'True':
+                    if request.user.is_authenticated:
+                        if content['group'].admin.user == request.user:
+                            content['choose_photo'] = True
+                        else:
+                            return redirect(request.path)
+                    else:
+                        return redirect(request.path)
+
             if 'edit' in request.GET:
                 if request.GET['edit'] == 'True':
-                    content['edit'] = True
-                    content['add_editors'] = Group.objects.get(id=id).followers.difference(
-                        Group.objects.get(id=id).editors.all())
+                    if request.user.is_authenticated:
+                        if content['group'].admin.user == request.user:
+                            content['edit'] = True
+                            content['add_editors'] = Group.objects.get(id=id).followers.difference(
+                                Group.objects.get(id=id).editors.all())
+                        else:
+                            return redirect('/' + content['group'].groupnsame)
+                    else:
+                        return redirect('/' + content['group'].groupname)
             return render(request, 'mainpage/group.html', content)
         # Page not found
         else:
@@ -268,6 +309,10 @@ class AccountIDView(View):
             group.name = name
             group.description = description
             group.admin = UserDetail.objects.get(user=User.objects.get(username=admin))
+
+            if 'photo' in request.FILES:
+                photo = Photo.objects.create(user=request.user, photo=request.FILES['photo'])
+                group.photo = photo
 
             for el in del_editors:
                 group.editors.remove(UserDetail.objects.get(user=User.objects.get(username=el)))
