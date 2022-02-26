@@ -239,8 +239,10 @@ class AccountIDView(View):
                 'group': Group.objects.get(id=id),
                 'edit': False,
                 'choose_photo': False,
-                'photos': Photo.objects.filter(user=request.user),
             })
+
+            if request.user.is_authenticated:
+                content['photos'] = Photo.objects.filter(user=request.user)
 
             if 'choose_photo_by_id' in request.GET:
                 if request.user.is_authenticated:
