@@ -186,7 +186,7 @@ class AccountIDView(View):
                 'groups': Group.objects.filter(followers=UserDetail.objects.get(user=id)),
                 'following': Follower.objects.filter(user1=id),
                 'pinned_posts': Post.objects.filter(author=f'usr{id}', pinned=1)[::-1],
-                'posts': Post.objects.filter(author=f'usr{id}', pinned=0)[::-1]
+                'posts': Post.objects.filter(author=f'usr{id}', pinned=0)[::-1],
             })
             # if user is you
             if request.user.id == id and user_view == None:
@@ -254,6 +254,8 @@ class AccountIDView(View):
                 'group': Group.objects.get(id=id),
                 'edit': False,
                 'choose_photo': False,
+                'pinned_posts': Post.objects.filter(author=f'gr{id}', pinned=1)[::-1],
+                'posts': Post.objects.filter(author=f'gr{id}', pinned=0)[::-1],
             })
 
             if request.user.is_authenticated:

@@ -157,7 +157,6 @@
                     <div class="post" id="post{{ el.id }}">
                         <p>{{ list.pinned }}</p>
                         <p class="text">{{ el.text }}</p>
-                        <p class="date">{{ el.date }}</p>
                         <div class="photos">
                             {% for photo in el.photos.all %}
                                 <div class="photo" style="background-image: url('{{ photo }}')"></div>
@@ -171,12 +170,12 @@
                             {% endif %}
                             {{ el.count_likes }}
                         </a>
+                        <p class="date">{{ el.date }}</p>
                     </div>
                 {% endfor %}
                 {% for el in posts %}
                     <div class="post" id="post{{ el.id }}">
                         <p class="text">{{ el.text }}</p>
-                        <p class="date">{{ el.date }}</p>
                         <div class="photos">
                             {% for photo in el.photos.all %}
                                 <div class="photo" style="background-image: url('{{ photo }}')"></div>
@@ -190,6 +189,7 @@
                             {% endif %}
                             {{ el.count_likes }}
                         </a>
+                        <p class="date">{{ el.date }}</p>
                     </div>
                 {% endfor %}
         </section>

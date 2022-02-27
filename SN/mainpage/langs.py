@@ -125,6 +125,7 @@ class EN:
         save = "Save"
         add_editor = "Add"
         del_editor = "Delete"
+        pinned = "Pinned"
 
     class CreateGroup(BASE):
         title = "Create a group"
@@ -261,6 +262,7 @@ class RU(EN):
         save = "Сохранить"
         add_editor = "Добавить"
         del_editor = "Удалить"
+        pinned = "Закреплено"
 
     class CreateGroup(EN.CreateGroup, BASE):
         title = "Создать группу"
