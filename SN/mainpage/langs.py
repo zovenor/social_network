@@ -43,6 +43,7 @@ class EN:
         choose_photo = "Choose the photo"
         friends = "Friends"
         subscriptions = "Subscriptions"
+        posts = "Posts"
 
     class Friends(BASE):
         title = "Friends"
@@ -177,6 +178,7 @@ class RU(EN):
         choose_photo = "Выбрать фотографию"
         friends = "Друзья"
         subscriptions = "Подписки"
+        posts = "Записи"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"

@@ -3,7 +3,7 @@ from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from . import langs
-from .models import Friend, Follower, UserDetail, Photo, Group
+from .models import Friend, Follower, UserDetail, Photo, Group, Post
 
 
 def user_to_user(self, request, user_view, url=""):
@@ -185,10 +185,8 @@ class AccountIDView(View):
                 'friends': Friend.objects.filter(user1=id).union(Friend.objects.filter(user2=id)),
                 'groups': Group.objects.filter(followers=UserDetail.objects.get(user=id)),
                 'following': Follower.objects.filter(user1=id),
+                'posts': Post.objects.filter(author=f'usr{id}')
             })
-
-            print(content['following'])
-
             # if user is you
             if request.user.id == id and user_view == None:
                 return redirect('/account')
@@ -221,6 +219,17 @@ class AccountIDView(View):
                             return redirect('/account')
                         except:
                             content['error'] = "Incorrect id!"
+                    elif 'like' in request.GET:
+                        post = Post.objects.get(id=int(request.GET['like']))
+                        if request.user.is_authenticated:
+                            if not post.likes.filter(user=id).exists():
+                                post.likes.add(UserDetail.objects.get(user=User.objects.get(id=id)))
+                                return redirect(f'{request.path}#post{request.GET["like"]}')
+                            else:
+                                post.likes.remove(UserDetail.objects.get(user=User.objects.get(id=id)))
+                                return redirect(f'{request.path}#post{request.GET["like"]}')
+                        else:
+                            return redirect(f'{request.path}#post{request.GET["like"]}')
                     content['user_view'] = UserDetail.objects.get(user=request.user.id)
                     content['edit'] = True
                 else:

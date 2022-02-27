@@ -140,3 +140,18 @@ class Group(models.Model):
             return self.photo
         else:
             return settings.STATIC_URL + "/mainpage/img/group.jpg"
+
+
+class Post(models.Model):
+    author = models.CharField(max_length=100, null=True, blank=True)
+    text = models.TextField()
+    photos = models.ManyToManyField(Photo, related_name="photos", null=True, blank=True)
+    pinned = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now=True)
+    likes = models.ManyToManyField(UserDetail, null=True, blank=True)
+
+    def __str__(self):
+        return self.text
+
+    def count_likes(self):
+        return self.likes.count()
