@@ -59,7 +59,7 @@
                     <h1>{{ list.friends }}</h1>
                     <ul>
                         {% for el in friends %}
-                            <li>
+                            <li class="user">
                             {% if el.user1 == user_view.user.id %}
                                 <a class="user" href="/{{ el.get_user2.user.username }}">
                                     <div class="user_photo" style="background-image: url('{{ el.get_user2.get_photo }}')"></div>
@@ -75,6 +75,21 @@
                         {% endfor %}
                     </ul>
                 </section>
+
+                    <section>
+                        <section class="groups">
+                        <h1>{{ list.groups }}</h1>
+                        <ul>
+                            {% for el in groups %}
+                                <li class="group" >
+                                    <a class="user" href="/{{ el.groupname }}">
+                                        <div class="user_photo" style="background-image: url('{{ el.get_photo }}')"></div>
+                                        <b>{{ el.name }}</b>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
                 {% endif %}
 
             {% else %}

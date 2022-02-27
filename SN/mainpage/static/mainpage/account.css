@@ -61,7 +61,8 @@ main{
     background-repeat: no-repeat;
     margin-right: 10px;
 }
-.user{
+.user, .group{
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }

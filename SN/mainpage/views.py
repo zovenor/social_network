@@ -182,7 +182,8 @@ class AccountIDView(View):
                 'user_to_user': user_to_user(self, request, UserDetail.objects.get(user=id)),
                 'edit_permissions': False,
                 'choose_photo': False,
-                'friends': Friend.objects.filter(user1=id).union(Friend.objects.filter(user2=id))
+                'friends': Friend.objects.filter(user1=id).union(Friend.objects.filter(user2=id)),
+                'groups': Group.objects.filter(followers=UserDetail.objects.get(user=id)),
             })
             # if user is you
             if request.user.id == id and user_view == None:
@@ -565,9 +566,6 @@ class GroupsView(View):
     @base
     def get(self, request, content={}):
 
-        if not request.user.is_authenticated:
-            return redirect('/groups?all=True')
-
         content.update({
             'list': get_wordlist(request).YourGroups,
             'create': False,
@@ -580,11 +578,18 @@ class GroupsView(View):
             if request.GET['all'] == 'True':
                 content['groups'] = Group.objects.all()
                 content['list'] = get_wordlist(request).AllGroups
+                return render(request, 'mainpage/groups.html', content)
 
         if 'create' in request.GET:
             if request.GET['create'] == 'True':
-                content['create'] = True
-                content['list'] = get_wordlist(request).CreateGroup
+                if request.user.is_authenticated:
+                    content['create'] = True
+                    content['list'] = get_wordlist(request).CreateGroup
+                else:
+                    return redirect('/groups?all=True')
+
+        if not request.user.is_authenticated:
+            return redirect('/groups?all=True')
 
         return render(request, 'mainpage/groups.html', content)
 

@@ -10,6 +10,7 @@
 .group{
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 .group_name{
     font-size: 20px;
