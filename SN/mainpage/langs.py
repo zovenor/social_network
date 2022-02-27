@@ -44,6 +44,7 @@ class EN:
         friends = "Friends"
         subscriptions = "Subscriptions"
         posts = "Posts"
+        pinned = "Pinned"
 
     class Friends(BASE):
         title = "Friends"
@@ -179,6 +180,7 @@ class RU(EN):
         friends = "Друзья"
         subscriptions = "Подписки"
         posts = "Записи"
+        pinned = "Закреплено"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"

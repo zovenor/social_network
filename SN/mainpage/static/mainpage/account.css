@@ -81,6 +81,7 @@ main{
     background-color: #1a1a1e;
     padding: 10px 20px 10px 20px;
     border-radius: 20px;
+    margin-bottom: 20px;
 }
 .likes{
     display: flex;
@@ -88,4 +89,13 @@ main{
 }
 .likes *{
     margin: 5px;
+}
+.photo{
+    width: 250px;
+    height: 250px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 25px;
+    margin: 20px;
 }

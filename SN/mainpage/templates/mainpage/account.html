@@ -153,18 +153,43 @@
         {% if permissions != 'closed' %}
             <section class="posts">
             <h1>{{ list.posts }}</h1>
-                {% for el in posts %}
+                {% for el in pinned_posts %}
                     <div class="post" id="post{{ el.id }}">
-                        <a href=""></a>
+                        <p>{{ list.pinned }}</p>
                         <p class="text">{{ el.text }}</p>
                         <p class="date">{{ el.date }}</p>
+                        <div class="photos">
+                            {% for photo in el.photos.all %}
+                                <div class="photo" style="background-image: url('{{ photo }}')"></div>
+                            {% endfor %}
+                        </div>
                         <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
                             {% if your_user in el.likes.all %}
                                 <img width="25px" src="{% static 'mainpage/img/like.png' %}">
                             {% else %}
                                 <img style="filter: invert(1); opacity: 0.75" width="25px" src="{% static 'mainpage/img/no-like.png' %}">
                             {% endif %}
-                            {{ el.count_likes }}</a>
+                            {{ el.count_likes }}
+                        </a>
+                    </div>
+                {% endfor %}
+                {% for el in posts %}
+                    <div class="post" id="post{{ el.id }}">
+                        <p class="text">{{ el.text }}</p>
+                        <p class="date">{{ el.date }}</p>
+                        <div class="photos">
+                            {% for photo in el.photos.all %}
+                                <div class="photo" style="background-image: url('{{ photo }}')"></div>
+                            {% endfor %}
+                        </div>
+                        <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
+                            {% if your_user in el.likes.all %}
+                                <img width="25px" src="{% static 'mainpage/img/like.png' %}">
+                            {% else %}
+                                <img style="filter: invert(1); opacity: 0.75" width="25px" src="{% static 'mainpage/img/no-like.png' %}">
+                            {% endif %}
+                            {{ el.count_likes }}
+                        </a>
                     </div>
                 {% endfor %}
         </section>

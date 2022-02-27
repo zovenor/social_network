@@ -185,7 +185,8 @@ class AccountIDView(View):
                 'friends': Friend.objects.filter(user1=id).union(Friend.objects.filter(user2=id)),
                 'groups': Group.objects.filter(followers=UserDetail.objects.get(user=id)),
                 'following': Follower.objects.filter(user1=id),
-                'posts': Post.objects.filter(author=f'usr{id}')
+                'pinned_posts': Post.objects.filter(author=f'usr{id}', pinned=1)[::-1],
+                'posts': Post.objects.filter(author=f'usr{id}', pinned=0)[::-1]
             })
             # if user is you
             if request.user.id == id and user_view == None:
