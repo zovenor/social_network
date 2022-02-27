@@ -8,144 +8,156 @@
     <link rel="stylesheet" href="{% static 'mainpage/group.css' %}">
 
     <div class="group">
-    {% if edit == True %}
+        {% if edit == True %}
 
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div style="background-image: url('{{ group.get_photo }}')" class="group_photo"></div>
+                <p><input name="photo" accept="image/*,image/jpeg" type="file"></p>
+                <a href="?choose_photo=True" class="button">Choose a photo</a>
+                <a href="?rm_photo=True" class="button">Remove the photo</a>
+                <p><input name="name" value="{{ group.name }}"></p>
+                <textarea name="description">{{ group.description }}</textarea>
+                <h3 style="display: flex; align-items: center;">
+                    <span>{{ list.admin }}:</span>
+                    <select name="admin">
+                        {% for el in editors %}
+                            <option {% if el == group.admin %}selected{% endif %}
+                                    value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}
+                                ({{ el.user }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </h3>
+                <h3 style="display: flex; align-items: center;">
+                    <span>{{ list.editors }} ({{ list.del_editor }}):</span>
+                    <select name="editors" multiple>
+                        {% for el in editors %}
+                            <option value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}
+                                ({{ el.user }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </h3>
+                <h3 style="display: flex; align-items: center;">
+                    <span>{{ list.editors }} ({{ list.add_editor }}):</span>
+                    <select name="add_editors" multiple>
+                        {% for el in add_editors %}
+                            <option value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}
+                                ({{ el.user }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </h3>
+                <input class="button" value="{{ list.save }}" type="submit">
+            </form>
+
+        {% elif choose_photo == True %}
+
+            <div class="photos">
+                {% for el in photos %}
+                    <a href="?choose_photo_by_id={{ el.id }}">
+                        <div style="background-image: url('{{ el }}')" class="photo"></div>
+                    </a>
+                {% endfor %}
+            </div>
+
+        {% else %}
+
             <div style="background-image: url('{{ group.get_photo }}')" class="group_photo"></div>
-            <p><input name="photo" accept="image/*,image/jpeg" type="file"></p>
-            <a href="?choose_photo=True" class="button">Choose a photo</a>
-            <a href="?rm_photo=True" class="button">Remove the photo</a>
-            <p><input name="name" value="{{ group.name }}"></p>
-            <textarea name="description">{{ group.description }}</textarea>
-            <h3 style="display: flex; align-items: center;">
-                <span>{{ list.admin }}:</span>
-                <select name="admin">
-                    {% for el in editors %}
-                        <option {% if el == group.admin %}selected{% endif %}
-                                value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}
-                            ({{ el.user }})
-                        </option>
-                    {% endfor %}
-                </select>
-            </h3>
-            <h3 style="display: flex; align-items: center;">
-                <span>{{ list.editors }} ({{ list.del_editor }}):</span>
-                <select name="editors" multiple>
-                    {% for el in editors %}
-                        <option value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }} ({{ el.user }})</option>
-                    {% endfor %}
-                </select>
-            </h3>
-            <h3 style="display: flex; align-items: center;">
-                <span>{{ list.editors }} ({{ list.add_editor }}):</span>
-                <select name="add_editors" multiple>
-                    {% for el in add_editors %}
-                        <option value="{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }} ({{ el.user }})</option>
-                    {% endfor %}
-                </select>
-            </h3>
-            <input class="button" value="{{ list.save }}" type="submit">
-        </form>
+            <div class="info">
+                <h1 class="name_of_group">{{ group.name }}</h1>
+                <p class="description">{{ group.description }}</p>
+                <h3 style="display: flex; align-items: center;">
+                    <span>{{ list.admin }}:</span>
+                    <a class="admin" href="/{{ group.admin.user.username }}">
+                        <div style="background-image: url('{{ group.admin.get_photo }}')" class="admin_img"></div>
+                        <b class="admin_name">{{ group.admin.user.first_name }} {{ group.admin.user.last_name }}</b>
+                    </a>
+                </h3>
+                <h3 style="display: flex;">
+                    <span style="margin-top: 20px">{{ list.editors }}:</span>
+                    <ul class="editors">
+                        {% for el in editors %}
+                            <li>
+                                <a class="editor" href="/{{ el.user.username }}">
+                                    <div style="background-image: url('{{ el.get_photo }}')" class="admin_img"></div>
+                                    <b class="admin_name">{{ el.user.first_name }} {{ el.user.last_name }}</b>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </h3>
 
-    {% elif choose_photo == True %}
+                {% if group.admin.user == request.user %}
+                    <a class="button edit" href="?edit=True">{{ list.edit }}</a>
+                {% endif %}
 
-        <div class="photos">
-            {% for el in photos %}
-                <a href="?choose_photo_by_id={{ el.id }}"><div style="background-image: url('{{ el }}')" class="photo"></div></a>
-            {% endfor %}
-        </div>
+                {% if your_user not in followers and user.is_authenticated %}
+                    <a class="button follow" href="?follow=True">{{ list.follow }}</a>
+                {% endif %}
 
-    {% else %}
-
-        <div style="background-image: url('{{ group.get_photo }}')" class="group_photo"></div>
-        <div class="info">
-        <h1 class="name_of_group">{{ group.name }}</h1>
-        <p class="description">{{ group.description }}</p>
-        <h3 style="display: flex; align-items: center;">
-            <span>{{ list.admin }}:</span>
-            <a class="admin" href="/{{ group.admin.user.username }}">
-                <div style="background-image: url('{{ group.admin.get_photo }}')" class="admin_img"></div>
-                <b class="admin_name">{{ group.admin.user.first_name }} {{ group.admin.user.last_name }}</b>
-            </a>
-        </h3>
-        <h3 style="display: flex;">
-            <span style="margin-top: 20px">{{ list.editors }}:</span>
-            <ul class="editors">
-                {% for el in editors %}
-                    <li>
-                        <a class="editor" href="/{{ el.user.username }}">
-                            <div style="background-image: url('{{ el.get_photo }}')" class="admin_img"></div>
-                            <b class="admin_name">{{ el.user.first_name }} {{ el.user.last_name }}</b>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </h3>
-
-        {% if group.admin.user == request.user %}
-            <a class="button edit" href="?edit=True">{{ list.edit }}</a>
+                <h1>{{ list.followers }}</h1>
+                <section class="followers">
+                    <ul>
+                        {% for el in followers %}
+                            <li><a class="fol" href="/{{ el.user.username }}">
+                                <div style="background-image: url('{{ el.get_photo }}')" class="fol_img"></div>
+                                <b class="group_name">{{ el.user.first_name }} {{ el.user.last_name }}</b></a></li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            </div>
         {% endif %}
-
-        {% if your_user not in followers and user.is_authenticated %}
-            <a class="button follow" href="?follow=True">{{ list.follow }}</a>
-        {% endif %}
-
-        <h1>{{ list.followers }}</h1>
-        <section class="followers">
-            <ul>
-                {% for el in followers %}
-                    <li><a class="fol" href="/{{ el.user.username }}">
-                        <div style="background-image: url('{{ el.get_photo }}')" class="fol_img"></div>
-                        <b class="group_name">{{ el.user.first_name }} {{ el.user.last_name }}</b></a></li>
-                {% endfor %}
-            </ul>
-        </section>
-        </div>
-    {% endif %}
 
     </div>
     <section class="posts">
-            <h1>{{ list.posts }}</h1>
-                {% for el in pinned_posts %}
-                    <div class="post" id="post{{ el.id }}">
-                        <p>{{ list.pinned }}</p>
-                        <p class="text">{{ el.text }}</p>
-                        <div class="photos">
-                            {% for photo in el.photos.all %}
-                                <div class="photo" style="background-image: url('{{ photo }}')"></div>
-                            {% endfor %}
-                        </div>
-                        <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
-                            {% if your_user in el.likes.all %}
-                                <img width="25px" src="{% static 'mainpage/img/like.png' %}">
-                            {% else %}
-                                <img style="filter: invert(1); opacity: 0.75" width="25px" src="{% static 'mainpage/img/no-like.png' %}">
-                            {% endif %}
-                            {{ el.count_likes }}
-                        </a>
-                        <p class="date">{{ el.date }}</p>
+        <h1>{{ list.posts }}</h1>
+        {% if posts or pinned_posts %}
+            {% for el in pinned_posts %}
+                <div class="post" id="post{{ el.id }}">
+                    <p>{{ list.pinned }}</p>
+                    <p class="text">{{ el.text }}</p>
+                    <div class="photos">
+                        {% for photo in el.photos.all %}
+                            <div class="photo" style="background-image: url('{{ photo }}')"></div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-                {% for el in posts %}
-                    <div class="post" id="post{{ el.id }}">
-                        <p class="text">{{ el.text }}</p>
-                        <div class="photos">
-                            {% for photo in el.photos.all %}
-                                <div class="photo" style="background-image: url('{{ photo }}')"></div>
-                            {% endfor %}
-                        </div>
-                        <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
-                            {% if your_user in el.likes.all %}
-                                <img width="25px" src="{% static 'mainpage/img/like.png' %}">
-                            {% else %}
-                                <img style="filter: invert(1); opacity: 0.75" width="25px" src="{% static 'mainpage/img/no-like.png' %}">
-                            {% endif %}
-                            {{ el.count_likes }}
-                        </a>
-                        <p class="date">{{ el.date }}</p>
+                    <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
+                        {% if your_user in el.likes.all %}
+                            <img width="25px" src="{% static 'mainpage/img/like.png' %}">
+                        {% else %}
+                            <img style="filter: invert(1); opacity: 0.75" width="25px"
+                                 src="{% static 'mainpage/img/no-like.png' %}">
+                        {% endif %}
+                        {{ el.count_likes }}
+                    </a>
+                    <p class="date">{{ el.date }}</p>
+                </div>
+            {% endfor %}
+            {% for el in posts %}
+                <div class="post" id="post{{ el.id }}">
+                    <p class="text">{{ el.text }}</p>
+                    <div class="photos">
+                        {% for photo in el.photos.all %}
+                            <div class="photo" style="background-image: url('{{ photo }}')"></div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-        </section>
+                    <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
+                        {% if your_user in el.likes.all %}
+                            <img width="25px" src="{% static 'mainpage/img/like.png' %}">
+                        {% else %}
+                            <img style="filter: invert(1); opacity: 0.75" width="25px"
+                                 src="{% static 'mainpage/img/no-like.png' %}">
+                        {% endif %}
+                        {{ el.count_likes }}
+                    </a>
+                    <p class="date">{{ el.date }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            {{ list.no_posts }}
+        {% endif %}
+    </section>
 
 {% endblock %}

@@ -45,6 +45,7 @@ class EN:
         subscriptions = "Subscriptions"
         posts = "Posts"
         pinned = "Pinned"
+        no_posts = "There are not posts yet"
 
     class Friends(BASE):
         title = "Friends"
@@ -126,6 +127,8 @@ class EN:
         add_editor = "Add"
         del_editor = "Delete"
         pinned = "Pinned"
+        posts = "Posts"
+        no_posts = "There are not posts yet"
 
     class CreateGroup(BASE):
         title = "Create a group"
@@ -182,6 +185,7 @@ class RU(EN):
         subscriptions = "Подписки"
         posts = "Записи"
         pinned = "Закреплено"
+        no_posts = "Здесь пока нет записей"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"
@@ -263,6 +267,9 @@ class RU(EN):
         add_editor = "Добавить"
         del_editor = "Удалить"
         pinned = "Закреплено"
+        posts = "Записи"
+        no_posts = "Здесь пока нет записей"
+
 
     class CreateGroup(EN.CreateGroup, BASE):
         title = "Создать группу"

@@ -11,188 +11,200 @@
     {% if choose_photo == True %}
 
         {% for el in photos_library %}
-            <a href="?choose_photo_by_id={{ el.id }}"><div class="account_photo" style="background-image: url('{{ el }}')"></div></a>
+            <a href="?choose_photo_by_id={{ el.id }}">
+                <div class="account_photo" style="background-image: url('{{ el }}')"></div>
+            </a>
         {% endfor %}
 
     {% else %}
         <div class="account">
 
 
-
-                {% if user_view.photo %}
-                    <img class="account_photo" src="{{ user_view.get_photo }}">
-                {% else %}
-                    <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
-                {% endif %}
+            {% if user_view.photo %}
+                <img class="account_photo" src="{{ user_view.get_photo }}">
+            {% else %}
+                <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
+            {% endif %}
 
 
 
             <div class="info">
                 {% if edit_permissions == False %}
 
-                <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
-                {% if permissions != 'closed' %}
-                    <p><b>{{ list.email }}</b>: {{ user_view.user.email }}</p>
-                    <p><b>{{ list.sex }}: </b>{{ get_sex }}</p>
-                    <p><b>{{ list.age }}: </b>{{ user_view.age }}</p>
-                    <p><b>{{ list.country }}</b>: {{ user_view.country }}</p>
-                    <p><b>{{ list.city }}: </b>{{ user_view.city }}</p>
-                    {% if user.is_authenticated %}
-                        {% if user.id != user_view.user.id %}
-                            {{ user_to_user|safe }}
-                        {% endif %}
-                    {% endif %}
-                    {% if edit %}
-                        <a class="button edit" href="?edit=True"><b>{{ list.edit }}</b></a>
-                    {% endif %}
-
-                {% else %}
-                    {% if user.is_authenticated %}
-                        {% if user.id != user_view.user.id %}
-                            {{ user_to_user|safe }}
-                        {% endif %}
-                    {% endif %}
-                    <h3>{{ list.permissions }}</h3>
-                {% endif %}
-
-                {% if permissions != 'closed' %}
-                    <section class="friends">
-                    <h1>{{ list.friends }}</h1>
-                    <ul>
-                        {% for el in friends %}
-                            <li class="user">
-                            {% if el.user1 == user_view.user.id %}
-                                <a class="user" href="/{{ el.get_user2.user.username }}">
-                                    <div class="user_photo" style="background-image: url('{{ el.get_user2.get_photo }}')"></div>
-                                    <b>{{ el.get_user2.user.first_name }} {{ el.get_user2.user.last_name }}</b>
-                                </a>
-                            {% else %}
-                                <a class="user" href="/{{ el.get_user1.user.username }}">
-                                    <div class="user_photo" style="background-image: url('{{ el.get_user1.get_photo }}')"></div>
-                                    <b>{{ el.get_user1.user.first_name }} {{ el.get_user1.user.last_name }}</b>
-                                </a>
-                            {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </section>
-
-                    <section class="subscriptions">
-                    <h1>{{ list.subscriptions }}</h1>
-                    <ul>
-                        {% for el in groups %}
-                            <li class="group" >
-                                <a class="user" href="/{{ el.groupname }}">
-                                    <div class="user_photo" style="background-image: url('{{ el.get_photo }}')"></div>
-                                    <b>{{ el.name }}</b>
-                                </a>
-                            </li>
-                        {% endfor %}
-                        {% for el in following %}
-                            <li class="user" >
-                                <a class="user" href="/{{ el.get_user2.user.username }}">
-                                    <div class="user_photo" style="background-image: url('{{ el.get_user2.get_photo }}')"></div>
-                                    <b>{{ el.get_user2.user.first_name }} {{ el.get_user2.user.last_name }}</b>
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    </section>
-                {% endif %}
-
-            {% else %}
-                <a href="?rm_photo=True">
-                    <button>{{ list.remove_photo }}</button>
-                </a>
-                <a href="?choose_photo=True">
-                    <button>{{ list.choose_photo }}</button>
-                </a>
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-
-                    <p><input name="photo" type="file" accept="image/*,image/jpeg"></p>
-                    <h1><input required type="text" name="name" value="{{ user_view.user.first_name }}">
-                        <input required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></h1>
+                    <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
                     {% if permissions != 'closed' %}
-                        <p><b>{{ list.email }}</b>: <input required value="{{ user_view.user.email }}" name="email"
-                                                           type="text"></p>
-                        <p><b>{{ list.sex }}: </b>
-                            <select required name="sex">
-                                <option disabled>{{ list.choose_sex }}</option>
-                                <option value="male" {% if user_view.sex == "male" %}
-                                        selected {% endif %}>{{ list.male }}</option>
-                                <option value="female" {% if user_view.sex == "female" %}
-                                        selected {% endif %}>{{ list.female }}</option>
-                                <option value="None" {% if user_view.sex == "None" %}
-                                        selected {% endif %}>{{ list.sex_is_not_defined }}</option>
-                            </select>
-                        </p>
-                        <p><b>{{ list.age }}: </b><input required name="date" value="{{ user_view.age|safe }}"
-                                                         type="date">
-                        </p>
-                        <p><b>{{ list.country }}</b>: <input required name="country" value="{{ user_view.country }}"
-                                                             type="text"></p>
-                        <p><b>{{ list.city }}: </b><input required name="city" value="{{ user_view.city }}" type="text">
-                        </p>
+                        <p><b>{{ list.email }}</b>: {{ user_view.user.email }}</p>
+                        <p><b>{{ list.sex }}: </b>{{ get_sex }}</p>
+                        <p><b>{{ list.age }}: </b>{{ user_view.age }}</p>
+                        <p><b>{{ list.country }}</b>: {{ user_view.country }}</p>
+                        <p><b>{{ list.city }}: </b>{{ user_view.city }}</p>
                         {% if user.is_authenticated %}
                             {% if user.id != user_view.user.id %}
                                 {{ user_to_user|safe }}
                             {% endif %}
                         {% endif %}
-                        <input class="button" value="{{ list.post_save }}" type="submit">
+                        {% if edit %}
+                            <a class="button edit" href="?edit=True"><b>{{ list.edit }}</b></a>
+                        {% endif %}
+
+                    {% else %}
+                        {% if user.is_authenticated %}
+                            {% if user.id != user_view.user.id %}
+                                {{ user_to_user|safe }}
+                            {% endif %}
+                        {% endif %}
+                        <h3>{{ list.permissions }}</h3>
                     {% endif %}
 
-                </form>
-            {% endif %}
-            {% if psot_error %}
-                {{ list.post_error }}
-            {% endif %}
+                    {% if permissions != 'closed' %}
+                        <section class="friends">
+                            <h1>{{ list.friends }}</h1>
+                            <ul>
+                                {% for el in friends %}
+                                    <li class="user">
+                                        {% if el.user1 == user_view.user.id %}
+                                            <a class="user" href="/{{ el.get_user2.user.username }}">
+                                                <div class="user_photo"
+                                                     style="background-image: url('{{ el.get_user2.get_photo }}')"></div>
+                                                <b>{{ el.get_user2.user.first_name }} {{ el.get_user2.user.last_name }}</b>
+                                            </a>
+                                        {% else %}
+                                            <a class="user" href="/{{ el.get_user1.user.username }}">
+                                                <div class="user_photo"
+                                                     style="background-image: url('{{ el.get_user1.get_photo }}')"></div>
+                                                <b>{{ el.get_user1.user.first_name }} {{ el.get_user1.user.last_name }}</b>
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </section>
+
+                        <section class="subscriptions">
+                            <h1>{{ list.subscriptions }}</h1>
+                            <ul>
+                                {% for el in groups %}
+                                    <li class="group">
+                                        <a class="user" href="/{{ el.groupname }}">
+                                            <div class="user_photo"
+                                                 style="background-image: url('{{ el.get_photo }}')"></div>
+                                            <b>{{ el.name }}</b>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                {% for el in following %}
+                                    <li class="user">
+                                        <a class="user" href="/{{ el.get_user2.user.username }}">
+                                            <div class="user_photo"
+                                                 style="background-image: url('{{ el.get_user2.get_photo }}')"></div>
+                                            <b>{{ el.get_user2.user.first_name }} {{ el.get_user2.user.last_name }}</b>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </section>
+                    {% endif %}
+
+                {% else %}
+                    <a href="?rm_photo=True">
+                        <button>{{ list.remove_photo }}</button>
+                    </a>
+                    <a href="?choose_photo=True">
+                        <button>{{ list.choose_photo }}</button>
+                    </a>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <p><input name="photo" type="file" accept="image/*,image/jpeg"></p>
+                        <h1><input required type="text" name="name" value="{{ user_view.user.first_name }}">
+                            <input required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></h1>
+                        {% if permissions != 'closed' %}
+                            <p><b>{{ list.email }}</b>: <input required value="{{ user_view.user.email }}" name="email"
+                                                               type="text"></p>
+                            <p><b>{{ list.sex }}: </b>
+                                <select required name="sex">
+                                    <option disabled>{{ list.choose_sex }}</option>
+                                    <option value="male" {% if user_view.sex == "male" %}
+                                            selected {% endif %}>{{ list.male }}</option>
+                                    <option value="female" {% if user_view.sex == "female" %}
+                                            selected {% endif %}>{{ list.female }}</option>
+                                    <option value="None" {% if user_view.sex == "None" %}
+                                            selected {% endif %}>{{ list.sex_is_not_defined }}</option>
+                                </select>
+                            </p>
+                            <p><b>{{ list.age }}: </b><input required name="date" value="{{ user_view.age|safe }}"
+                                                             type="date">
+                            </p>
+                            <p><b>{{ list.country }}</b>: <input required name="country" value="{{ user_view.country }}"
+                                                                 type="text"></p>
+                            <p><b>{{ list.city }}: </b><input required name="city" value="{{ user_view.city }}"
+                                                              type="text">
+                            </p>
+                            {% if user.is_authenticated %}
+                                {% if user.id != user_view.user.id %}
+                                    {{ user_to_user|safe }}
+                                {% endif %}
+                            {% endif %}
+                            <input class="button" value="{{ list.post_save }}" type="submit">
+                        {% endif %}
+
+                    </form>
+                {% endif %}
+                {% if psot_error %}
+                    {{ list.post_error }}
+                {% endif %}
             </div>
         </div>
 
         {% if permissions != 'closed' %}
             <section class="posts">
-            <h1>{{ list.posts }}</h1>
-                {% for el in pinned_posts %}
-                    <div class="post" id="post{{ el.id }}">
-                        <p>{{ list.pinned }}</p>
-                        <p class="text">{{ el.text }}</p>
-                        <div class="photos">
-                            {% for photo in el.photos.all %}
-                                <div class="photo" style="background-image: url('{{ photo }}')"></div>
-                            {% endfor %}
+                <h1>{{ list.posts }}</h1>
+                {% if posts or pinned_posts %}
+                    {% for el in pinned_posts %}
+                        <div class="post" id="post{{ el.id }}">
+                            <p>{{ list.pinned }}</p>
+                            <p class="text">{{ el.text }}</p>
+                            <div class="photos">
+                                {% for photo in el.photos.all %}
+                                    <div class="photo" style="background-image: url('{{ photo }}')"></div>
+                                {% endfor %}
+                            </div>
+                            <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
+                                {% if your_user in el.likes.all %}
+                                    <img width="25px" src="{% static 'mainpage/img/like.png' %}">
+                                {% else %}
+                                    <img style="filter: invert(1); opacity: 0.75" width="25px"
+                                         src="{% static 'mainpage/img/no-like.png' %}">
+                                {% endif %}
+                                {{ el.count_likes }}
+                            </a>
+                            <p class="date">{{ el.date }}</p>
                         </div>
-                        <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
-                            {% if your_user in el.likes.all %}
-                                <img width="25px" src="{% static 'mainpage/img/like.png' %}">
-                            {% else %}
-                                <img style="filter: invert(1); opacity: 0.75" width="25px" src="{% static 'mainpage/img/no-like.png' %}">
-                            {% endif %}
-                            {{ el.count_likes }}
-                        </a>
-                        <p class="date">{{ el.date }}</p>
-                    </div>
-                {% endfor %}
-                {% for el in posts %}
-                    <div class="post" id="post{{ el.id }}">
-                        <p class="text">{{ el.text }}</p>
-                        <div class="photos">
-                            {% for photo in el.photos.all %}
-                                <div class="photo" style="background-image: url('{{ photo }}')"></div>
-                            {% endfor %}
+                    {% endfor %}
+                    {% for el in posts %}
+                        <div class="post" id="post{{ el.id }}">
+                            <p class="text">{{ el.text }}</p>
+                            <div class="photos">
+                                {% for photo in el.photos.all %}
+                                    <div class="photo" style="background-image: url('{{ photo }}')"></div>
+                                {% endfor %}
+                            </div>
+                            <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
+                                {% if your_user in el.likes.all %}
+                                    <img width="25px" src="{% static 'mainpage/img/like.png' %}">
+                                {% else %}
+                                    <img style="filter: invert(1); opacity: 0.75" width="25px"
+                                         src="{% static 'mainpage/img/no-like.png' %}">
+                                {% endif %}
+                                {{ el.count_likes }}
+                            </a>
+                            <p class="date">{{ el.date }}</p>
                         </div>
-                        <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
-                            {% if your_user in el.likes.all %}
-                                <img width="25px" src="{% static 'mainpage/img/like.png' %}">
-                            {% else %}
-                                <img style="filter: invert(1); opacity: 0.75" width="25px" src="{% static 'mainpage/img/no-like.png' %}">
-                            {% endif %}
-                            {{ el.count_likes }}
-                        </a>
-                        <p class="date">{{ el.date }}</p>
-                    </div>
-                {% endfor %}
-        </section>
+                    {% endfor %}
+                {% else %}
+                    {{ list.no_posts }}
+                {% endif %}
+            </section>
         {% else %}
             <h1 class="posts" style="justify-content: center; align-items: center">{{ list.permissions }}</h1>
         {% endif %}
