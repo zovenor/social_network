@@ -224,10 +224,10 @@ class AccountIDView(View):
                         post = Post.objects.get(id=int(request.GET['like']))
                         if request.user.is_authenticated:
                             if not post.likes.filter(user=id).exists():
-                                post.likes.add(UserDetail.objects.get(user=User.objects.get(id=id)))
+                                post.likes.add(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
                                 return redirect(f'{request.path}#post{request.GET["like"]}')
                             else:
-                                post.likes.remove(UserDetail.objects.get(user=User.objects.get(id=id)))
+                                post.likes.remove(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
                                 return redirect(f'{request.path}#post{request.GET["like"]}')
                         else:
                             return redirect(f'{request.path}#post{request.GET["like"]}')
@@ -292,6 +292,18 @@ class AccountIDView(View):
                             return redirect(request.path)
                     else:
                         return redirect(request.path)
+
+            if 'like' in request.GET:
+                post = Post.objects.get(id=int(request.GET['like']))
+                if request.user.is_authenticated:
+                    if not post.likes.filter(user=request.user).exists():
+                        post.likes.add(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
+                        return redirect(f'{request.path}#post{request.GET["like"]}')
+                    else:
+                        post.likes.remove(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
+                        return redirect(f'{request.path}#post{request.GET["like"]}')
+                else:
+                    return redirect(f'{request.path}#post{request.GET["like"]}')
 
             if 'edit' in request.GET:
                 if request.GET['edit'] == 'True':
