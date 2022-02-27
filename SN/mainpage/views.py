@@ -184,7 +184,11 @@ class AccountIDView(View):
                 'choose_photo': False,
                 'friends': Friend.objects.filter(user1=id).union(Friend.objects.filter(user2=id)),
                 'groups': Group.objects.filter(followers=UserDetail.objects.get(user=id)),
+                'following': Follower.objects.filter(user1=id),
             })
+
+            print(content['following'])
+
             # if user is you
             if request.user.id == id and user_view == None:
                 return redirect('/account')

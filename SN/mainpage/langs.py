@@ -42,6 +42,7 @@ class EN:
         remove_photo = "Remove the photo"
         choose_photo = "Choose the photo"
         friends = "Friends"
+        subscriptions = "Subscriptions"
 
     class Friends(BASE):
         title = "Friends"
@@ -175,6 +176,7 @@ class RU(EN):
         remove_photo = "Убрать фотографию"
         choose_photo = "Выбрать фотографию"
         friends = "Друзья"
+        subscriptions = "Подписки"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"

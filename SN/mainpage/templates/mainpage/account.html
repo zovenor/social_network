@@ -18,16 +18,17 @@
         <div class="account">
 
 
-            {% if permissions != "closed" %}
+
                 {% if user_view.photo %}
                     <img class="account_photo" src="{{ user_view.get_photo }}">
                 {% else %}
                     <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
                 {% endif %}
-            {% endif %}
 
 
-            {% if edit_permissions == False %}
+
+            <div class="info">
+                {% if edit_permissions == False %}
 
                 <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
                 {% if permissions != 'closed' %}
@@ -76,20 +77,26 @@
                     </ul>
                 </section>
 
-                    <section>
-                        <section class="groups">
-                        <h1>{{ list.groups }}</h1>
-                        <ul>
-                            {% for el in groups %}
-                                <li class="group" >
-                                    <a class="user" href="/{{ el.groupname }}">
-                                        <div class="user_photo" style="background-image: url('{{ el.get_photo }}')"></div>
-                                        <b>{{ el.name }}</b>
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </section>
+                    <section class="subscriptions">
+                    <h1>{{ list.subscriptions }}</h1>
+                    <ul>
+                        {% for el in groups %}
+                            <li class="group" >
+                                <a class="user" href="/{{ el.groupname }}">
+                                    <div class="user_photo" style="background-image: url('{{ el.get_photo }}')"></div>
+                                    <b>{{ el.name }}</b>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        {% for el in following %}
+                            <li class="user" >
+                                <a class="user" href="/{{ el.get_user2.user.username }}">
+                                    <div class="user_photo" style="background-image: url('{{ el.get_user2.get_photo }}')"></div>
+                                    <b>{{ el.get_user2.user.first_name }} {{ el.get_user2.user.last_name }}</b>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
 
             {% else %}
@@ -141,6 +148,7 @@
             {% if psot_error %}
                 {{ list.post_error }}
             {% endif %}
+            </div>
         </div>
     {% endif %}
 {% endblock %}

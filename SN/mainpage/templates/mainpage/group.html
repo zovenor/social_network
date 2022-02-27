@@ -7,6 +7,7 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'mainpage/group.css' %}">
 
+    <div class="group">
     {% if edit == True %}
 
         <form method="POST" enctype="multipart/form-data">
@@ -58,6 +59,7 @@
     {% else %}
 
         <div style="background-image: url('{{ group.get_photo }}')" class="group_photo"></div>
+        <div class="info">
         <h1 class="name_of_group">{{ group.name }}</h1>
         <p class="description">{{ group.description }}</p>
         <h3 style="display: flex; align-items: center;">
@@ -99,6 +101,8 @@
                 {% endfor %}
             </ul>
         </section>
+        </div>
     {% endif %}
+    </div>
 
 {% endblock %}

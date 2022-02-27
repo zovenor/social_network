@@ -71,3 +71,16 @@
     justify-content: center;
     flex-wrap: wrap;
 }
+.editor, .fol{
+    margin-bottom: 10px;
+}
+.group{
+    margin-right: auto;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 40%;
+}
+main{
+    display: flex;
+}
