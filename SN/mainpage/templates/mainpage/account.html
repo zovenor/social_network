@@ -179,6 +179,9 @@
                                 {{ el.count_likes }}
                             </a>
                             <p class="date">{{ el.date }}</p>
+                            {% if el.get_author.user == request.user %}
+                                <a href="/edit_post?post={{ el.id }}">{{ list.edit_post }}</a>
+                            {% endif %}
                         </div>
                     {% endfor %}
                     {% for el in posts %}
@@ -199,6 +202,9 @@
                                 {{ el.count_likes }}
                             </a>
                             <p class="date">{{ el.date }}</p>
+                            {% if el.get_author.user == request.user %}
+                                <a href="/edit_post?post={{ el.id }}">{{ list.edit_post }}</a>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 {% else %}

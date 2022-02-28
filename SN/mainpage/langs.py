@@ -46,6 +46,7 @@ class EN:
         posts = "Posts"
         pinned = "Pinned"
         no_posts = "There are not posts yet"
+        edit_post = "Edit"
 
     class Friends(BASE):
         title = "Friends"
@@ -137,6 +138,12 @@ class EN:
         groupname = "Unique group name"
         create = "Create"
 
+    class EditPost(BASE):
+        save = "Save"
+        post_from = "Post from"
+        pinned = "Pinned"
+        content = "Content"
+
 
 # #######################################################################################################################################
 
@@ -186,6 +193,7 @@ class RU(EN):
         posts = "Записи"
         pinned = "Закреплено"
         no_posts = "Здесь пока нет записей"
+        edit_post = "Редактировать"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"
@@ -270,10 +278,15 @@ class RU(EN):
         posts = "Записи"
         no_posts = "Здесь пока нет записей"
 
-
     class CreateGroup(EN.CreateGroup, BASE):
         title = "Создать группу"
         name = "Название группы"
         description = "Описание группы"
         groupname = "Уникальное имя группы"
         create = "Создать"
+
+    class EditPost(EN.EditPost, BASE):
+        save = "Сохранить"
+        post_from = "Запись от"
+        pinned = "Закреплено"
+        content = "Содержимое"

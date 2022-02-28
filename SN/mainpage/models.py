@@ -155,3 +155,11 @@ class Post(models.Model):
 
     def count_likes(self):
         return self.likes.count()
+
+    def get_author(self):
+        if self.author[0:3] == 'usr':
+            return UserDetail.objects.get(user=User.objects.get(id=self.author[3:]))
+        elif self.author[0:2] == "gr":
+            return Group.objects.get(id=self.author[2:])
+        else:
+            return None

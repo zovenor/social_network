@@ -1,0 +1,56 @@
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+form{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+.photo{
+    width: 350px;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+.photo_img{
+    background-position: center;
+    background-size: cover;
+    width: 350px;
+    height: 350px;
+    background-repeat: no-repeat;
+    border-radius: 999px;
+    transition: .5s;
+    opacity: 1;
+    z-index: 1;
+    cursor: pointer;
+}
+.btn_photo{
+    filter: invert(1);
+    position: absolute;
+    transition: .5s;
+    z-index: 0;
+}
+.photos{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.photo_img_add{
+    background-position: center;
+    background-size: cover;
+    width: 350px;
+    height: 350px;
+    background-repeat: no-repeat;
+    border-radius: 999px;
+    transition: .25s;
+    z-index: 1;
+    background-color: #777;
+    opacity: .5;
+    cursor: pointer;
+}

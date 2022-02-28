@@ -578,14 +578,18 @@ class PhotosView(View):
                 content['list'] = get_wordlist(request).AllPhotos
         elif 'add_photo' in request.GET:
             if request.GET['add_photo'] == "True":
+                print(request.GET)
                 content['list'] = get_wordlist(request).AddPhoto
 
         return render(request, 'mainpage/photos.html', content)
 
     def post(self, request):
         if 'photo' in request.FILES:
-            Photo.objects.create(user=request.user, photo=request.FILES['photo'])
-            return redirect('/')
+            photo = Photo.objects.create(user=request.user, photo=request.FILES['photo'])
+            if 'url' in request.GET:
+                return redirect(f"{request.GET['url']}&add_photo={photo}")
+            else:
+                return redirect('/')
         else:
             return self.get(request, content={'error': get_wordlist(request).AddPhoto.error})
 
@@ -644,3 +648,50 @@ class GroupsView(View):
             else:
                 error = get_wordlist(request).Group.create_error
                 return self.get(request, content={'error': error, 'pl': pl})
+
+
+class EditPostView(View):
+    @base
+    @user_is_authenticated
+    def get(self, request, content={}, *args, **kwargs):
+
+        post = None
+
+        if 'post' in request.GET:
+            # if True:
+            post = Post.objects.get(id=request.GET['post'])
+            permissions = False
+            try:
+                if post.author[3:] == str(request.user.id):
+                    permissions = True
+            except:
+                pass
+            try:
+                if content['your_user'] in Group.objects.get(id=post.author[2:]).editors.all() or content['your_user'] == Group.objects.get(id=post.author[2:]).admin:
+                    permissions = True
+            except:
+                pass
+            if permissions:
+                if 'add_photo' in request.GET:
+                    post.photos.add(Photo.objects.get(photo=request.GET['add_photo'][7:]))
+            else:
+                return redirect('/')
+
+        else:
+            if 'url' in request.GET:
+                try:
+                    return redirect(request.GET['url'])
+                except:
+                    return redirect('/')
+            else:
+                return redirect('/')
+
+        content = {
+            'list': get_wordlist(request).EditPost,
+            'post': post,
+        }
+
+        return render(request, 'mainpage/edit_post.html', content)
+
+    def post(self, request):
+        pass

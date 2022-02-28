@@ -13,5 +13,6 @@ urlpatterns = [
     path('registration', views.RegView.as_view()),
     path('photos', views.PhotosView.as_view()),
     path('groups', views.GroupsView.as_view()),
+    path('edit_post', views.EditPostView.as_view()),
     path('<str:name>', views.AccountView.as_view()),
 ]

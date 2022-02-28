@@ -1,0 +1,56 @@
+{% extends 'mainpage/base.html' %}
+
+{% block title %}{{ list.post_from }} {{ post.get_author.user.first_name }}
+    {{ post.get_author.user.last_name }}{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'mainpage/edit_post.css' %}">
+    <form method=POST">
+        {% csrf_token %}
+        <b>{{ list.content }}</b>
+        <p>
+            <textarea name="text" type="text">{{ post.text }}</textarea>
+        </p>
+
+
+        <div class="photos">
+            {% for el in post.photos.all %}
+                <div class="photo">
+                    <div onclick="del(this, {{ el.id }})" class="photo_img"
+                         style="background-image: url('{{ el }}')"></div>
+                    <img id="icon{{ el.id }}" class="btn_photo" width="50px">
+                </div>
+            {% endfor %}
+            <div class="photo">
+                <a href="photos?add_photo=True&url={{ request.path }}?post={{ request.GET.post }}" class="photo_img_add"></a>
+                {#                <img class="btn_photo" width="50px" src="{% static 'mainpage/img/add.svg' %}">#}
+                <h1 class="btn_photo">+</h1>
+            </div>
+        </div>
+
+        <script>
+            function del(obj, id) {
+                if (document.getElementById(id).selected == true) {
+                    document.getElementById(id).selected = false;
+                    document.getElementById('icon' + id).src = "{% static 'mainpage/img/add.svg' %}";
+                    obj.style.opacity = .5;
+                } else {
+                    document.getElementById(id).selected = true;
+                    obj.style.opacity = 1;
+                }
+            }
+        </script>
+
+        <select multiple>
+            {% for el in post.photos.all %}
+                <option id="{{ el.id }}" selected value="{{ el }}" class="photo_get">{{ el }}</option>
+            {% endfor %}
+        </select>
+        <p><b>{{ list.pinned }} </b>
+            <input name="pinned" type="checkbox" {% if post.pinned == 1 %}checked{% endif %}>
+        </p>
+        <input class="button" value="{{ list.save }}" type="submit">
+    </form>
+{% endblock %}
