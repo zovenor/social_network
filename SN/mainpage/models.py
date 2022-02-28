@@ -133,7 +133,7 @@ class Group(models.Model):
     editors = models.ManyToManyField(UserDetail, related_name="editors", null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.groupname
 
     def get_photo(self):
         if self.photo:

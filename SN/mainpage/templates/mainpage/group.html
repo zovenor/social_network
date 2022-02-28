@@ -133,6 +133,9 @@
                         {{ el.count_likes }}
                     </a>
                     <p class="date">{{ el.date }}</p>
+                    {% if permissions_post == True %}
+                        <a href="/edit_post?post={{ el.id }}&url={{ request.path }}">{{ list.edit_post }}</a>
+                    {% endif %}
                 </div>
             {% endfor %}
             {% for el in posts %}
@@ -153,6 +156,9 @@
                         {{ el.count_likes }}
                     </a>
                     <p class="date">{{ el.date }}</p>
+                    {% if permissions_post == True %}
+                        <a href="/edit_post?post={{ el.id }}&url={{ request.path }}">{{ list.edit_post }}</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         {% else %}

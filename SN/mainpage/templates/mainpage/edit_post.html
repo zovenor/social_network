@@ -1,13 +1,19 @@
 {% extends 'mainpage/base.html' %}
 
-{% block title %}{{ list.post_from }} {{ post.get_author.user.first_name }}
-    {{ post.get_author.user.last_name }}{% endblock %}
+{% block title %}{{ list.post_from }}
+    {% if post.author.user.first_name %}
+        {{ post.get_author.user.first_name }}
+    {{ post.get_author.user.last_name }}
+    {% else %}
+        {{ post.get_author.name }}
+    {% endif %}
+{% endblock %}
 
 {% load static %}
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'mainpage/edit_post.css' %}">
-    <form method=POST">
+    <form method="POST">
         {% csrf_token %}
         <b>{{ list.content }}</b>
         <p>
@@ -43,9 +49,9 @@
             }
         </script>
 
-        <select multiple>
+        <select name="photos" multiple>
             {% for el in post.photos.all %}
-                <option id="{{ el.id }}" selected value="{{ el }}" class="photo_get">{{ el }}</option>
+                <option id="{{ el.id }}" selected value="{{ el.id }}" class="photo_get">{{ el }}</option>
             {% endfor %}
         </select>
         <p><b>{{ list.pinned }} </b>

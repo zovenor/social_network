@@ -231,6 +231,7 @@ class AccountIDView(View):
                                 return redirect(f'{request.path}#post{request.GET["like"]}')
                         else:
                             return redirect(f'{request.path}#post{request.GET["like"]}')
+                    print('like' in request.GET)
                     content['user_view'] = UserDetail.objects.get(user=request.user.id)
                     content['edit'] = True
                 else:
@@ -256,10 +257,14 @@ class AccountIDView(View):
                 'choose_photo': False,
                 'pinned_posts': Post.objects.filter(author=f'gr{id}', pinned=1)[::-1],
                 'posts': Post.objects.filter(author=f'gr{id}', pinned=0)[::-1],
+                'permissions_post': False,
             })
 
             if request.user.is_authenticated:
                 content['photos'] = Photo.objects.filter(user=request.user)
+
+                if content['your_user'] == content['group'].admin or content['your_user'] in content['group'].editors.all():
+                    content['permissions_post'] = True
 
             if 'choose_photo_by_id' in request.GET:
                 if request.user.is_authenticated:
@@ -295,6 +300,7 @@ class AccountIDView(View):
 
             if 'like' in request.GET:
                 post = Post.objects.get(id=int(request.GET['like']))
+                print(post)
                 if request.user.is_authenticated:
                     if not post.likes.filter(user=request.user).exists():
                         post.likes.add(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
@@ -667,7 +673,8 @@ class EditPostView(View):
             except:
                 pass
             try:
-                if content['your_user'] in Group.objects.get(id=post.author[2:]).editors.all() or content['your_user'] == Group.objects.get(id=post.author[2:]).admin:
+                if content['your_user'] in Group.objects.get(id=post.author[2:]).editors.all() or content[
+                    'your_user'] == Group.objects.get(id=post.author[2:]).admin:
                     permissions = True
             except:
                 pass
@@ -694,4 +701,24 @@ class EditPostView(View):
         return render(request, 'mainpage/edit_post.html', content)
 
     def post(self, request):
-        pass
+        if 'text' in request.POST and 'photos' in request.POST:
+            text = request.POST['text']
+            photos = request.POST.getlist('photos')
+            pinned_on = None
+            if 'pinned' in request.GET:
+                pinned_on = request.POST['pinned']
+
+            if text != '':
+                post = Post.objects.get(id=request.GET['post'])
+                post.text = text
+                post.photos.set(Photo.objects.get(id=el) for el in photos)
+                if pinned_on == 'on':
+                    post.pinned = 1
+                else:
+                    post.pinned = 0
+                post.save()
+                return redirect(f'/{post.get_author()}#post{request.GET["post"]}')
+            else:
+                return redirect('/')
+        else:
+            return redirect('/')

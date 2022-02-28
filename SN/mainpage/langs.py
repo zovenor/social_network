@@ -130,6 +130,7 @@ class EN:
         pinned = "Pinned"
         posts = "Posts"
         no_posts = "There are not posts yet"
+        edit_post = "Edit"
 
     class CreateGroup(BASE):
         title = "Create a group"
@@ -277,6 +278,7 @@ class RU(EN):
         pinned = "Закреплено"
         posts = "Записи"
         no_posts = "Здесь пока нет записей"
+        edit_post = "Редактировать"
 
     class CreateGroup(EN.CreateGroup, BASE):
         title = "Создать группу"
