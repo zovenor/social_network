@@ -701,7 +701,7 @@ class EditPostView(View):
         return render(request, 'mainpage/edit_post.html', content)
 
     def post(self, request):
-        if 'text' in request.POST and 'photos' in request.POST:
+        if 'text' in request.POST:
             text = request.POST['text']
             photos = request.POST.getlist('photos')
             pinned_on = None
@@ -711,7 +711,10 @@ class EditPostView(View):
             if text != '':
                 post = Post.objects.get(id=request.GET['post'])
                 post.text = text
-                post.photos.set(Photo.objects.get(id=el) for el in photos)
+                if photos is not None:
+                    post.photos.set(Photo.objects.get(id=el) for el in photos)
+                else:
+                    post.photos.clear()
                 if pinned_on == 'on':
                     post.pinned = 1
                 else:

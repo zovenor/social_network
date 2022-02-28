@@ -49,7 +49,7 @@
             }
         </script>
 
-        <select name="photos" multiple>
+        <select name="photos" multiple hidden>
             {% for el in post.photos.all %}
                 <option id="{{ el.id }}" selected value="{{ el.id }}" class="photo_get">{{ el }}</option>
             {% endfor %}
