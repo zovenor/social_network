@@ -188,6 +188,19 @@ class AccountIDView(View):
                 'pinned_posts': Post.objects.filter(author=f'usr{id}', pinned=1)[::-1],
                 'posts': Post.objects.filter(author=f'usr{id}', pinned=0)[::-1],
             })
+
+            if 'like' in request.GET:
+                post = Post.objects.get(id=int(request.GET['like']))
+                if request.user.is_authenticated:
+                    if not post.likes.filter(user=request.user.id).exists():
+                        post.likes.add(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
+                        return redirect(f'{request.path}#post{request.GET["like"]}')
+                    else:
+                        post.likes.remove(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
+                        return redirect(f'{request.path}#post{request.GET["like"]}')
+                else:
+                    return redirect(f'{request.path}#post{request.GET["like"]}')
+
             # if user is you
             if request.user.id == id and user_view == None:
                 return redirect('/account')
@@ -220,18 +233,6 @@ class AccountIDView(View):
                             return redirect('/account')
                         except:
                             content['error'] = "Incorrect id!"
-                    elif 'like' in request.GET:
-                        post = Post.objects.get(id=int(request.GET['like']))
-                        if request.user.is_authenticated:
-                            if not post.likes.filter(user=id).exists():
-                                post.likes.add(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
-                                return redirect(f'{request.path}#post{request.GET["like"]}')
-                            else:
-                                post.likes.remove(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
-                                return redirect(f'{request.path}#post{request.GET["like"]}')
-                        else:
-                            return redirect(f'{request.path}#post{request.GET["like"]}')
-                    print('like' in request.GET)
                     content['user_view'] = UserDetail.objects.get(user=request.user.id)
                     content['edit'] = True
                 else:
@@ -263,7 +264,8 @@ class AccountIDView(View):
             if request.user.is_authenticated:
                 content['photos'] = Photo.objects.filter(user=request.user)
 
-                if content['your_user'] == content['group'].admin or content['your_user'] in content['group'].editors.all():
+                if content['your_user'] == content['group'].admin or content['your_user'] in content[
+                    'group'].editors.all():
                     content['permissions_post'] = True
 
             if 'choose_photo_by_id' in request.GET:
@@ -300,7 +302,6 @@ class AccountIDView(View):
 
             if 'like' in request.GET:
                 post = Post.objects.get(id=int(request.GET['like']))
-                print(post)
                 if request.user.is_authenticated:
                     if not post.likes.filter(user=request.user).exists():
                         post.likes.add(UserDetail.objects.get(user=User.objects.get(id=request.user.id)))
@@ -584,7 +585,6 @@ class PhotosView(View):
                 content['list'] = get_wordlist(request).AllPhotos
         elif 'add_photo' in request.GET:
             if request.GET['add_photo'] == "True":
-                print(request.GET)
                 content['list'] = get_wordlist(request).AddPhoto
 
         return render(request, 'mainpage/photos.html', content)
