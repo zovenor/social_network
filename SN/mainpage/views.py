@@ -693,10 +693,10 @@ class EditPostView(View):
             else:
                 return redirect('/')
 
-        content = {
+        content.update({
             'list': get_wordlist(request).EditPost,
             'post': post,
-        }
+        })
 
         return render(request, 'mainpage/edit_post.html', content)
 
