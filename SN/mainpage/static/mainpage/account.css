@@ -99,3 +99,6 @@ main{
     border-radius: 25px;
     margin: 20px;
 }
+.like_img{
+    cursor: pointer;
+}

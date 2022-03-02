@@ -6,6 +6,11 @@
 
 {% block content %}
 
+    <script>
+        const STATIC_PATH = '{% static "mainpage" %}';
+    </script>
+    <script src="{% static 'mainpage/js/likes.js' %}"></script>
+
     <link rel="stylesheet" href="{% static 'mainpage/account.css' %}">
 
     {% if choose_photo == True %}
@@ -169,15 +174,15 @@
                                     <div class="photo" style="background-image: url('{{ photo }}')"></div>
                                 {% endfor %}
                             </div>
-                            <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
+                            <div onclick="like({{ el.id }})" class="like_img" id="like_img_{{ el.id }}">
                                 {% if your_user in el.likes.all %}
                                     <img width="25px" src="{% static 'mainpage/img/like.png' %}">
                                 {% else %}
                                     <img style="filter: invert(1); opacity: 0.75" width="25px"
                                          src="{% static 'mainpage/img/no-like.png' %}">
                                 {% endif %}
-                                {{ el.count_likes }}
-                            </a>
+                                <span id="like_{{ el.id }}" class="like">{{ el.count_likes }}</span>
+                            </div>
                             <p class="date">{{ el.date }}</p>
                             {% if el.get_author.user == request.user %}
                                 <a href="/edit_post?post={{ el.id }}">{{ list.edit_post }}</a>
@@ -192,15 +197,15 @@
                                     <div class="photo" style="background-image: url('{{ photo }}')"></div>
                                 {% endfor %}
                             </div>
-                            <a href="?like={{ el.id }}#post{{ el.id }}" class="likes">
+                            <div onclick="like({{ el.id }})" class="like_img" id="like_img_{{ el.id }}">
                                 {% if your_user in el.likes.all %}
                                     <img width="25px" src="{% static 'mainpage/img/like.png' %}">
                                 {% else %}
                                     <img style="filter: invert(1); opacity: 0.75" width="25px"
                                          src="{% static 'mainpage/img/no-like.png' %}">
                                 {% endif %}
-                                {{ el.count_likes }}
-                            </a>
+                                <span id="like_{{ el.id }}" class="like">{{ el.count_likes }}</span>
+                            </div>
                             <p class="date">{{ el.date }}</p>
 
                             {% if el.get_author.user == request.user %}
