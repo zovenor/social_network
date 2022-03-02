@@ -145,6 +145,9 @@ class EN:
         pinned = "Pinned"
         content = "Content"
 
+    class ChatRoom(BASE):
+        chat = "Chat"
+
 
 # #######################################################################################################################################
 
@@ -292,3 +295,6 @@ class RU(EN):
         post_from = "Запись от"
         pinned = "Закреплено"
         content = "Содержимое"
+
+    class ChatRoom(EN.ChatRoom, BASE):
+        chat = "Чат"

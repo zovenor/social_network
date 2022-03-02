@@ -21,6 +21,9 @@ socket.onmessage = function (event) {
             }
         }
     }
+    else{
+        console.log('[Error] '+data.status);
+    }
 }
 
 function like(id) {
