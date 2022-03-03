@@ -16,20 +16,20 @@ class LikesConsumer(JsonWebsocketConsumer):
         if self.scope['user']:
             user = self.scope['user']
             user_detail = UserDetail.objects.get(user=user)
-            if json_data['get'] == 'count':
-                if Post.objects.filter(id=json_data['post']).exists():
-                    post = Post.objects.get(id=json_data['post'])
+            if json_data['action'] == 'post_count_likes':
+                if Post.objects.filter(id=json_data['post_id']).exists():
+                    post = Post.objects.get(id=json_data['post_id'])
+                    response['status'] = 'OK'
+                    response['action'] = 'post_count_likes'
                     if not post.likes.filter(user=user).exists():
                         post.likes.add(user_detail)
-                        response['like'] = True
+                        response['is_liked'] = True
                     else:
                         post.likes.remove(user_detail)
-                        response['like'] = False
+                        response['is_liked'] = False
                     response.update({
-                        'status': 'OK',
                         'count': post.count_likes(),
-                        'action': 'count',
-                        'post': json_data['post']
+                        'post_id': json_data['post_id']
                     })
                 else:
                     response['status'] = 'This post is not found!'

@@ -2,21 +2,22 @@
 ## WebSockets
 <b>Add/remove like in the post: </b> ws://{SITE_URL}/like/
 
-<p>Request</p>
+<p>Request example</p>
 
 ```yaml
 {
-    post: POST_ID,g
+    action: 'post_count_likes',
+    post_id: 5,
 }
 ```
 <p>Response example</p>
 
 ```yaml
 {
-    like: true,
-    status: 'OK',
-    count: 10,
-    action: 'count',
-    post: 5,
+    status: "OK",
+    action: "post_count_likes",
+    is_liked: true,
+    count: 2,
+    post_id: 5,
 }
 ```
