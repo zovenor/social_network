@@ -145,8 +145,9 @@ class EN:
         pinned = "Pinned"
         content = "Content"
 
-    class ChatRoom(BASE):
+    class PersonalChatRoom(BASE):
         chat = "Chat"
+        chat_with = "Chat with"
 
 
 # #######################################################################################################################################
@@ -296,5 +297,6 @@ class RU(EN):
         pinned = "Закреплено"
         content = "Содержимое"
 
-    class ChatRoom(EN.ChatRoom, BASE):
+    class PersonalChatRoom(EN.PersonalChatRoom, BASE):
         chat = "Чат"
+        chat_with = "Чат с"

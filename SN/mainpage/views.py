@@ -86,11 +86,11 @@ class HeheView(View):
 # Decorator for authentication
 def user_is_authenticated(func):
     def redir(self, request):
-        return redirect('/login')
+        return redirect('/login?url=' + request.path)
 
-    def wrapper(self, request, **kwargs):
+    def wrapper(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return func(self, request, **kwargs)
+            return func(self, request, *args, **kwargs)
         else:
             return redir(self, request)
 
@@ -146,6 +146,8 @@ class LogInView(View):
             return self.get(request, error=get_wordlist(request).Login.incorrect_username_or_password)
         else:
             login(request, user)
+            if 'url' in request.GET:
+                return redirect(request.GET['url'])
             return redirect('/')
 
 

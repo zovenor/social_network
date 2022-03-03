@@ -1,0 +1,16 @@
+{% extends 'mainpage/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ list.chat_with }} {{ person.user.first_name }} {{ person.user.last_name }}{% endblock %}
+
+{% block content %}
+    <script>
+        const person_name = '{{ person }}';
+    </script>
+    <script src="{% static 'messenger/js/messages.js' %}"></script>
+
+    <div id="messages">
+    </div>
+
+{% endblock %}
