@@ -1,0 +1,45 @@
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.messages_block{
+    background-color: #333336;
+    padding: 20px;
+    display: flex;
+    flex-flow: column;
+    border-radius: 35px;
+    width: 60%;
+    height: 70vh;
+    justify-content: flex-end;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.messages{
+    overflow-y: scroll;
+    padding-right: 10px;
+}
+.messages::-webkit-scrollbar{
+    width: 2px;
+    background-color: #333336;
+}
+.message{
+    background-color: #222226;
+    padding: 15px;
+    border-radius: 20px;
+    width: fit-content;
+}
+.user1{
+    margin-left: auto;
+}
+.mes_input{
+    background-color: #222226;
+    border: 0px solid white;
+    color: #777;
+    padding: 10px;
+    border-radius: 20px;
+}
+.mes_input:focus{
+    border: 0px solid white;
+    outline: none !important;
+}

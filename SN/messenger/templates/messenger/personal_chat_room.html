@@ -5,12 +5,17 @@
 {% block title %}{{ list.chat_with }} {{ person.user.first_name }} {{ person.user.last_name }}{% endblock %}
 
 {% block content %}
+
+    <link rel="stylesheet" href="{% static 'messenger/personal_chat_room.css' %}">
+
+
+    <div class="messages_block">
+        <div class="messages" id="messages"></div>
+        <input id="mes_input" class="mes_input" type="text">
+    </div>
+
     <script>
         const person_name = '{{ person }}';
     </script>
     <script src="{% static 'messenger/js/messages.js' %}"></script>
-
-    <div id="messages">
-    </div>
-
 {% endblock %}
