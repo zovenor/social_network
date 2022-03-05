@@ -8,8 +8,11 @@
 
     <link rel="stylesheet" href="{% static 'messenger/personal_chat_room.css' %}">
 
-
     <div class="messages_block">
+        <a href="/messenger/personal/{{ person.user.username }}" class="user">
+            <div style="background-image: url('{{ person.get_photo }}')" class="user_photo"></div>
+            <div class="user_name">{{ person.user.first_name }} {{ person.user.last_name }}</div>
+        </a>
         <div class="messages" id="messages"></div>
         <input placeholder="{{ list.type_message }}" id="mes_input" class="mes_input" type="text">
     </div>

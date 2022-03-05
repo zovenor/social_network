@@ -8,6 +8,7 @@
 .user{
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 .user_name{
     margin-left: 10px;

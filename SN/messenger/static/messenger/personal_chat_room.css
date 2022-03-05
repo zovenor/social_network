@@ -12,20 +12,23 @@ main{
     width: 60%;
     height: 70vh;
     justify-content: flex-end;
-    padding-left: 40px;
-    padding-right: 40px;
+    align-items: center;
 }
 .messages{
     overflow-y: auto;
-    padding-right: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
     height: 100%;
+    background-color: #222226;
+    border-radius: 20px;
+    width: 90%;
 }
 .messages::-webkit-scrollbar{
-    width: 2px;
+    width: 0px;
     background-color: #333336;
 }
 .message{
-    background-color: #222226;
+    background-color: #333336;
     padding: 15px;
     border-radius: 20px;
     width: fit-content;
@@ -41,6 +44,8 @@ main{
     color: #777;
     padding: 10px;
     border-radius: 20px;
+    margin-top: 10px;
+    width: 90%;
 }
 .mes_input:focus{
     border: 0px solid white;
@@ -48,4 +53,19 @@ main{
 }
 time{
     font-size: small;
+}
+.user_photo{
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.user{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.user_name{
+    margin-left: 10px;
 }
