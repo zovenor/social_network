@@ -46,3 +46,6 @@ main{
     border: 0px solid white;
     outline: none !important;
 }
+time{
+    font-size: small;
+}

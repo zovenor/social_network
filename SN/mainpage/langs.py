@@ -149,6 +149,7 @@ class EN:
     class PersonalChatRoom(BASE):
         chat = "Chat"
         chat_with = "Chat with"
+        type_message = "Type a message..."
 
     class Chats(BASE):
         title = "Chats"
@@ -305,6 +306,7 @@ class RU(EN):
     class PersonalChatRoom(EN.PersonalChatRoom, BASE):
         chat = "Чат"
         chat_with = "Чат с"
+        type_message = "Напечатайте сообщение..."
 
     class Chats(EN.Chats, BASE):
         title = "Чаты"

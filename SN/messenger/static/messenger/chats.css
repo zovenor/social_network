@@ -1,0 +1,26 @@
+.user_photo{
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.user{
+    display: flex;
+    align-items: center;
+}
+.user_name{
+    margin-left: 10px;
+}
+.chats{
+    display: flex;
+    background-color: #333336;
+    width: 40vw;
+    padding: 20px;
+    border-radius: 35px;
+    flex-flow: column;
+}
+main{
+    display: flex;
+    justify-content: center;
+}

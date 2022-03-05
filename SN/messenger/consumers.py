@@ -66,3 +66,12 @@ class SendMessageConsumer(AsyncJsonWebsocketConsumer):
                     'status': 'OK',
                     'text': data['text'],
                 }))
+
+
+class GetChatsConsumer(AsyncJsonWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+
+    @sync_to_async
+    def receive_json(self, data_json, **kwargs):
+        pass

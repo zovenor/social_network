@@ -2,12 +2,19 @@
 
 {% block title %}{{ list.title }}{% endblock %}
 
+{% load static %}
 
 {% block content %}
 
+    <link rel="stylesheet" href="{% static 'messenger/chats.css' %}">
+
     <div class="chats">
+        <h1>{{ list.title }}</h1>
         {% for el in chats %}
-            <a href="/messenger/personal/{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}</a>
+            <a href="/messenger/personal/{{ el.user.username }}" class="user">
+                <div style="background-image: url('{{ el.get_photo }}')" class="user_photo"></div>
+                <div class="user_name">{{ el.user.first_name }} {{ el.user.last_name }}</div>
+            </a>
         {% endfor %}
     </div>
     
