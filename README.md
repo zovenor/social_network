@@ -1,6 +1,6 @@
 # Social network
 ## WebSockets
-<b>Add/remove like in the post: </b> ws://{ SITE_URL }/like/
+<b>Add/remove like in the post: </b> ```/like/```
 
 <p>Request example</p>
 
@@ -21,7 +21,7 @@
     post_id: 5,
 }
 ```
-<b>Send message: </b> ws://{ SITE_URL }/messenger/send_message/{ NAME_OF_USER_OR_GROUP }
+<b>Send message: </b> ```/messenger/send_message/{ NAME_OF_USER_OR_GROUP }```
 
 <p>Request example</p>
 

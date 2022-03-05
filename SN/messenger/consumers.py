@@ -9,6 +9,7 @@ from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async, SyncToAsync
 from time import sleep
 from random import randint
+from markupsafe import escape
 
 
 class MessagesConsumer(AsyncJsonWebsocketConsumer):
@@ -58,8 +59,10 @@ class SendMessageConsumer(AsyncJsonWebsocketConsumer):
     @sync_to_async()
     def receive_json(self, data):
         personal_name = self.scope['url_route']['kwargs']['personal_name']
-        Message.objects.create(text=data['text'], user1=self.scope['user'], user2=personal_name)
-        self.send(json.dumps({
-            'status': 'OK',
-            'text': data['text'],
-        }))
+        if 'text' in data and 'action' in data:
+            if data['text'].strip() != "" and data['action'] == 'send_message':
+                Message.objects.create(text=escape(data['text']), user1=self.scope['user'], user2=personal_name)
+                self.send(json.dumps({
+                    'status': 'OK',
+                    'text': data['text'],
+                }))

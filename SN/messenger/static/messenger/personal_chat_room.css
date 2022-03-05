@@ -16,8 +16,9 @@ main{
     padding-right: 40px;
 }
 .messages{
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-right: 10px;
+    height: 100%;
 }
 .messages::-webkit-scrollbar{
     width: 2px;
@@ -28,6 +29,8 @@ main{
     padding: 15px;
     border-radius: 20px;
     width: fit-content;
+    max-width: 50%;
+    word-wrap: break-word;
 }
 .user1{
     margin-left: auto;

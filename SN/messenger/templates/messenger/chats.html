@@ -1,0 +1,14 @@
+{% extends 'mainpage/base.html' %}
+
+{% block title %}{{ list.title }}{% endblock %}
+
+
+{% block content %}
+
+    <div class="chats">
+        {% for el in chats %}
+            <a href="/messenger/personal/{{ el.user.username }}">{{ el.user.first_name }} {{ el.user.last_name }}</a>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

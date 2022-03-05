@@ -8,6 +8,7 @@ class EN:
         photos = "Photos"
         groups = "Groups"
         created_by = "created by"
+        messenger = 'Messenger'
 
     class Login(BASE):
         incorrect_username_or_password = 'Incorrect username or password!'
@@ -149,6 +150,9 @@ class EN:
         chat = "Chat"
         chat_with = "Chat with"
 
+    class Chats(BASE):
+        title = "Chats"
+
 
 # #######################################################################################################################################
 
@@ -161,6 +165,7 @@ class RU(EN):
         photos = "Фотографии"
         groups = "Группы"
         created_by = "создан благодаря"
+        messenger = "Мессенджер"
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
@@ -300,3 +305,6 @@ class RU(EN):
     class PersonalChatRoom(EN.PersonalChatRoom, BASE):
         chat = "Чат"
         chat_with = "Чат с"
+
+    class Chats(EN.Chats, BASE):
+        title = "Чаты"
