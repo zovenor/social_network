@@ -31,7 +31,9 @@
                 <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
             {% endif %}
 
-            <a class="button" href="/messenger/personal/{{ user_view.user.username }}">Send message</a>
+            <a class="button" href="/messenger/personal/{{ user_view.user.username }}">
+            {% if user == user_view.user %}{{ list.favourites }}{% else %}{{ list.send_message }}{% endif %}
+                </a>
 
             <div class="info">
                 {% if edit_permissions == False %}

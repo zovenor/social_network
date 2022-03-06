@@ -49,6 +49,8 @@ class EN:
         pinned = "Pinned"
         no_posts = "There are not posts yet"
         edit_post = "Edit"
+        favourites = "Favourites"
+        send_message = "Send a message"
 
     class Friends(BASE):
         title = "Friends"
@@ -210,6 +212,8 @@ class RU(EN):
         pinned = "Закреплено"
         no_posts = "Здесь пока нет записей"
         edit_post = "Редактировать"
+        favourites = "Избранное"
+        send_message = "Оправить сообщение"
 
     class Friends(EN.Friends, BASE):
         title = "Друзья"
