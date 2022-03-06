@@ -153,6 +153,7 @@ class EN:
         chat = "Chat"
         chat_with = "Chat with"
         type_message = "Type a message..."
+        favourites = "Favourites"
 
     class Chats(BASE):
         title = "Chats"
@@ -316,6 +317,7 @@ class RU(EN):
         chat = "Чат"
         chat_with = "Чат с"
         type_message = "Напечатайте сообщение..."
+        favourites = "Избранное"
 
     class Chats(EN.Chats, BASE):
         title = "Чаты"

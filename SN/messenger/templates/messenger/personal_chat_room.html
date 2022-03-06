@@ -2,7 +2,13 @@
 
 {% load static %}
 
-{% block title %}{{ list.chat_with }} {{ person.user.first_name }} {{ person.user.last_name }}{% endblock %}
+{% block title %}
+    {% if user != person.user %}
+        {{ list.chat_with }} {{ person.user.first_name }} {{ person.user.last_name }}
+    {% else %}
+        {{ list.favourites }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 
@@ -11,7 +17,11 @@
     <div class="messages_block">
         <a href="/{{ person.user.username }}" class="user">
             <div style="background-image: url('{{ person.get_photo }}')" class="user_photo"></div>
-            <div class="user_name">{{ person.user.first_name }} {{ person.user.last_name }}</div>
+            {% if user != person.user %}
+                <div class="user_name">{{ person.user.first_name }} {{ person.user.last_name }}</div>
+            {% else %}
+                <div class="user_name">{{ list.favourites }}</div>
+            {% endif %}
         </a>
         <div class="messages" id="messages"></div>
         <input placeholder="{{ list.type_message }}" id="mes_input" class="mes_input" type="text">
