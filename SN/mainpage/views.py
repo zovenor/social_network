@@ -727,3 +727,29 @@ class EditPostView(View):
                 return redirect('/')
         else:
             return redirect('/')
+
+
+class NewsView(View):
+    @base
+    @user_is_authenticated
+    def get(self, request, content):
+        content.update({
+            'list': get_wordlist(request).News,
+            'posts': None,
+        })
+
+        for el in Follower.objects.filter(user1=request.user.id):
+            content['posts'] = Post.objects.filter(author=f'usr{el.user2}')
+        for el in Friend.objects.filter(user1=request.user.id).union(Friend.objects.filter(user2=request.user.id)):
+            if content['posts'] != None:
+                content['posts'] = content['posts'].union(Post.objects.filter(author=f'usr{el.get_user_to(request.user.id)}'))
+            else:
+                content['posts'] = Post.objects.filter(author=f'usr{el.get_user_to(request.user.id)}')
+        for el in Group.objects.filter(followers=UserDetail.objects.get(user=request.user)):
+            # print(content['posts'])
+            if content['posts'] != None:
+                content['posts'] = content['posts'].union(Post.objects.filter(author=f'gr{el.id}'))
+            else:
+                content['posts'] = Post.objects.filter(author=f'gr{el.id}')
+
+        return render(request, 'mainpage/news.html', content)

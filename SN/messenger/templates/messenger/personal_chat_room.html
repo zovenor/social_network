@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'messenger/personal_chat_room.css' %}">
 
     <div class="messages_block">
-        <a href="/messenger/personal/{{ person.user.username }}" class="user">
+        <a href="/{{ person.user.username }}" class="user">
             <div style="background-image: url('{{ person.get_photo }}')" class="user_photo"></div>
             <div class="user_name">{{ person.user.first_name }} {{ person.user.last_name }}</div>
         </a>

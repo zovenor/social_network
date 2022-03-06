@@ -33,6 +33,7 @@
     <a class="NAME" href="/">{{ list.NAME }}</a>
     {% if user.is_authenticated %}
         <a href="/account"><img width="40px" style="border-radius: 999px" src="{{ your_user.get_photo }}"></a>
+        <a href="/news">{{ list.news }}</a>
         <a href="/friends">{{ list.Friends }}</a>
         <a href="/groups">{{ list.groups }}</a>
         <a href="/messenger/">{{ list.messenger }}</a>

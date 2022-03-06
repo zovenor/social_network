@@ -47,6 +47,12 @@ class Friend(models.Model):
         except:
             return None
 
+    def get_user_to(self, id):
+        if self.user1 == id:
+            return self.user2
+        else:
+            return self.user1
+
 
 # Unconfirmed requests
 class Follower(models.Model):
@@ -161,5 +167,15 @@ class Post(models.Model):
             return UserDetail.objects.get(user=User.objects.get(id=self.author[3:]))
         elif self.author[0:2] == "gr":
             return Group.objects.get(id=self.author[2:])
+        else:
+            return None
+
+    def get_author_name(self):
+        if self.author[0:3] == 'usr':
+            id = self.author[3:]
+            return f'{User.objects.get(id=id).first_name} {User.objects.get(id=id).last_name}'
+        elif self.author[0:2] == "gr":
+            id = self.author[2:]
+            return Group.objects.get(id=id).name
         else:
             return None

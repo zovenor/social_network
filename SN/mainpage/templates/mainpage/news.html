@@ -1,0 +1,46 @@
+{% extends 'mainpage/base.html' %}
+
+{% block title %}{{ list.title }}{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <script>
+        const STATIC_PATH = "{% static 'mainpage' %}";
+    </script>
+    <script src="{% static 'mainpage/js/likes.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'mainpage/news.css' %}">
+
+     <section class="posts">
+        <h1>{{ list.posts }}</h1>
+            {% for el in posts %}
+                <div class="post" id="post{{ el.id }}">
+                    <a href="/{{ el.get_author  }}" class="user">
+                        <div style="background-image: url({{ el.get_author.get_photo  }})" class="user_img"></div>
+                        <p class="user_name">{{ el.get_author_name }}</p>
+                    </a>
+                    <p class="text">{{ el.text }}</p>
+                    <div class="photos">
+                        {% for photo in el.photos.all %}
+                            <div class="photo" style="background-image: url('{{ photo }}')"></div>
+                        {% endfor %}
+                    </div>
+                    <div onclick="like({{ el.id }})" class="like_img" id="like_img_{{ el.id }}">
+                        {% if your_user in el.likes.all %}
+                            <img width="25px" src="{% static 'mainpage/img/like.png' %}">
+                        {% else %}
+                            <img style="filter: invert(1); opacity: 0.75" width="25px"
+                                 src="{% static 'mainpage/img/no-like.png' %}">
+                        {% endif %}
+                        <span class="like" id="like_{{ el.id }}">{{ el.count_likes }}</span>
+                    </div>
+                    <p class="date">{{ el.date }}</p>
+                    {% if permissions_post == True %}
+                        <a href="/edit_post?post={{ el.id }}&url={{ request.path }}">{{ list.edit_post }}</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+    </section>
+
+{% endblock %}

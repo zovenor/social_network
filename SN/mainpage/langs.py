@@ -9,6 +9,7 @@ class EN:
         groups = "Groups"
         created_by = "created by"
         messenger = 'Messenger'
+        news = "News"
 
     class Login(BASE):
         incorrect_username_or_password = 'Incorrect username or password!'
@@ -154,6 +155,9 @@ class EN:
     class Chats(BASE):
         title = "Chats"
 
+    class News(BASE):
+        title = "News"
+
 
 # #######################################################################################################################################
 
@@ -167,6 +171,7 @@ class RU(EN):
         groups = "Группы"
         created_by = "создан благодаря"
         messenger = "Мессенджер"
+        news = "Новости"
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
@@ -310,3 +315,6 @@ class RU(EN):
 
     class Chats(EN.Chats, BASE):
         title = "Чаты"
+
+    class News(EN.News, BASE):
+        title = "Новости"
