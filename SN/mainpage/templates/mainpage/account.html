@@ -31,12 +31,12 @@
                 <img class="account_photo" src="{% static 'mainpage/img/user.png' %}">
             {% endif %}
 
-            <a class="button" href="/messenger/personal/{{ user_view.user.username }}">
-            {% if user == user_view.user %}{{ list.favourites }}{% else %}{{ list.send_message }}{% endif %}
-                </a>
-
             <div class="info">
                 {% if edit_permissions == False %}
+
+                     <a class="button" href="/messenger/personal/{{ user_view.user.username }}">
+            {% if user == user_view.user %}{{ list.favourites }}{% else %}{{ list.send_message }}{% endif %}
+                </a>
 
                     <h1>{{ user_view.user.first_name }} {{ user_view.user.last_name }}</h1>
                     {% if permissions != 'closed' %}
@@ -114,22 +114,22 @@
 
                 {% else %}
                     <a href="?rm_photo=True">
-                        <button>{{ list.remove_photo }}</button>
+                        <button class="input">{{ list.remove_photo }}</button>
                     </a>
                     <a href="?choose_photo=True">
-                        <button>{{ list.choose_photo }}</button>
+                        <button class="input">{{ list.choose_photo }}</button>
                     </a>
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        <p><input name="photo" type="file" accept="image/*,image/jpeg"></p>
-                        <h1><input required type="text" name="name" value="{{ user_view.user.first_name }}">
-                            <input required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></h1>
+                        <p><input class="input" name="photo" type="file" accept="image/*,image/jpeg"></p>
+                        <h1><input class="input" required type="text" name="name" value="{{ user_view.user.first_name }}">
+                            <input class="input" required tyoe="text" name="surname" value="{{ user_view.user.last_name }}"></h1>
                         {% if permissions != 'closed' %}
-                            <p><b>{{ list.email }}</b>: <input required value="{{ user_view.user.email }}" name="email"
+                            <p><b>{{ list.email }}</b>: <input class="input" required value="{{ user_view.user.email }}" name="email"
                                                                type="text"></p>
                             <p><b>{{ list.sex }}: </b>
-                                <select required name="sex">
+                                <select class="input" required name="sex">
                                     <option disabled>{{ list.choose_sex }}</option>
                                     <option value="male" {% if user_view.sex == "male" %}
                                             selected {% endif %}>{{ list.male }}</option>
@@ -139,12 +139,12 @@
                                             selected {% endif %}>{{ list.sex_is_not_defined }}</option>
                                 </select>
                             </p>
-                            <p><b>{{ list.age }}: </b><input required name="date" value="{{ user_view.age|safe }}"
+                            <p><b>{{ list.age }}: </b><input class="input" required name="date" value="{{ user_view.age|safe }}"
                                                              type="date">
                             </p>
-                            <p><b>{{ list.country }}</b>: <input required name="country" value="{{ user_view.country }}"
+                            <p><b>{{ list.country }}</b>: <input class="input" required name="country" value="{{ user_view.country }}"
                                                                  type="text"></p>
-                            <p><b>{{ list.city }}: </b><input required name="city" value="{{ user_view.city }}"
+                            <p><b>{{ list.city }}: </b><input class="input" required name="city" value="{{ user_view.city }}"
                                                               type="text">
                             </p>
                             {% if user.is_authenticated %}

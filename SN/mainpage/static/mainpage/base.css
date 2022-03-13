@@ -16,7 +16,7 @@ body {
     margin: 0;
     background: #222226;
     color: #777;
-    font-family: Calibri;
+    font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
     min-height: 100vh;
     display: flex;
     flex-flow: column;
@@ -103,5 +103,12 @@ footer{
 }
 footer a{
     text-decoration: none;
+    color: #777;
+}
+.input{
+    background-color: #333336;
+    border: 1px solid #777;
+    border-radius: 25px;
+    padding: 10px;
     color: #777;
 }

@@ -14,7 +14,7 @@
         <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
             <h1>{{ list.add_photo }}</h1>
-            <input required name="photo" type="file" accept="image/*,image/jpeg">
+            <input class="input" required name="photo" type="file" accept="image/*,image/jpeg">
             <input class="button" value="{{ list.add_photo }}" type="submit">
         </form>
 

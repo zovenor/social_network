@@ -1,0 +1,22 @@
+.login_form{
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+}
+body{
+    height: 100vh;
+}
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+form{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+form *{
+    margin: 10px;
+}

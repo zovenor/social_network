@@ -130,13 +130,13 @@ class UserDetail(models.Model):
 
 
 class Group(models.Model):
-    followers = models.ManyToManyField(UserDetail, related_name="followers", null=True, blank=True)
+    followers = models.ManyToManyField(UserDetail, related_name="followers")
     name = models.CharField(max_length=250)
     description = models.TextField(null=True, blank=True)
     groupname = models.CharField(max_length=100, unique=True)
     photo = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True, blank=True)
     admin = models.ForeignKey(UserDetail, on_delete=models.SET_NULL, null=True, blank=True)
-    editors = models.ManyToManyField(UserDetail, related_name="editors", null=True, blank=True)
+    editors = models.ManyToManyField(UserDetail, related_name="editors")
 
     def __str__(self):
         return self.groupname
@@ -151,10 +151,10 @@ class Group(models.Model):
 class Post(models.Model):
     author = models.CharField(max_length=100, null=True, blank=True)
     text = models.TextField()
-    photos = models.ManyToManyField(Photo, related_name="photos", null=True, blank=True)
+    photos = models.ManyToManyField(Photo, related_name="photos")
     pinned = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now=True)
-    likes = models.ManyToManyField(UserDetail, null=True, blank=True)
+    likes = models.ManyToManyField(UserDetail)
 
     def __str__(self):
         return self.text

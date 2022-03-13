@@ -2,17 +2,23 @@
 
 {% block title %}{{ list.title }}{% endblock %}
 
+{% load static %}
+
 {% block content %}
 {% if error != '' %}
     <script>alert("{{ error }}");</script>
 {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <h1>{{ list.title }}</h1>
-        <input type="text" name="username">
-        <input type="password" name="password">
-        <input type="submit" value="{{ list.login }}">
-    </form>
-    <h3><a href="/registration">{{ list.no_account }}</a></h3>
+    <link rel="stylesheet" href="{% static 'mainpage/login.css' %}">
+
+    <div class="login_form">
+        <form method="POST">
+            {% csrf_token %}
+            <h1>{{ list.title }}</h1>
+            <input class="input" placeholder="{{ list.username }}" type="text" name="username">
+            <input class="input" placeholder="{{ list.password }}" type="password" name="password">
+            <input class="button" type="submit" value="{{ list.login }}">
+        </form>
+        <h5><a href="/registration">{{ list.no_account }}</a></h5>
+    </div>
 {% endblock %}

@@ -2,7 +2,11 @@
 
 {% block title %}{{ list.title }}{% endblock %}
 
+{% load static %}
+
 {% block content %}
+
+    <link rel="stylesheet" href="{% static 'mainpage/reg.css' %}">
 
     {% if error != "" %}
         <script>
@@ -10,25 +14,31 @@
         </script>
     {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <p>{{ list.name }}: <input required value="{{ pl.name }}" name="name" type="text"></p>
-        <p>{{ list.surname }}: <input required value="{{ pl.surname }}" name="surname" type="text"></p>
-        <p>{{ list.email }}: <input required value="{{ pl.email }}" name="email" type="email"></p>
-        <p>{{ list.username }}: <input required value="{{ pl.username }}" name="username" type="text"></p>
-        <p>{{ list.password1 }}: <input required value="{{ pl.password1 }}" name="password1" type="password"></p>
-        <p>{{ list.password2 }}: <input required value="{{ pl.password2 }}" name="password2" type="password"></p>
 
-        <p>{{ list.birthday }}: <input required value="{{ pl.birthday }}" name="date" type="date"></p>
-        <p>{{ list.country }}: <input value="{{ pl.country }}" name="country" type="text"></p>
-        <p>{{ list.city }}: <input value="{{ pl.city }}" name="city" type="text"></p>
-        <p>{{ list.sex }}: <select required name="sex">
-            <option disabled>{{ list.choose_sex }}</option>
-            <option {% if pl.sex == 'None' %}selected{% endif %} value="None">{{ list.sex_is_not_defined }}</option>
-            <option {% if pl.sex == 'male' %}selected{% endif %} value="male">{{ list.male }}</option>
-            <option {% if pl.sex == 'female' %}selected{% endif %} value="female">{{ list.female }}</option>
-        </select></p>
+    <div class="reg_form">
+        <h1>{{ list.title }}</h1>
 
-        <input value="{{ list.register }}" type="submit">
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+            <p><input class="input" placeholder="{{ list.name }}" required value="{{ pl.name }}" name="name" type="text"></p>
+            <p><input placeholder="{{ list.surname }}" class="input" required value="{{ pl.surname }}" name="surname" type="text"></p>
+            <p><input placeholder="{{ list.email }}" class="input" required value="{{ pl.email }}" name="email" type="email"></p>
+            <p><input placeholder="{{ list.username }}" class="input" required value="{{ pl.username }}" name="username" type="text"></p>
+            <p><input placeholder="{{ list.password1 }}" class="input" required value="{{ pl.password1 }}" name="password1" type="password"></p>
+            <p><input placeholder="{{ list.password2 }}" class="input" required value="{{ pl.password2 }}" name="password2" type="password"></p>
+
+            <p><input placeholder="{{ list.birthday }}" class="input" required value="{{ pl.birthday }}" name="date" type="date"></p>
+            <p><input placeholder="{{ list.country }}" class="input" value="{{ pl.country }}" name="country" type="text"></p>
+            <p><input placeholder="{{ list.city }}" class="input" value="{{ pl.city }}" name="city" type="text"></p>
+            <p><select class="input" required name="sex">
+                <option disabled>{{ list.choose_sex }}</option>
+                <option {% if pl.sex == 'None' %}selected{% endif %} value="None">{{ list.sex_is_not_defined }}</option>
+                <option {% if pl.sex == 'male' %}selected{% endif %} value="male">{{ list.male }}</option>
+                <option {% if pl.sex == 'female' %}selected{% endif %} value="female">{{ list.female }}</option>
+            </select></p>
+
+            <input class="button" value="{{ list.register }}" type="submit">
+        </form>
+    </div>
+
 {% endblock %}

@@ -10,6 +10,8 @@ class EN:
         created_by = "created by"
         messenger = 'Messenger'
         news = "News"
+        username = "Enter your username"
+        password = "Enter your password"
 
     class Login(BASE):
         incorrect_username_or_password = 'Incorrect username or password!'
@@ -175,6 +177,8 @@ class RU(EN):
         created_by = "создан благодаря"
         messenger = "Мессенджер"
         news = "Новости"
+        username = "Введите своё имя пользователя"
+        password = "Введите свой пароль"
 
     class Login(EN.Login, BASE):
         incorrect_username_or_password = 'Неправильное имя пользователя или пароль!'
